@@ -1,0 +1,61 @@
+# Ajustes generales de Cátodo. Nada de esto debe estar fijo en el código.
+
+episodio:
+  duracion_objetivo_min: 12        # minutos
+  palabras_min: 1500
+  palabras_max: 2000
+  noticias_min: 5
+  noticias_max: 6
+
+noticias:
+  horas_atras: 24                  # ventana de recogida de feeds
+  candidatas: 20                   # cuántas pasan a news.json (el editor elige entre ellas)
+  grupos_minimos: 2                # grupos editoriales independientes por noticia
+  agrupacion: claude               # claude | estadistico (respaldo sin IA)
+  umbral_similitud: 0.15           # 0-1: cuánto se tienen que parecer dos titulares para ser la misma noticia
+  umbral_tema: 0.13                # 0-1: segunda pasada que une enfoques distintos de la misma historia
+  excluir_si_contiene:             # titulares que no son noticias (ofertas, cupones...)
+    - chollo
+    - ofertas
+    - oferta del día
+    - descuento
+    - rebajas
+    - cupón
+    - black friday
+    - cyber monday
+    - "% off"
+    - " deals"
+    - deal of the day
+    - "save $"
+    - "save up to"
+  pesos:                           # cómo se ordenan las candidatas
+    por_grupo: 3                   # cada grupo editorial que la cubre
+    por_fuente: 1                  # cada fuente nuestra (no agregador) que la publica
+    techmeme: 2                    # si sale en Techmeme (señal de relevancia)
+    hacker_news: 2                 # máximo, según los puntos en Hacker News
+
+claude:                            # llamadas a `claude -p` con la suscripción de Claude
+  modelo_agrupar: opus
+  esfuerzo_agrupar: medium
+  modelo_guion: opus               # editor, redacción, verificación, crítica y versión final
+  esfuerzo_guion: high
+  tiempo_max_pasada_s: 1800
+
+memoria:
+  dias: 7                          # cuántos días atrás recuerda Cátodo
+  dias_pendientes: 3               # una noticia pendiente caduca a los N días
+
+tts:
+  proveedor: gemini
+  modelo: gemini-3.8-flash-tts
+  voz: es-es-csagent-3             # Call Center Agent 3: castellano, 32 años
+  estilo: >-
+    Habla en español de España, con acento castellano peninsular.
+    Tono cálido, cercano y simpático, como el presentador de un podcast
+    matinal de tecnología. Ritmo natural, con algo de humor; nada de
+    locutor de telediario.
+
+audio:
+  loudness_lufs: -16
+  bitrate_kbps: 96
+  canales: 1                       # mono

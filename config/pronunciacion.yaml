@@ -1,0 +1,9 @@
+# Sustituciones de texto que se aplican al guion justo antes de sintetizar la voz.
+# Gemini no tiene diccionario de pronunciación: si la voz lee mal una palabra,
+# se añade aquí cómo debe escribirse para que suene bien.
+# Las claves distinguen mayúsculas y minúsculas.
+
+sustituciones: {}
+  # Ejemplos (descomentar si hace falta):
+  # "USB-C": "USB C"
+  # "macOS": "mac o ese"

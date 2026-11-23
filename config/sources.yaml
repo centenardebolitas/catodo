@@ -1,0 +1,445 @@
+# Fuentes de noticias de Cátodo.
+#
+# grupo: grupo editorial propietario. Una noticia solo entra en el episodio si la
+#        cubren al menos dos grupos independientes (ver catodo-proyecto.md).
+# agregador: true si la fuente solo enlaza a otros medios (Techmeme, Hacker News,
+#        Google News, Slashdot). tipo_agregador dice dónde está el enlace original:
+#        enlace_directo, enlace_en_resumen o google_news.
+#        No cuenta como cobertura propia: cuenta el medio original al que enlaza,
+#        cuyo grupo se deduce de su dominio (ver grupos_por_dominio más abajo).
+# dominios: dominios web del medio, para reconocer sus artículos cuando llegan
+#        a través de un agregador.
+# peso: importancia relativa de la fuente al ordenar (1 = normal).
+# activa: false para desactivarla sin borrarla.
+# leer_con_ia: false si el medio no quiere que una IA lea sus artículos (robots.txt,
+#        TDMRep o sus condiciones). Sigue contando para la regla de dos grupos y se
+#        enlaza en las notas, pero la redacción y la verificación no abren sus
+#        artículos. src/reservas.py lo comprueba también de forma automática.
+
+# Lista ampliada y activada el 23 de noviembre de 2026. Los grupos marcados
+# «por confirmar» hay que verificarlos.
+
+fuentes:
+- nombre: Techmeme
+  idioma: en
+  grupo: Techmeme
+  agregador: true
+  peso: 1
+  feed: https://www.techmeme.com/feed.xml
+  activa: true
+  tipo_agregador: enlace_en_resumen
+- nombre: Ars Technica
+  leer_con_ia: false  # bloquea a Claude-User
+  idioma: en
+  grupo: Condé Nast
+  dominios:
+  - arstechnica.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.arstechnica.com/arstechnica/index
+  activa: true
+- nombre: The Verge
+  leer_con_ia: false  # bloquea a Claude-User
+  idioma: en
+  grupo: Vox Media
+  dominios:
+  - theverge.com
+  agregador: false
+  peso: 1
+  feed: https://www.theverge.com/rss/index.xml
+  activa: true
+- nombre: TechCrunch
+  idioma: en
+  grupo: Regent
+  dominios:
+  - techcrunch.com
+  agregador: false
+  peso: 1
+  feed: https://techcrunch.com/feed/
+  activa: true
+- nombre: Hacker News
+  idioma: en
+  grupo: Y Combinator
+  agregador: true
+  peso: 1
+  feed: https://hnrss.org/frontpage?points=200
+  activa: true
+  tipo_agregador: enlace_directo
+- nombre: Xataka
+  idioma: es
+  grupo: Webedia
+  dominios:
+  - xataka.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.weblogssl.com/xataka2
+  activa: true
+- nombre: Genbeta
+  idioma: es
+  grupo: Webedia
+  dominios:
+  - genbeta.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.weblogssl.com/genbeta
+  activa: true
+- nombre: Hipertextual
+  idioma: es
+  grupo: Hipertextual
+  dominios:
+  - hipertextual.com
+  agregador: false
+  peso: 1
+  feed: https://hipertextual.com/feed
+  activa: true
+- nombre: El Confidencial Tecnología
+  idioma: es
+  grupo: Titania (El Confidencial)
+  dominios:
+  - elconfidencial.com
+  agregador: false
+  peso: 1
+  feed: https://rss.elconfidencial.com/tecnologia/
+  activa: true
+- nombre: MuyComputer
+  idioma: es
+  grupo: TPNET (por confirmar)
+  dominios:
+  - muycomputer.com
+  agregador: false
+  peso: 1
+  feed: https://www.muycomputer.com/feed/
+  activa: true
+- nombre: Computer Hoy
+  idioma: es
+  grupo: Henneo (20minutos, por confirmar)
+  dominios:
+  - computerhoy.20minutos.es
+  - computerhoy.com
+  agregador: false
+  peso: 1
+  feed: https://computerhoy.20minutos.es/rss
+  activa: true
+- nombre: El Español Omicrono
+  idioma: es
+  grupo: El Español
+  dominios:
+  - elespanol.com
+  agregador: false
+  peso: 1
+  feed: https://www.elespanol.com/rss/omicrono/
+  activa: true
+- nombre: El País Tecnología
+  leer_con_ia: false  # bloquea a Claude-User
+  idioma: es
+  grupo: PRISA
+  dominios:
+  - elpais.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/tecnologia/portada
+  activa: true
+- nombre: Engadget
+  idioma: en
+  grupo: Yahoo
+  dominios:
+  - engadget.com
+  agregador: false
+  peso: 1
+  feed: https://www.engadget.com/rss.xml
+  activa: true
+- nombre: The Register
+  idioma: en
+  grupo: Situation Publishing
+  dominios:
+  - theregister.com
+  agregador: false
+  peso: 1
+  feed: https://www.theregister.com/headlines.atom
+  activa: true
+- nombre: BBC Technology
+  leer_con_ia: false  # prohíbe por escrito usar su contenido para IA y resúmenes
+  idioma: en
+  grupo: BBC
+  dominios:
+  - bbc.com
+  - bbc.co.uk
+  agregador: false
+  peso: 1
+  feed: https://feeds.bbci.co.uk/news/technology/rss.xml
+  activa: true
+- nombre: Tom's Hardware
+  idioma: en
+  grupo: Future
+  dominios:
+  - tomshardware.com
+  agregador: false
+  peso: 1
+  feed: https://www.tomshardware.com/feeds/all
+  activa: true
+- nombre: 9to5Mac
+  idioma: en
+  grupo: 9to5
+  dominios:
+  - 9to5mac.com
+  agregador: false
+  peso: 1
+  feed: https://9to5mac.com/feed/
+  activa: true
+- nombre: Gizmodo
+  leer_con_ia: false  # reserva la minería en TDMRep (tdm-reservation: 1)
+  idioma: en
+  grupo: Keleops
+  dominios:
+  - gizmodo.com
+  agregador: false
+  peso: 1
+  feed: https://gizmodo.com/feed
+  activa: true
+- nombre: CNBC Technology
+  leer_con_ia: false  # bloquea a Claude-User
+  idioma: en
+  grupo: Versant
+  dominios:
+  - cnbc.com
+  agregador: false
+  peso: 1
+  feed: https://www.cnbc.com/id/19854910/device/rss/rss.html
+  activa: true
+- nombre: Business Insider España
+  idioma: es
+  grupo: Axel Springer (por confirmar)
+  dominios:
+  - businessinsider.es
+  agregador: false
+  peso: 1
+  feed: https://www.businessinsider.es/rss
+  activa: true
+- nombre: Andro4all
+  idioma: es
+  grupo: Planeta (La Razón)
+  dominios:
+  - andro4all.com
+  - larazon.es
+  agregador: false
+  peso: 1
+  feed: https://andro4all.com/feed
+  activa: true
+- nombre: Microsiervos
+  idioma: es
+  grupo: Microsiervos
+  dominios:
+  - microsiervos.com
+  agregador: false
+  peso: 1
+  feed: https://www.microsiervos.com/index.xml
+  activa: true
+- nombre: Wwwhat's new
+  idioma: es
+  grupo: Wwwhat's new
+  dominios:
+  - wwwhatsnew.com
+  agregador: false
+  peso: 1
+  feed: https://wwwhatsnew.com/feed/
+  activa: true
+- nombre: FayerWayer
+  idioma: es
+  grupo: FayerWayer (grupo por confirmar)
+  dominios:
+  - fayerwayer.com
+  agregador: false
+  peso: 1
+  feed: https://www.fayerwayer.com/feed/
+  activa: true
+- nombre: Google News Tecnología (España)
+  idioma: es
+  grupo: Google News
+  agregador: true
+  tipo_agregador: google_news
+  peso: 1
+  feed: https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=es&gl=ES&ceid=ES:es
+  activa: true
+- nombre: Bloomberg Technology
+  leer_con_ia: false  # bloquea a Claude-User
+  idioma: en
+  grupo: Bloomberg
+  dominios:
+  - bloomberg.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.bloomberg.com/technology/news.rss
+  activa: true
+- nombre: NYT Technology
+  leer_con_ia: false  # bloquea a Claude-User y reserva la minería por escrito
+  idioma: en
+  grupo: The New York Times
+  dominios:
+  - nytimes.com
+  agregador: false
+  peso: 1
+  feed: https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml
+  activa: true
+- nombre: Washington Post Technology
+  idioma: en
+  grupo: The Washington Post
+  dominios:
+  - washingtonpost.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.washingtonpost.com/rss/business/technology
+  activa: true
+- nombre: MIT Technology Review
+  idioma: en
+  grupo: MIT Technology Review
+  dominios:
+  - technologyreview.com
+  agregador: false
+  peso: 1
+  feed: https://www.technologyreview.com/feed/
+  activa: true
+- nombre: 404 Media
+  idioma: en
+  grupo: 404 Media
+  dominios:
+  - 404media.co
+  agregador: false
+  peso: 1
+  feed: https://www.404media.co/rss/
+  activa: true
+- nombre: ZDNet
+  leer_con_ia: false  # bloquea a Claude-User y reserva por escrito el uso para IA
+  idioma: en
+  grupo: Ziff Davis
+  dominios:
+  - zdnet.com
+  agregador: false
+  peso: 1
+  feed: https://www.zdnet.com/news/rss.xml
+  activa: true
+- nombre: The Next Web
+  idioma: en
+  grupo: Nikkei (Financial Times, por confirmar)
+  dominios:
+  - thenextweb.com
+  agregador: false
+  peso: 1
+  feed: https://thenextweb.com/feed
+  activa: true
+- nombre: MacRumors
+  idioma: en
+  grupo: MacRumors
+  dominios:
+  - macrumors.com
+  agregador: false
+  peso: 1
+  feed: https://feeds.macrumors.com/MacRumors-All
+  activa: true
+- nombre: Android Authority
+  idioma: en
+  grupo: Authority Media
+  dominios:
+  - androidauthority.com
+  agregador: false
+  peso: 1
+  feed: https://www.androidauthority.com/feed/
+  activa: true
+- nombre: Android Police
+  leer_con_ia: false  # reserva por escrito el uso para IA y resúmenes
+  idioma: en
+  grupo: Valnet
+  dominios:
+  - androidpolice.com
+  agregador: false
+  peso: 1
+  feed: https://www.androidpolice.com/feed/
+  activa: true
+- nombre: Slashdot
+  idioma: en
+  grupo: Slashdot
+  agregador: true
+  tipo_agregador: enlace_en_resumen
+  peso: 1
+  feed: https://rss.slashdot.org/Slashdot/slashdotMain
+  activa: true
+- nombre: Google News Technology (EE. UU.)
+  idioma: en
+  grupo: Google News
+  agregador: true
+  tipo_agregador: google_news
+  peso: 1
+  feed: https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en
+  activa: true
+
+# Grupos de medios que no son fuentes nuestras pero aparecen en los agregadores.
+# Si un dominio no está aquí ni en las fuentes, su grupo es el propio dominio.
+grupos_por_dominio:
+  wired.com: Condé Nast
+  newyorker.com: Condé Nast
+  engadget.com: Yahoo
+  yahoo.com: Yahoo
+  wsj.com: News Corp
+  barrons.com: News Corp
+  nypost.com: News Corp
+  theinformation.com: The Information
+  bloomberg.com: Bloomberg
+  reuters.com: Thomson Reuters
+  nytimes.com: The New York Times
+  ft.com: Nikkei (Financial Times)
+  cnbc.com: Versant
+  washingtonpost.com: The Washington Post
+  theguardian.com: Guardian Media Group
+  bbc.com: BBC
+  bbc.co.uk: BBC
+  vox.com: Vox Media
+  axios.com: Cox Enterprises
+  9to5mac.com: 9to5
+  9to5google.com: 9to5
+  electrek.co: 9to5
+  pcmag.com: Ziff Davis
+  mashable.com: Ziff Davis
+  zdnet.com: Ziff Davis
+  cnet.com: Ziff Davis
+  tomshardware.com: Future
+  techradar.com: Future
+  gizmodo.com: Keleops
+  404media.co: 404 Media
+  semafor.com: Semafor
+  businessinsider.com: Axel Springer
+  politico.com: Axel Springer
+  20minutos.es: Henneo (20minutos, por confirmar)
+  xda-developers.com: Valnet
+  howtogeek.com: Valnet
+  tomsguide.com: Future
+  androidcentral.com: Future
+  windowscentral.com: Future
+  techspot.com: TechSpot
+  elmundo.es: Unidad Editorial
+  expansion.com: Unidad Editorial
+  abc.es: Vocento
+  lavanguardia.com: Grupo Godó
+  elperiodico.com: Prensa Ibérica
+  eldiario.es: eldiario.es
+  rtve.es: RTVE
+  europapress.es: Europa Press
+  cincodias.elpais.com: PRISA
+  applesfera.com: Webedia
+  xatakandroid.com: Webedia
+  xatakamovil.com: Webedia
+  adslzone.net: Grupo ADSLZone
+  elotrolado.net: Grupo ADSLZone
+
+# Dominios que no cuentan como cobertura de un medio: redes sociales y similares.
+# Un artículo que solo enlaza a un tuit no suma un grupo editorial.
+dominios_que_no_cuentan:
+  - twitter.com
+  - x.com
+  - truthsocial.com
+  - bsky.app
+  - threads.net
+  - facebook.com
+  - instagram.com
+  - linkedin.com
+  - youtube.com
+  - reddit.com
+  - mastodon.social

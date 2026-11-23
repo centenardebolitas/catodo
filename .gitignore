@@ -1,0 +1,33 @@
+# Secretos
+.env
+
+# Python
+__pycache__/
+.venv/
+
+# Sistema
+.DS_Store
+
+# Audio de pruebas y bloques intermedios
+pruebas/salida/
+episodes/*/bloques/
+
+# Material de trabajo con titulares y extractos de los medios: nunca al repositorio
+# público (ver investigacion/analisis-legal.md). Solo se publican guion, notas y memoria.
+episodes/*/articulos.json
+episodes/*/news.json
+episodes/*/pasadas/
+episodes/*/escaleta.json
+episodes/*/revision.md
+episodes/*/revision-detalle.md
+
+# Investigación interna
+investigacion/
+
+# Cachés locales
+cache/
+
+# Audio de episodios (va a R2, no al repositorio)
+episodes/*/*.wav
+episodes/*/*.m4a
+episodes/*/*.mp3

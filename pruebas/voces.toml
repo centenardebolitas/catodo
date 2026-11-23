@@ -1,0 +1,157 @@
+# Candidatos para la prueba de voces de Cátodo.
+# Cada bloque [[candidato]] genera una muestra. Para desactivar uno, pon activo = false.
+# Los candidatos de ElevenLabs sin voz (voz = "") se saltan con un aviso.
+
+texto = "texto_prueba.md"
+
+# Instrucción de estilo para Gemini (ElevenLabs no la usa: el estilo depende de la voz elegida).
+estilo_gemini = """Habla en español de España, con acento castellano peninsular (distingue la z y la c de la s). \
+Tono cálido, cercano y simpático, como el presentador de un podcast matinal de tecnología. \
+Ritmo natural, con algo de humor; nada de locutor de telediario."""
+
+# ---------------------------------------------------------------- ElevenLabs
+# Rellena "voz" con el voice_id de las voces que añadas a "My Voices".
+# Modelos: eleven_v4, eleven_v4_turbo, eleven_v3, eleven_flash_v2_5, eleven_multilingual_v2
+
+[[candidato]]
+proveedor = "elevenlabs"
+modelo = "eleven_v4_turbo"
+voz = ""
+nombre_voz = "voz 1"
+activo = false
+
+[[candidato]]
+proveedor = "elevenlabs"
+modelo = "eleven_flash_v2_5"
+voz = ""
+nombre_voz = "voz 1"
+activo = false
+
+[[candidato]]
+proveedor = "elevenlabs"
+modelo = "eleven_v4_turbo"
+voz = ""
+nombre_voz = "voz 2"
+activo = false
+
+[[candidato]]
+proveedor = "elevenlabs"
+modelo = "eleven_flash_v2_5"
+voz = ""
+nombre_voz = "voz 2"
+activo = false
+
+# ---------------------------------------------------------------- Gemini
+# Voces masculinas candidatas: Achird (Friendly), Puck (Upbeat), Algieba (Smooth),
+# Charon (Informative), Iapetus (Clear), Umbriel (Easy-going).
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "Achird"
+activo = false
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "Puck"
+activo = false
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-lite-tts"
+voz = "Achird"
+activo = false
+
+# ---------------------------------------------------------------- Gemini: voces castellanas (catálogo ampliado)
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "Achird"
+nombre_voz = "Achird (voz genérica, referencia de la ronda anterior)"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-podcaster-7"
+nombre_voz = "Podcaster 7 · locutor de radio, 51 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-techagent-4"
+nombre_voz = "Tech Advisor 4 · cálido y cercano, 50 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-training-3"
+nombre_voz = "Training Voiceover 3 · cálido y cercano, 44 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-training-11"
+nombre_voz = "Training Voiceover 11 · natural y claro, 31 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-training-9"
+nombre_voz = "Training Voiceover 9 · seguro y claro, 23 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-assistant-4"
+nombre_voz = "Digital Assistant 4 · claro y simpático, 54 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-assistant-3"
+nombre_voz = "Digital Assistant 3 · resonante e ingenioso, 59 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-concierge-4"
+nombre_voz = "Concierge 4 · tranquilo y seguro, 35 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-concierge-12"
+nombre_voz = "Concierge 12 · directo, 27 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-csagent-3"
+nombre_voz = "Call Center Agent 3 · empático, 32 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-advisor-2"
+nombre_voz = "Authoritative Advisor 2 · curioso, 38 años"
+activo = true
+
+[[candidato]]
+proveedor = "gemini"
+modelo = "gemini-3.8-flash-tts"
+voz = "es-es-advisor-9"
+nombre_voz = "Authoritative Advisor 9 · seguro y claro, 44 años"
+activo = true
