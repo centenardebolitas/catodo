@@ -184,7 +184,7 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
 <main>
 {cuerpo}
   <footer>{html.escape(cfg['aviso_ia'])}<br>
-  <a href="/feed.xml">Feed RSS</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></footer>
+  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/feed.xml">Feed RSS</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></footer>
 </main>
 </body>
 </html>

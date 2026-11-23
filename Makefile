@@ -1,10 +1,12 @@
 # Cátodo: comandos del día a día. Ejecuta `make` para ver la ayuda.
 
 PYTHON := .venv/bin/python
-FECHA  ?= $(shell date +%Y-%m-%d)
+# Fecha del episodio: a partir de las 15:00 se trabaja en el de mañana (flujo nocturno).
+FECHA  ?= $(shell if [ $$(date +%H) -ge 15 ]; then date -v+1d +%Y-%m-%d; else date +%Y-%m-%d; fi)
+PLIST  := $(HOME)/Library/LaunchAgents/es.catodo.noche.plist
 
 .DEFAULT_GOAL := ayuda
-.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio publicar simulacro feed probar-voces
+.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio noche programar instalar-noche desinstalar-noche publicar simulacro feed probar-voces
 
 ayuda: ## Muestra esta ayuda
 	@echo "Cátodo: comandos disponibles"
@@ -49,7 +51,26 @@ voz: ## Sintetiza el guion por bloques con Gemini (solo repite los que cambian)
 audio: voz ## Voz + montaje: MP3 final con sintonía y volumen normalizado (Fase 3)
 	$(PYTHON) src/mix.py --fecha $(FECHA)
 
-publicar: ## Sube el episodio aprobado a R2, regenera feed y web, y hace push (Fase 4)
+noche: ## Lo que se lanza solo a las 23:00: guion y audio del episodio de mañana
+	scripts/noche.sh
+
+programar: ## Tras aprobar: audio al día, subida a R2 y publicación automática a las 6:00
+	$(MAKE) audio FECHA=$(FECHA)
+	$(PYTHON) src/publish.py --fecha $(FECHA) --programar
+
+instalar-noche: ## Instala la preparación automática de las 23:00 (domingo a jueves)
+	@mkdir -p logs $(dir $(PLIST))
+	@sed "s|RUTA_CATODO|$(CURDIR)|g" scripts/es.catodo.noche.plist > "$(PLIST)"
+	@launchctl bootout gui/$$(id -u) "$(PLIST)" 2>/dev/null || true
+	launchctl bootstrap gui/$$(id -u) "$(PLIST)"
+	@echo "Instalado: Cátodo se preparará solo a las 23:00 de domingo a jueves."
+
+desinstalar-noche: ## Quita la preparación automática de las 23:00
+	@launchctl bootout gui/$$(id -u) "$(PLIST)" 2>/dev/null || true
+	@$(PYTHON) -c "import pathlib; pathlib.Path('$(PLIST)').unlink(missing_ok=True)"
+	@echo "Desinstalado."
+
+publicar: ## Publica ya el episodio aprobado: R2, feed, web y push (sin esperar a las 6:00)
 	$(PYTHON) src/publish.py --fecha $(FECHA)
 
 simulacro: ## Prueba la publicación sin subir nada (feed y web en una carpeta temporal)

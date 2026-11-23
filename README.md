@@ -17,12 +17,19 @@ make                   # lista los comandos
 
 ## Uso diario
 
-```bash
-make preparar   # noticias + guion en cinco pasadas con Claude (unos 20-30 min)
-                # revisar episodes/AAAA-MM-DD/revision.md y editar guion.md
-make aprobar NOTA="datos dudosos comprobados"   # deja constancia de la revisión humana
-make publicar   # voz, montaje, subida a R2, feed y push
-```
+Cátodo se prepara por la noche y se publica solo a las 6:00 (hora de Madrid):
+
+1. **23:00 (domingo a jueves), automático:** el Mac ejecuta `make noche` (noticias, guion en cinco pasadas, voz y montaje del episodio de mañana) y avisa con una notificación. Se instala una vez con `make instalar-noche`.
+2. **Tú, por la noche:** revisa `episodes/AAAA-MM-DD/revision.md`, corrige `guion.md` si hace falta y:
+
+   ```bash
+   make aprobar NOTA="datos dudosos comprobados"   # deja constancia de la revisión humana
+   make programar   # rehace solo los bloques de voz que cambien, sube el audio a R2 y lo programa
+   ```
+
+3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) publica el episodio programado y actualiza la web y el feed. El Mac puede estar apagado.
+
+Después de las 15:00, `make` trabaja por defecto con el episodio del día siguiente. Para publicar en el momento, sin esperar a las 6:00: `make publicar`.
 
 Otros comandos útiles:
 

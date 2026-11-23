@@ -1,0 +1,76 @@
+# Publica a las 6:00 (hora de Madrid) el episodio que `make programar` dejó en la rama
+# `programado`: la pasa a main y pide a GitHub Pages que regenere la web y el feed.
+#
+# GitHub solo admite horarios en UTC, así que se lanza a las 4:00 y a las 5:00 UTC y solo
+# actúa la ejecución que cae en las 6 de Madrid (5:00 UTC en invierno, 4:00 UTC en verano).
+
+name: Publicar episodio programado
+
+on:
+  schedule:
+    - cron: "0 4 * * 1-5"
+    - cron: "0 5 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      forzar:
+        description: "Publicar ahora, sin mirar la hora"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ¿Son las 6 en Madrid?
+        id: hora
+        run: |
+          hora=$(TZ=Europe/Madrid date +%H)
+          echo "Hora en Madrid: $hora"
+          if [ "$hora" = "06" ] || [ "${{ inputs.forzar }}" = "true" ]; then
+            echo "toca=si" >> "$GITHUB_OUTPUT"
+          else
+            echo "toca=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Descargar el repositorio
+        if: steps.hora.outputs.toca == 'si'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pasar la rama programada a main
+        if: steps.hora.outputs.toca == 'si'
+        id: fusion
+        run: |
+          if ! git ls-remote --exit-code --heads origin programado >/dev/null; then
+            echo "No hay ningún episodio programado."
+            echo "publicado=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch origin programado main
+          if git merge-base --is-ancestor origin/programado origin/main; then
+            echo "El episodio programado ya está publicado."
+            echo "publicado=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! git merge-base --is-ancestor origin/main origin/programado; then
+            echo "::error::La rama programado no parte del último main. Vuelve a ejecutar make programar."
+            exit 1
+          fi
+          git push origin origin/programado:refs/heads/main
+          echo "Publicado: $(git log -1 --format=%s origin/programado)"
+          echo "publicado=si" >> "$GITHUB_OUTPUT"
+
+      - name: Regenerar GitHub Pages
+        if: steps.fusion.outputs.publicado == 'si'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds"

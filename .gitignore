@@ -37,3 +37,6 @@ assets/portada/variante-*.jpg
 assets/portada/comparativa.png
 assets/separador/separador-*.wav
 assets/sintonia/original-*.wav
+
+# Registros de la preparación nocturna
+logs/

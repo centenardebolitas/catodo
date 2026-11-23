@@ -1,7 +1,7 @@
 """Fase 4: publica un episodio aprobado.
 
 Uso:
-    python src/publish.py [--fecha AAAA-MM-DD] [--simulacro] [--sin-push]
+    python src/publish.py [--fecha AAAA-MM-DD] [--simulacro] [--sin-push] [--programar]
 
 Pasos:
   1. Comprueba que el episodio está aprobado (make aprobar) y que existe su MP3 (make audio).
@@ -13,6 +13,12 @@ Pasos:
 
 Con --simulacro no sube nada, no toca la memoria ni git, y genera el feed y la web en
 una carpeta temporal para revisarlos.
+
+Con --programar el episodio queda listo pero no se publica: el audio se sube a R2, el
+commit se hace en local y se envía a la rama `programado`, con fecha de publicación a la
+HORA_PUBLICACION de Madrid. A esa hora, la tarea de GitHub (.github/workflows/publicar.yml)
+pasa la rama a main y GitHub Pages actualiza la web y el feed. Si esa hora ya ha pasado,
+se publica en el momento.
 """
 
 import argparse
@@ -22,14 +28,18 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import date, datetime
+from datetime import date, datetime, time
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import feed
 import memoria
 from comun import EPISODIOS, RAIZ, cargar_env
 
 CARPETA_R2 = "episodios"
+ZONA = ZoneInfo("Europe/Madrid")
+HORA_PUBLICACION = time(6, 0)
+RAMA_PROGRAMADA = "programado"
 
 
 def duracion(ruta):
@@ -84,6 +94,8 @@ def main():
     parser.add_argument("--fecha", default=date.today().isoformat())
     parser.add_argument("--simulacro", action="store_true", help="prueba sin subir nada ni tocar git")
     parser.add_argument("--sin-push", action="store_true", help="hace commit pero no push")
+    parser.add_argument("--programar", action="store_true",
+                        help="deja el episodio listo para que GitHub lo publique a las 6:00 de Madrid")
     args = parser.parse_args()
 
     carpeta = EPISODIOS / args.fecha
@@ -115,6 +127,14 @@ def main():
         "duracion_s": round(duracion(mp3), 1),
         "publicado_en": datetime.now().astimezone().isoformat(timespec="seconds"),
     }
+    programado = False
+    if args.programar:
+        hora = datetime.combine(date.fromisoformat(args.fecha), HORA_PUBLICACION, ZONA)
+        if hora > datetime.now(ZONA):
+            programado = True
+            datos["publicado_en"] = hora.isoformat(timespec="seconds")
+        else:
+            print(f"Las {HORA_PUBLICACION:%H:%M} del {args.fecha} ya han pasado: se publica ahora.")
 
     if args.simulacro:
         temporal = Path(tempfile.mkdtemp(prefix="catodo-simulacro-"))
@@ -131,7 +151,7 @@ def main():
         print(f"  (el audio se publicaría en {url_audio}, {bytes_mp3 / 1e6:.1f} MB)")
         return
 
-    print(f"Publicando el episodio {numero} ({args.fecha})…")
+    print(f"{'Programando' if programado else 'Publicando'} el episodio {numero} ({args.fecha})…")
     limpiar_notas(carpeta / "notas.md")
     print(f"  Subiendo {mp3.name} a R2…")
     subir_a_r2(mp3, clave_r2, env)
@@ -147,7 +167,13 @@ def main():
     publicos += [str(p.relative_to(RAIZ)) for p in EPISODIOS.glob("*/memoria.json")]  # correcciones saldadas
     git("add", *publicos)
     git("commit", "-q", "-m", f"Episodio {numero} ({args.fecha})")
-    if not args.sin_push:
+    if args.sin_push:
+        return
+    if programado:
+        # main se queda en local; la tarea de GitHub lo publicará desde la rama programada.
+        git("push", "-q", "-f", "origin", f"HEAD:refs/heads/{RAMA_PROGRAMADA}")
+        print(f"  Programado: se publicará el {args.fecha} a las {HORA_PUBLICACION:%H:%M} (hora de Madrid).")
+    else:
         git("push", "-q")
         print("  Publicado: GitHub Pages actualizará catodo.es/feed.xml en uno o dos minutos.")
 
