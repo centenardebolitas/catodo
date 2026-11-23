@@ -208,6 +208,11 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 
 **Hecho cuando:** `https://catodo.es` muestra una página de prueba con HTTPS, un fichero de prueba subido a R2 se descarga desde `https://audio.catodo.es`, y `make` muestra los comandos disponibles.
 
+**Estado (23 de noviembre de 2026):**
+- 0.1 hecho: DNS de `catodo.es` en Cloudflare (servidores `sara` y `zod`), con los registros de correo de OVH y los de GitHub Pages en modo «solo DNS». Propagándose.
+- 0.2 hecho: R2 activado, bucket `catodo-audio` en Europa Occidental, dominio `audio.catodo.es` (TLS mínimo 1.2) y token de cuenta `catodo-publicar`, con lectura y escritura de objetos solo en ese bucket, guardado en `.env`. Probado: subida por la API y descarga pública por `https://audio.catodo.es`.
+- 0.3 hecho a falta de HTTPS: repositorio `centenardebolitas/catodo` con GitHub Pages desde `docs/`. Falta activar «Enforce HTTPS» cuando GitHub emita el certificado, que llegará tras la propagación del DNS.
+
 ### Fase 1. Recogida y selección de noticias
 - `fetch.py`: lee los feeds de `sources.yaml` y se queda con lo publicado en las últimas 24 h.
 - `rank.py`: agrupa la misma noticia publicada en varias fuentes; cuantos más grupos editoriales independientes la cubren, más sube. Descarta las noticias cubiertas por un solo grupo (los agregadores no cuentan). Devuelve las mejores candidatas en `news.json` (titular, resumen, enlaces, fuentes, fecha).
