@@ -193,6 +193,8 @@ Entre {palabras_min} y {palabras_max} palabras en total. Respeta aproximadamente
 1. Antes de escribir cada noticia, lee con WebFetch al menos dos de sus "enlaces_para_leer", de grupos distintos si es posible. Si un enlace falla o tiene muro de pago, prueba con otro o busca la noticia con WebSearch en otro medio solvente.
    NUNCA abras con WebFetch los "enlaces_solo_citar" ni otros artículos de esos mismos dominios: son medios que no permiten que una IA lea su contenido. Puedes mencionarlos y atribuirles datos solo si esos datos los recoge otra fuente que sí hayas leído. Si WebFetch te dice que un sitio no permite el acceso, respétalo y no busques copias.
    Nunca uses copias que saltan muros de pago (archive.today, 12ft y similares).
+   Los enlaces de news.google.com son redirecciones de Google News: no los abras. Si te hacen falta, busca con WebSearch el artículo original en el medio que indica (por el titular) y usa esa URL.
+   En "fuentes_leidas" pon siempre la URL original de cada artículo, nunca la de Google News.
 2. Escribe con palabras propias. No copies frases de los artículos, ni siquiera traducidas literalmente.
 3. Usa solo datos que aparezcan en las fuentes que has leído. Atribuye lo que venga de un medio concreto.
 4. Sigue las reglas de fechas y cifras: solo las imprescindibles.
@@ -260,12 +262,15 @@ Entre {palabras_min} y {palabras_max} palabras. Es un límite: si el guion se pa
 # Informe del verificador (obligatorio corregir todos los errores; los dudosos, corregir, matizar o quitar)
 {verificacion}
 
+# URL originales que ha leído la redacción (úsalas en las notas en lugar de las de Google News)
+{fuentes_leidas}
+
 # Críticas del abogado del diablo (aplica las que mejoren el guion; ignora las que no, y di por qué en "cambios")
 {critica}
 
 # Qué devolver
 - "guion": el guion final, en el mismo formato de bloques.
-- "notas": las notas del episodio en Markdown, para publicar: un título propio por noticia, una frase de resumen con tus palabras y los enlaces a las fuentes (de la escaleta, tanto los leídos como los "solo citar"). El texto de cada enlace es SOLO el nombre del medio, por ejemplo [Bloomberg](url) o [Xataka](url); nunca copies el titular del artículo. Al final, el aviso: "Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es."
+- "notas": las notas del episodio en Markdown, para publicar. Empiezan con una línea "# " con el título del episodio tal y como se verá en las apps de podcasts: corto (máximo unos 80 caracteres), con las dos o tres noticias principales y sin número de episodio ni fecha (por ejemplo, "# Huang vuelve a Nvidia, Riemann pasa por Lean y un día de bugs"). Después, un título propio por noticia, una frase de resumen con tus palabras y los enlaces a las fuentes (de la escaleta, tanto los leídos como los "solo citar"). El texto de cada enlace es SOLO el nombre del medio, por ejemplo [Bloomberg](url) o [Xataka](url); nunca copies el titular del artículo. No pongas nunca enlaces de news.google.com: usa la URL original del artículo (está en las URL leídas por la redacción) y, si no la tienes, deja ese medio fuera de las notas. Al final, el aviso: "Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es."
 - "cambios": lista breve de lo que has cambiado respecto al guion anterior.
 - "dudas_para_revisor": lo que el humano que revisa debería mirar con atención (datos que no se pudieron confirmar del todo, decisiones discutibles).
 - "contadas": para la memoria de próximos episodios, una entrada por noticia contada con un resumen de lo que se dijo y los asuntos abiertos (lo que puede pasar después y conviene seguir).
@@ -413,7 +418,9 @@ def main():
         critica = pasada(4, "critica", CRITICA.format(guion=borrador["guion"], **comunes), ESQUEMA_CRITICA)
         final = pasada(5, "final", FINAL.format(escaleta=texto_escaleta, guion=borrador["guion"],
                                                 verificacion=json_bonito(verificacion),
-                                                critica=json_bonito(critica), **comunes), ESQUEMA_FINAL)
+                                                critica=json_bonito(critica),
+                                                fuentes_leidas="\n".join(borrador.get("fuentes_leidas", [])) or "(ninguna)",
+                                                **comunes), ESQUEMA_FINAL)
     except claude_cli.ErrorClaude as e:
         sys.exit(f"\nNo se ha podido preparar el guion: {e}")
 

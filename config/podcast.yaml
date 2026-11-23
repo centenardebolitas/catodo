@@ -1,0 +1,23 @@
+# Datos del podcast para el feed RSS, Apple Podcasts, Spotify y la web.
+
+titulo: Cátodo
+subtitulo: Tecnología cada mañana          # pendiente de confirmar
+descripcion: >-
+  Cátodo es un podcast diario de noticias de tecnología en español, de lunes a
+  viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado
+  con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias
+  publicadas por al menos dos grupos editoriales independientes y enlaza siempre
+  las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini)
+  y revisados por una persona antes de publicarse.
+aviso_ia: >-
+  Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados
+  por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.
+autor: Cátodo
+email: hola@catodo.es
+idioma: es-ES
+categoria: Technology                      # categoría de Apple Podcasts (en inglés)
+subcategoria: Tech News
+explicito: false
+web: https://catodo.es
+imagen: https://catodo.es/portada.jpg      # 3000x3000 px, pendiente
+copyright: Cátodo

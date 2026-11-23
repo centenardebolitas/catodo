@@ -31,3 +31,9 @@ cache/
 episodes/*/*.wav
 episodes/*/*.m4a
 episodes/*/*.mp3
+
+# Material de diseño descartado o pesado (se queda en local)
+assets/portada/variante-*.jpg
+assets/portada/comparativa.png
+assets/separador/separador-*.wav
+assets/sintonia/original-*.wav

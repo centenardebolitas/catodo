@@ -47,8 +47,12 @@ memoria:
 
 tts:
   proveedor: gemini
+  via: agent_platform              # agent_platform (Google Cloud, factura directa) | gemini_api (AI Studio)
+  proyecto_gcp: gen-lang-client-0764736820   # proyecto «catodo» en Google Cloud
+  region: eu                       # eu | us | global (Agent Platform)
   modelo: gemini-3.8-flash-tts
   voz: es-es-csagent-3             # Call Center Agent 3: castellano, 32 años
+  estilo_modo: prefijo             # con estilo | ninguno (en Agent Platform va en su campo propio)
   estilo: >-
     Habla en español de España, con acento castellano peninsular.
     Tono cálido, cercano y simpático, como el presentador de un podcast

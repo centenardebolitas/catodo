@@ -4,7 +4,7 @@ PYTHON := .venv/bin/python
 FECHA  ?= $(shell date +%Y-%m-%d)
 
 .DEFAULT_GOAL := ayuda
-.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas publicar probar-voces
+.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio publicar simulacro feed probar-voces
 
 ayuda: ## Muestra esta ayuda
 	@echo "Cátodo: comandos disponibles"
@@ -43,8 +43,21 @@ corregir: ## Registra una corrección del episodio de FECHA (TEXTO="...")
 reservas: ## Comprueba qué medios no permiten que una IA lea sus artículos
 	$(PYTHON) src/reservas.py
 
-publicar: ## Voz, montaje, subida a R2, feed y push (Fases 3 y 4)
-	@echo "Pendiente: Fases 3 y 4 (tts.py, mix.py, publish.py, feed.py)"
+voz: ## Sintetiza el guion por bloques con Gemini (solo repite los que cambian)
+	$(PYTHON) src/tts.py --fecha $(FECHA)
+
+audio: voz ## Voz + montaje: MP3 final con sintonía y volumen normalizado (Fase 3)
+	$(PYTHON) src/mix.py --fecha $(FECHA)
+
+publicar: ## Sube el episodio aprobado a R2, regenera feed y web, y hace push (Fase 4)
+	$(PYTHON) src/publish.py --fecha $(FECHA)
+
+simulacro: ## Prueba la publicación sin subir nada (feed y web en una carpeta temporal)
+	$(PYTHON) src/publish.py --fecha $(FECHA) --simulacro
+
+feed: ## Regenera docs/feed.xml y la web a partir de los episodios publicados
+	$(PYTHON) src/feed.py
+
 
 probar-voces: ## Prueba a ciegas de voces (pruebas/voces.toml)
 	python3 pruebas/prueba_voces.py

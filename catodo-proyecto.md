@@ -121,7 +121,7 @@ El DNS de `catodo.es` se gestiona en Cloudflare (ver Fase 0).
 |---|---|
 | Lenguaje | Python 3 (`feedparser`, `requests`, `boto3`, `pyyaml`) |
 | Guion | Claude Code en modo no interactivo (`claude -p`) con mi plan Max |
-| Voz | API de Gemini (Google AI Studio), capa de pago por uso. Modelo `gemini-3.8-flash-tts`, voz `es-es-csagent-3` (Call Center Agent 3, castellano, 32 años) e instrucción de estilo en `config/` |
+| Voz | Gemini TTS por la Agent Platform de Google Cloud (región eu, credenciales de gcloud), pago por uso; la API de AI Studio queda como alternativa. Modelo `gemini-3.8-flash-tts`, voz `es-es-csagent-3` (Call Center Agent 3, castellano, 32 años) e instrucción de estilo en `config/` |
 | Pronunciación | Gemini no tiene diccionario de pronunciación: se usa un diccionario propio de sustituciones que se aplica al texto antes de sintetizar (siglas, marcas, nombres en inglés) |
 | Montaje de audio | `ffmpeg` |
 | Alojamiento de audio | Cloudflare R2 con dominio `audio.catodo.es` |
@@ -233,6 +233,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 - `mix.py`: une bloques con `ffmpeg`, añade sintonía de entrada y salida, normaliza a -16 LUFS y exporta MP3 mono a 96 kbps.
 - Mostrar al final la duración del episodio y su coste aproximado (tokens de audio: 25 por segundo).
 - Hecho cuando: obtengo un MP3 escuchable del guion aprobado.
+- Estado (23 de noviembre de 2026): `tts.py` y `mix.py` escritos (`make voz`, `make audio`). La voz se genera por la Agent Platform de Google Cloud (antes Vertex AI), región `eu`, con las credenciales de `gcloud` (`gcloud auth application-default login`, una vez): la API de AI Studio aplicaba la cuota gratuita de 10 peticiones al día aunque el proyecto estuviera en el nivel de pago. La vía de AI Studio sigue disponible (`tts.via: gemini_api`). Primer episodio completo generado: 10 minutos para 1.935 palabras (la voz lee a unas 190 palabras por minuto). Falta la sintonía (`assets/sintonia_intro.mp3` y `assets/sintonia_outro.mp3`); sin ella el episodio se monta igual.
 
 ### Fase 4. Publicación
 - `publish.py`: sube el MP3 a R2 y obtiene la URL pública en `audio.catodo.es`.
@@ -241,6 +242,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 - La `<description>` de cada episodio incluye el aviso de IA (lo exige Apple Podcasts).
 - Solo publica episodios aprobados (`make aprobar`) y los marca como publicados para la memoria.
 - Hecho cuando: el feed pasa un validador de podcasts y el episodio se reproduce desde `https://audio.catodo.es`.
+- Estado (23 de noviembre de 2026): `publish.py` y `feed.py` escritos (`make publicar`, `make simulacro`, `make feed`); los datos del programa están en `config/podcast.yaml`. Probado en local: el feed es un RSS válido. Falta R2 (Fase 0.2) para publicar de verdad.
 
 ### Fase 5. Distribución (la hago yo, con tu guía)
 - Alta del feed `https://catodo.es/feed.xml` en Apple Podcasts Connect y en Spotify (feed externo).
@@ -278,6 +280,7 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 - Comprobar la marca "Cátodo" en la OEPM y en TMview (clases 9, 38 y 41).
 - Valorar una consulta con un abogado (anonimato frente a la identificación del responsable en la política de privacidad, límite de cita, lectura por IA). Las preguntas están en `investigacion/analisis-legal.md`.
 - Valorar usar una clave de API de Anthropic para el proceso nocturno en lugar del plan Max.
+- Portada (3000x3000 px, `docs/portada.jpg`) y sintonía, con licencia que cubra podcasts.
 - Sintonía y portada.
 - Sección fija o muletilla del presentador, si la hay.
 - Handles en redes sociales.
