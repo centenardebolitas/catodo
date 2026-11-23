@@ -1,8 +1,14 @@
 """Cátodo en ops (trabajo catodo.preparar, ops#118): la decisión y la respuesta.
 
 Uso (lo lanzan scripts/ops/preparar.sh y scripts/ops/responder.sh):
+    python src/ops.py preparar --fecha AAAA-MM-DD
     python src/ops.py decision --fecha AAAA-MM-DD
     python src/ops.py responder
+
+preparar: lo de `make noche`, paso a paso. El token de Claude que da ops por el
+descriptor de OPS_CLAUDE_TOKEN_FD solo se puede leer una vez: se lee aquí, lo
+primero, y a los pasos que llaman a Claude (rank y script) se les pasa por un
+descriptor nuevo cada vez. Los demás no lo ven.
 
 decision: tras preparar el episodio, sube el MP3 y el guion a una ruta de R2 no
 enlazada (revision/<fecha>-<aleatorio>), y deja en OPS_DECISION_FILE la decisión
@@ -26,6 +32,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import claude_cli
 import memoria
 from comun import EPISODIOS, RAIZ, cargar_env
 
@@ -106,6 +113,39 @@ def cliente_r2(env):
 
 def base_publica(env):
     return env.get("R2_PUBLIC_BASE_URL", "https://audio.catodo.es").rstrip("/")
+
+
+# (script, si llama a Claude): lo de `make preparar` y `make audio`.
+PASOS = [("src/fetch.py", False), ("src/rank.py", True), ("src/script.py", True),
+         ("src/tts.py", False), ("src/mix.py", False)]
+
+
+def paso(script, fecha, token):
+    """Un paso de la preparación, en su proceso. Con token, por un descriptor suyo."""
+    env = {k: v for k, v in os.environ.items() if k != "OPS_CLAUDE_TOKEN_FD"}
+    extra = {}
+    leer = None
+    if token:
+        leer, escribir = os.pipe()
+        os.write(escribir, f"{token}\n".encode())
+        os.close(escribir)
+        env["OPS_CLAUDE_TOKEN_FD"] = str(leer)
+        extra["pass_fds"] = (leer,)
+    try:
+        resultado = subprocess.run([sys.executable, script, "--fecha", fecha], cwd=RAIZ, env=env, **extra)
+    finally:
+        if leer is not None:
+            os.close(leer)
+    if resultado.returncode != 0:
+        sys.exit(f"{script} ha fallado (código {resultado.returncode}).")
+
+
+def preparar(fecha):
+    token = claude_cli.token_ops()  # lo primero: luego ya no se puede leer
+    for script, con_claude in PASOS:
+        print(f"== {script}", flush=True)
+        paso(script, fecha, token if con_claude else None)
+    decision(fecha)
 
 
 def decision(fecha):
@@ -214,11 +254,15 @@ def responder():
 def main():
     parser = argparse.ArgumentParser(description="Cátodo en ops: decisión y respuesta")
     ordenes = parser.add_subparsers(dest="orden", required=True)
+    todo = ordenes.add_parser("preparar", help="prepara el episodio y deja la decisión para ops")
+    todo.add_argument("--fecha", required=True)
     abrir = ordenes.add_parser("decision", help="sube el audio de revisión y deja la decisión para ops")
     abrir.add_argument("--fecha", required=True)
     ordenes.add_parser("responder", help="aplica la opción que ha elegido Ulises")
     args = parser.parse_args()
-    if args.orden == "decision":
+    if args.orden == "preparar":
+        preparar(args.fecha)
+    elif args.orden == "decision":
         decision(args.fecha)
     else:
         responder()

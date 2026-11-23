@@ -95,6 +95,37 @@ class Respuesta(unittest.TestCase):
         self.assertIn("Opción desconocida", self.responder("otra", ops.titulo("1999-01-01")))
 
 
+class Preparar(unittest.TestCase):
+    """El token se lee una vez y llega a cada paso que llama a Claude por un descriptor nuevo."""
+
+    def test_cada_paso_con_claude_recibe_el_token_y_los_demas_no(self):
+        with tempfile.TemporaryDirectory() as dir:
+            visto = Path(dir) / "visto.txt"
+            paso = Path(dir) / "paso.py"
+            paso.write_text(f"""import os
+fd = os.environ.get("OPS_CLAUDE_TOKEN_FD")
+token = os.read(int(fd), 100).decode().strip() if fd else "-"
+with open({str(visto)!r}, "a") as f:
+    f.write(token + "\\n")
+""")
+            for con_claude in (True, True, False):
+                ops.paso(str(paso), "2026-11-25", "tok" if con_claude else None)
+            self.assertEqual(visto.read_text().split(), ["tok", "tok", "-"])
+
+    def test_un_paso_que_falla_para_la_preparacion(self):
+        with tempfile.TemporaryDirectory() as dir:
+            falla = Path(dir) / "falla.py"
+            falla.write_text("import sys; sys.exit(3)\n")
+            with self.assertRaises(SystemExit) as salida:
+                ops.paso(str(falla), "2026-11-25", None)
+            self.assertIn("código 3", str(salida.exception))
+
+    def test_los_pasos_son_los_de_make_noche(self):
+        self.assertEqual([p for p, _ in ops.PASOS],
+                         ["src/fetch.py", "src/rank.py", "src/script.py", "src/tts.py", "src/mix.py"])
+        self.assertEqual([p for p, claude in ops.PASOS if claude], ["src/rank.py", "src/script.py"])
+
+
 class ClaudeEnOps(unittest.TestCase):
     """El token por descriptor y las cerraduras, con un `claude` falso en el PATH."""
 
