@@ -1,0 +1,168 @@
+{
+  "fecha": "2026-11-23",
+  "publicado": true,
+  "contadas": [
+    {
+      "titulo": "Jensen Huang vuelve a Nvidia once días después, con Trump de por medio",
+      "resumen": "Contamos que Huang, cofundador de Nvidia, dimitió tras reconocer una relación con una mujer que, según el NYT, estuvo en contacto con un funcionario del espionaje chino. No la nombramos en el audio; es Alice Huang. Según CNBC, EEUU mantiene abierta una investigación sobre ella y otra sobre su antigua empresa, Megaspeed, por los controles de exportación de chips; Megaspeed dice que su negocio es legal. El consejo votó por unanimidad devolverle el puesto de consejero delegado y su asiento en el consejo. Harvey Jones sigue presidiendo el consejo y había dicho que no lo readmitirían. Nvidia dijo que había escuchado al Gobierno de EEUU y Trump presumió de haber hablado con el consejo. La acción subió alrededor de un tercio. Bessent dio un giro: dice que Huang ahora es técnicamente alguien de fuera. Warren habló de una decisión temeraria. Nvidia creará un puesto de director de cumplimiento normativo. Según el FT, unos sesenta altos cargos le rendían cuentas directamente.",
+      "asuntos_abiertos": [
+        "La comparecencia de Huang en el Congreso y la audiencia pública en el Senado (en unas semanas; prometimos seguirla)",
+        "Las investigaciones de EEUU sobre Alice Huang y sobre Megaspeed",
+        "El nombramiento del director de cumplimiento normativo de Nvidia",
+        "Más reacciones políticas sobre la intervención del Gobierno en la empresa"
+      ]
+    },
+    {
+      "titulo": "Lean confirma la demostración de la hipótesis de Riemann hecha con Claude",
+      "resumen": "Explicamos que la comunidad de Lean y Mathlib certificó el enunciado y la prueba de la demostración de Levent Alpöge, matemático de Anthropic que la hizo colaborando con Claude. Explicamos qué es Lean comparándolo con un compilador. La prueba tiene unos diecisiete millones de líneas, casi siete veces Mathlib. Hubo escepticismo: Litt dice que es casi seguro que es correcta, pero que nadie la entiende; Tao dice que digerirla llevará tiempo; Alpöge quiere simplificarla. Mencionamos una prueba rival humana de un matemático de Stanford con posibles fallos y que unos agentes de IA lo intentan con P contra NP, aunque es solo un intento. Señalamos el interés de Anthropic como escaparate y declaramos que los guiones de Cátodo los escribe Claude. La recomendación del cierre fue el Natural Number Game.",
+      "asuntos_abiertos": [
+        "Versión simplificada o explicación de la prueba por parte de Alpöge",
+        "Valoración de la comunidad matemática más allá de la verificación formal",
+        "Qué pasa con el premio del Instituto Clay (no se mencionó en el episodio)",
+        "En qué queda la prueba rival de Stanford",
+        "Si los agentes de IA consiguen algo con P contra NP"
+      ]
+    },
+    {
+      "titulo": "La oleada de caídas en EEUU: no fue una conspiración, fue deuda técnica",
+      "resumen": "En las últimas semanas EEUU ha encadenado caídas: el correo de Microsoft, bancos, servicios de Apple y una parada de la FAA de más de cuatro horas, la más larga desde el 11-S. El secretario de Transporte señala a un router recién instalado en El Dorado, Arkansas, aunque la causa de fondo no está confirmada. Para el resto de caídas, los análisis (The Register) descartan una conspiración y apuntan a la deuda técnica. Brad Smith, de Microsoft, advierte de los parches con prisas. Según 9to5Mac, las próximas caídas podrían venir de la IA. Jay Clayton avisa de que habrá más cortes durante la modernización. No mencionamos ni DOGE ni el apagón español.",
+      "asuntos_abiertos": [
+        "Causa raíz oficial de la parada de la FAA (router de Arkansas)",
+        "Nuevas caídas durante la modernización",
+        "Quién paga la modernización y debate sobre recortes de personal (DOGE)"
+      ]
+    },
+    {
+      "titulo": "CrowdStrike compra Zscaler por unos cuarenta y cuatro mil millones de dólares",
+      "resumen": "CrowdStrike comprará Zscaler por unos cuarenta y cuatro mil millones de dólares, todo en acciones, con una prima de alrededor de un tercio. La justificación son los ciberataques con IA, y Kurtz aspira, según CNBC, a crear la mayor empresa de seguridad de IA. Según Bloomberg, Jay Chaudhry y su familia se llevarán casi quince mil millones de dólares en acciones. CrowdStrike cayó en torno a un diez por ciento en bolsa. Faltan los reguladores y el cierre se espera dentro de un año, más o menos. Recordamos el apagón de CrowdStrike de 2024 y planteamos el riesgo de un punto único de fallo.",
+      "asuntos_abiertos": [
+        "Revisión de los reguladores (EEUU y, en su caso, la UE)",
+        "Evolución en bolsa de CrowdStrike",
+        "Cierre de la operación, previsto en torno a finales de 2027"
+      ]
+    },
+    {
+      "titulo": "Oregón y Virginia demandan a SpaceX por los deepfakes sexuales de Grok",
+      "resumen": "Los fiscales generales de Oregón y Virginia demandan a SpaceX, que ahora engloba xAI, con las leyes de protección al consumidor. Las acusaciones son dos: no frenar la creación y difusión con Grok y X de imágenes sexuales de personas reales sin consentimiento, incluido presunto material de abuso infantil, y presentar las herramientas como seguras. Piden sanciones, medidas cautelares y protecciones más estrictas. En otro pleito, la empresa defendió que Grok es una herramienta neutral. SpaceX responde que suspende cuentas y avisa a las autoridades. Según CNBC hay investigaciones en varios países, España entre ellos. Lo contamos en tono serio, sin humor.",
+      "asuntos_abiertos": [
+        "Avance de las demandas y posibles medidas cautelares",
+        "Si otros estados se suman a las demandas",
+        "Investigaciones en Europa y en España sobre Grok"
+      ]
+    },
+    {
+      "titulo": "BepiColombo llega a Mercurio, pero a la órbita equivocada",
+      "resumen": "La sonda de la ESA y JAXA entró en órbita de Mercurio tras unos ocho años de viaje; es la primera en más de una década. Según la ESA, un problema de software acortó el encendido de frenado y la dejó en una órbita distinta de la planificada. La nave está a salvo y la agencia lo investiga. The Register habla de un estado incierto. Microsiervos es optimista porque hay encendidos previstos y combustible para corregir. La ciencia estaba prevista para la primavera de 2027. Hicimos el chiste de Mercurio retrógrado.",
+      "asuntos_abiertos": [
+        "Explicación de la ESA sobre el fallo de software (prometimos contarla)",
+        "Maniobras de corrección de la órbita",
+        "Si se retrasa el inicio de la ciencia, previsto para la primavera de 2027"
+      ]
+    }
+  ],
+  "pendientes": [
+    {
+      "titulo": "ARTEX, la herramienta de hackeo con IA que se sigue distribuyendo",
+      "candidata": 17,
+      "motivo": "Muy relevante para Europa: es la principal sospechosa del ciberataque a la Comisión Europea. Encaja con las caídas y con CrowdStrike. No cabe hoy; es la primera opción para mañana si sigue avanzando.",
+      "resumen": "Framework de hacking con IA sospechoso del ataque a la Comisión Europea, con el FBI en alerta. Sigue circulando aunque su autor lo retiró (404 Media, Xataka).",
+      "enlaces": [
+        "https://www.xataka.com/seguridad/que-artex-herramienta-ia-que-busca-fallos-seguridad-sola-que-preocupa-a-empresas-gobiernos",
+        "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNWVpxV0V5alVyNWlWYkF2MldKa1A0NXZnUzBpRVdmWlh5VU5pWi1LSGFuV2dDX1FEODJQbmNPOGpaTzRYbUk1YUpHZjlYdW9NM3NTOXNDblRQQnBYdUpVQnpiYi1HaUxVTDBWdXFFS19ydVhHU1hLSTVmSlR0ZzFTbHpTaC1fVW9mT1JBbWxaSllNM042VERIRWZxNlI4MEtLV09JRktwc3pDOG5Jdmc5ejBYLU9mSUhWNzRlLUoxNlfSAcYBQVVfeXFMUGJuYnNaOW5qaURXckFuQXVkbGpodnpzVms5Znc3NXoyN3dQT2ZScnFYWW55TENQN0hHOEhzUU81T3FQMXM5WWtYVjE0TGg0NUs0YjNuRFRqNUpxTGdPS3haVGVrN1d5UzMyTERBVFF2ZTV4Z3RuTVZkYVlmdTVDb0VpSElBaEV2ZzBQck5BTnE1bWdkNUZ3Um1UblZqcUFlSmU5VzNFcTIwUUdnOVF5RHU5ck5WZmZqSzlaY0ZUNFFCaWxEeTBB?oc=5",
+        "https://www.404media.co/the-code-is-already-copied-everywhere-the-ai-hacking-tool-causing-havoc-around-the-world-artex-github/",
+        "https://www.404media.co/im-not-going-to-remove-the-repository/"
+      ]
+    },
+    {
+      "titulo": "Nothing presentará Ear Note, sus auriculares con IA para tomar notas",
+      "candidata": 10,
+      "motivo": "Fecha concreta próxima (8 de diciembre). Es mejor contarlo antes de la presentación o cubrir directamente el lanzamiento. Marca europea con presencia en España.",
+      "resumen": "El primer dispositivo de IA de Nothing, sin pantalla: auriculares con estuche que graban y transcriben.",
+      "enlaces": [
+        "https://www.larazon.es/tecnologia-consumo/moviles/nothing-fija-8-diciembre-presentacion-su-primer-dispositivo-ia-pantalla_202611236b04469350b7057c6d146288.html",
+        "https://www.bloomberg.com/news/articles/2026-11-23/phone-maker-nothing-to-launch-ear-note-earbuds-and-case-with-ai-recording",
+        "https://gizmodo.com/nothings-mysterious-ai-device-is-a-pair-of-note-taking-wireless-earbuds-2000844014"
+      ]
+    },
+    {
+      "titulo": "Rusia podría lanzar un satélite con arma nuclear capaz de inutilizar la órbita baja",
+      "candidata": 18,
+      "motivo": "Tema grave con implicaciones para Europa, pero de momento es una afirmación de la inteligencia alemana que el Kremlin niega. Habrá que ver si se confirma o si lo cuentan más grupos antes de diciembre.",
+      "resumen": "Según la inteligencia alemana, el Sputnik-S podría despegar en diciembre; Rusia lo llama propaganda.",
+      "enlaces": [
+        "https://www.elconfidencial.com/tecnologia/novaceno/2026-11-23/rusia-satelite-arma-nuclear-espacio-sputnik-otan_4470620/",
+        "https://www.tomshardware.com/tech-industry/space/russia-readying-nuclear-armed-satellite-that-could-destroy-every-low-earth-orbit-satellite-report-claims-kremlin-blasts-sputnik-s-claims-as-unfounded-allegations-and-propaganda"
+      ]
+    },
+    {
+      "titulo": "Google retirará la app Nest a principios del año que viene",
+      "candidata": 19,
+      "motivo": "Utilidad práctica para quien tenga cámaras o termostatos Nest en España (cómo guardar los vídeos). Mejor contarlo más cerca del cierre de enero.",
+      "resumen": "La app Nest desaparece en favor de Google Home y el Asistente de Google deja los altavoces y pantallas inteligentes.",
+      "enlaces": [
+        "https://www.engadget.com/2325245/google-is-finally-retiring-the-nest-app-early-next-year/",
+        "https://www.zdnet.com/home-and-office/how-to-save-your-google-nest-app-videos-switch-to-google-home/"
+      ]
+    },
+    {
+      "titulo": "El científico jefe de OpenAI propone poner límites al desarrollo de la IA",
+      "candidata": 15,
+      "motivo": "Buen material para profundizar en un día flojo, sobre todo después de lo de Riemann (hasta dónde y a qué velocidad avanza la IA).",
+      "resumen": "Jakub Pachocki plantea límites comunes vinculados a la capacidad de monitorizar los modelos.",
+      "enlaces": [
+        "https://techcrunch.com/2026/11/22/openais-chief-scientist-has-thoughts-on-how-to-limit-ai-development/",
+        "https://computerhoy.20minutos.es/tecnologia/jakub-pachocki-cientifico-jefe-openai-tenemos-que-poner-limites-desarrollo-ia_7064392_0.html"
+      ]
+    },
+    {
+      "titulo": "Samsung no lanzará un Galaxy Watch en 2027",
+      "candidata": 5,
+      "motivo": "Es un rumor sobre una fecha lejana. Puede entrar como breve en un día con menos carga.",
+      "resumen": "Samsung pasaría a renovar sus relojes cada dos años para recortar costes; el Galaxy Watch 10 llegaría en 2028.",
+      "enlaces": [
+        "https://www.androidauthority.com/samsung-galaxy-watch-2027-launch-skip-3738043/",
+        "https://www.androidpolice.com/no-more-annual-samsung-galaxy-watch-releases-rumors/",
+        "https://www.larazon.es/tecnologia-consumo/samsung/samsung-podria-romper-tradicion-casi-decada-galaxy-watch10-no-llegaria-2027-habria-esperar-2028_202611236b042fb0c0d5c85b96c54015.html",
+        "https://www.zdnet.com/tech/samsung-galaxy-watch-10-biannual-release-2028/"
+      ]
+    },
+    {
+      "titulo": "Apple: MacBook Neo anual y oleada de productos en primavera",
+      "candidata": 6,
+      "motivo": "Rumor de Mark Gurman, sin urgencia. Encaja mejor junto a otras noticias de Apple.",
+      "resumen": "Renovaciones anuales del MacBook Neo, un MacBook Neo 2 y una renovación completa del iPad en primavera.",
+      "enlaces": [
+        "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPVGo0dUJLelRZMTlReXZEUHQ0eHJoV2RqNVA1TWFPYkU0TGl5THd0Q3o4ZXpUay01bExnMEJhS29Pa2RPclBodzgzUGVFOUNDQkd2VGhmQ1hITWVjdFliQ1BmQlhLU2lka0pYNVFLQ0pDTy1TN3dJWjkwUXJyWDdPaEk4cmZ1R3FsQS1GQW8zVFRBQm4yQVdBV0xaRi1iZ2dJTkFSVE1nc0dpbGR0OE52NHZuWHZ4Rnl0?oc=5",
+        "https://www.macrumors.com/2026/11/23/macbook-neo-new-colors-every-year/",
+        "https://computerhoy.20minutos.es/dispositivos/apple-prepara-un-ambicioso-plan-para-macbook-neo-habra-novedades-todos-los-anos_7064401_0.html",
+        "https://gizmodo.com/macbook-neo-2-ipad-spring-update-2000843885"
+      ]
+    },
+    {
+      "titulo": "Filtran la versión de Xbox de GTA VI y se prepara un port no oficial para PC",
+      "candidata": 7,
+      "motivo": "Interés alto, pero la cobertura es débil (uno de los grupos está por confirmar y otro es un medio menor). Esperar a que avance o lo recojan más grupos. Se podría contar junto con las ventas récord si se confirman con mejores fuentes.",
+      "resumen": "El grupo CyberLeek dice haber publicado todos los archivos de la versión de Xbox, incluido el ejecutable.",
+      "enlaces": [
+        "https://www.muycomputer.com/2026/11/23/port-no-oficial-de-gta-vi-para-pc-ya-en-desarrollo-podria-llegar-en-unos-dias/",
+        "https://news.google.com/rss/articles/CBMihwFBVV95cUxNdFZqMlYtRlhEc1Bxbk55VzRfUnR5WElGRlk1X29hcUhUajl2QXV2TFNnYURXZk8weUlpZG11dV9kam1GTDE1YVN3YVlhbjRzQWJPc2ZLVk5VZXBENTNRTjRUcldaNGVNVnF5Nk1IUUd5V1VlSUZhZ05yaVM0NjRldVk3T3hlV1XSAYwBQVVfeXFMT2IwZmQySDZ5X3Q2am5ZYjJ6RHJIX2E3NENxQW0xa2NBZl9EbWVGajlMY2dsOW83QllYaTlZdDk1ZHJ3aXNUeVZkSkFXemdQZ3RlalVKZjIyd2gzQ0xTaF9wekZaUnkzRHVOcGxmTDhHbTlDdkVmOFFyQ1J0LWZHd0w1ajlkUy01aVp1SUk?oc=5",
+        "https://www.pcmag.com/news/gta-6-leaker-releases-all-files-for-alleged-xbox-build-of-game"
+      ]
+    },
+    {
+      "titulo": "Amazon compra la tecnología de Decart por unos 7.500 millones",
+      "candidata": 13,
+      "motivo": "Relevante para la guerra de los chips de IA (Trainium frente a Nvidia), pero hoy ya hay otra gran compra. Puede volver si Amazon mueve ficha con Trainium.",
+      "resumen": "Amazon se queda con buena parte de Decart, con su equipo y su stack de optimización, mientras se prepara para vender chips Trainium.",
+      "enlaces": [
+        "https://www.bloomberg.com/news/articles/2026-11-23/amazon-is-said-to-pay-7-5-billion-for-ai-startup-decart-s-tech",
+        "https://techcrunch.com/2026/11/23/amazon-snaps-up-decarts-ai-optimization-tech-for-7-5b-as-it-prepares-to-sell-trainium-chips/"
+      ]
+    }
+  ],
+  "revision_humana": {
+    "aprobado": true,
+    "cuando": "2026-11-23T23:14",
+    "nota": "Aprobado por el editor para publicarlo como episodio de prueba; escuchado el audio completo, sin revisión punto por punto de las dudas."
+  }
+}

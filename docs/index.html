@@ -4,30 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cátodo</title>
-<meta name="description" content="Cátodo: podcast diario de tecnología en español.">
+<meta name="description" content="Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.">
+<link rel="alternate" type="application/rss+xml" title="Cátodo" href="/feed.xml">
 <style>
-  :root { --fondo: #fafaf7; --texto: #1d1d1b; --suave: #6b6b66; --acento: #c2410c; }
+  :root { --fondo:#fafaf7; --texto:#1d1d1b; --suave:#6b6b66; --acento:#c2410c; --borde:#e4e4de; }
   @media (prefers-color-scheme: dark) {
-    :root { --fondo: #141413; --texto: #ecece8; --suave: #9a9a94; --acento: #fb923c; }
-  }
-  body { margin: 0; min-height: 100vh; display: grid; place-items: center;
-         background: var(--fondo); color: var(--texto);
-         font-family: system-ui, -apple-system, sans-serif; padding: 0 16px; }
-  main { max-width: 560px; }
-  h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; letter-spacing: -0.02em; }
-  h1 span { color: var(--acento); }
-  p { color: var(--suave); font-size: 1.1rem; line-height: 1.5; }
-  .nota { font-size: 0.9rem; }
-  footer { margin-top: 32px; font-size: 0.85rem; }
-  footer a { color: var(--suave); }
+    :root { --fondo:#141413; --texto:#ecece8; --suave:#9a9a94; --acento:#fb923c; --borde:#2c2c2a; } }
+  body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
+         line-height:1.6; padding:0 16px; }
+  main { max-width:680px; margin:48px auto 64px; }
+  a { color:var(--acento); }
+  h1 { font-size:clamp(2.2rem,7vw,3.4rem); margin:0; letter-spacing:-0.02em; }
+  h1 span { color:var(--acento); }
+  .suave { color:var(--suave); }
+  .episodio { padding:20px 0; border-top:1px solid var(--borde); }
+  .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
+  audio { width:100%; margin:10px 0; }
+  footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
+  footer a { color:var(--suave); }
+  details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
 </style>
 </head>
 <body>
 <main>
   <h1>Cátodo<span>.</span></h1>
-  <p>Tecnología cada mañana, en español. Muy pronto.</p>
-  <p class="nota">Guion y voz generados con inteligencia artificial y revisados por una persona antes de publicarse.</p>
-  <footer><a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>
+  <p class="suave">Tecnología cada mañana. Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</p>
+  <article class="episodio">
+    <h2><a href="/episodios/2026-11-23.html">Huang vuelve a Nvidia, Riemann pasa por Lean y un día de bugs</a></h2>
+    <div class="suave">2026-11-23 · 10 min</div>
+    <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-23.mp3"></audio>
+  </article>
+  <footer>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.<br>
+  <a href="/feed.xml">Feed RSS</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>
 </main>
 </body>
 </html>
