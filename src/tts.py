@@ -6,7 +6,8 @@ Uso:
 Dos vías (tts.via en settings.yaml):
   - agent_platform: Agent Platform de Google Cloud (antes Vertex AI). Se factura a la
     cuenta de Google Cloud y usa las credenciales de gcloud
-    (`gcloud auth application-default login`, una sola vez).
+    (`gcloud auth application-default login`, una sola vez). En ops, la clave de la
+    cuenta de servicio catodo-tts (solo roles/aiplatform.user) en CATODO_GCP_SA_KEY.
   - gemini_api: API de Gemini de AI Studio, con GEMINI_API_KEY en .env.
 
 Lee episodes/AAAA-MM-DD/guion.md, lo divide por los encabezados "## ",
@@ -22,6 +23,7 @@ import base64
 import hashlib
 import io
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -85,9 +87,29 @@ def _audio_de_respuesta(nodo):
     return None
 
 
+def _token_cuenta_de_servicio(clave_json):
+    """Token de acceso de la cuenta de servicio de ops (catodo-tts), con google-auth."""
+    from google.auth.transport.requests import Request  # solo hace falta en ops
+    from google.oauth2 import service_account
+
+    try:
+        info = json.loads(clave_json)
+    except ValueError:
+        sys.exit("CATODO_GCP_SA_KEY no es la clave JSON de una cuenta de servicio.")
+    credenciales = service_account.Credentials.from_service_account_info(
+        info, scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    credenciales.refresh(Request())
+    return credenciales.token
+
+
 def _token_gcloud():
-    """Token de acceso de las credenciales de gcloud (dura una hora; se renueva solo)."""
+    """Token de acceso de Google Cloud (dura una hora; se renueva solo): el de la cuenta
+    de servicio si llega CATODO_GCP_SA_KEY (ops), o el de las credenciales de gcloud."""
     if _TOKEN["valor"] and time.time() < _TOKEN["hasta"]:
+        return _TOKEN["valor"]
+    clave_json = os.environ.get("CATODO_GCP_SA_KEY")
+    if clave_json:
+        _TOKEN.update(valor=_token_cuenta_de_servicio(clave_json), hasta=time.time() + 45 * 60)
         return _TOKEN["valor"]
     if not shutil.which("gcloud"):
         sys.exit("Falta gcloud: instálalo con `brew install --cask gcloud-cli`.")
