@@ -3,6 +3,11 @@
 #
 # GitHub solo admite horarios en UTC, así que se lanza a las 4:00 y a las 5:00 UTC y solo
 # actúa la ejecución que cae en las 6 de Madrid (5:00 UTC en invierno, 4:00 UTC en verano).
+#
+# La vigila ops (trabajo catodo.publicar, ops#118): solo la ejecución que actúa avisa del
+# inicio y del resultado, y falla si al terminar el episodio de hoy no está en main. Si a
+# las 6 no llega nada (el cron de GitHub se retrasa más de una hora), ops avisa igual.
+# Sin el secreto OPS_TOKEN_CATODO_PUBLICAR los avisos no se hacen y publica igual.
 
 name: Publicar episodio programado
 
@@ -28,6 +33,9 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
+    env:
+      OPS_TOKEN: ${{ secrets.OPS_TOKEN_CATODO_PUBLICAR }}
+      OPS_API: https://ops.wmail.es/api
     steps:
       - name: ¿Son las 6 en Madrid?
         id: hora
@@ -39,6 +47,17 @@ jobs:
           else
             echo "toca=no" >> "$GITHUB_OUTPUT"
           fi
+
+      # `|| true` y `-m 10`: que ops no responda no puede impedir la publicación.
+      - name: Avisar a ops del inicio
+        if: steps.hora.outputs.toca == 'si' && env.OPS_TOKEN != ''
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          kind=()
+          if [ "$EVENT" = "workflow_dispatch" ]; then kind=(-d kind=manual); fi
+          curl -fsS -m 10 -X POST -H "Authorization: Bearer ${OPS_TOKEN}" "${kind[@]}" \
+            "${OPS_API}/ingest/start" > "${RUNNER_TEMP}/ops-start.json" || true
 
       - name: Descargar el repositorio
         if: steps.hora.outputs.toca == 'si'
@@ -74,3 +93,30 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds"
+
+      # Lo que vigila ops: que hoy haya episodio en main, programado esta noche o no.
+      - name: ¿Está el episodio de hoy en main?
+        if: steps.hora.outputs.toca == 'si'
+        run: |
+          hoy=$(TZ=Europe/Madrid date +%F)
+          git fetch -q origin main
+          if git cat-file -e "origin/main:episodes/${hoy}/publicacion.json" 2>/dev/null; then
+            echo "Episodio del ${hoy} en main: $(git log -1 --format=%s origin/main)" | tee -a "${RUNNER_TEMP}/ops.log"
+          else
+            echo "::error::El episodio del ${hoy} no está en main: no se ha programado (o se eligió «No publicar»)." | tee -a "${RUNNER_TEMP}/ops.log"
+            exit 1
+          fi
+
+      - name: Avisar a ops del resultado
+        if: always() && steps.hora.outputs.toca == 'si' && env.OPS_TOKEN != ''
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          status=failure
+          [ "${JOB_STATUS}" = "success" ] && status=success
+          run_id="$(sed -n 's/.*"runId":"\([^"]*\)".*/\1/p' "${RUNNER_TEMP}/ops-start.json" 2>/dev/null || true)"
+          output="$(tail -c 16000 "${RUNNER_TEMP}/ops.log" 2>/dev/null || true)"
+          curl -fsS -m 10 -H "Authorization: Bearer ${OPS_TOKEN}" \
+            ${run_id:+-d "runId=${run_id}"} -d "status=${status}" \
+            --data-urlencode "output=${output}" \
+            "${OPS_API}/ingest/finish" > /dev/null || true
