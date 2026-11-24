@@ -255,7 +255,8 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 - Estado (24 de noviembre de 2026):
   - **Apple Podcasts:** dado de alta con un Apple ID propio de Cátodo (hola@catodo.es). Estado «Disponible», ID 6838674796: https://podcasts.apple.com/us/podcast/cátodo/id6838674796. Declarado «sin contenido de terceros», frecuencia diaria, todos los países.
   - **Spotify:** dado de alta en Spotify for Creators (feed externo, verificado con código a hola@catodo.es). País España, idioma español, categoría Business & Technology › Technology (no se puede cambiar). Enlace: https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4 (tarda unas horas en aparecer).
-  - Pendiente: comprobar que ambos enlaces funcionan y, si quieres, añadirlos a la web. Opcional: iVoox.
+  - Enlaces en la web (portada y pie), configurables en `config/podcast.yaml` (`escuchar`).
+  - **iVoox (aparcado):** cuenta creada con hola@catodo.es, pero al importar el feed su filtro automático lo rechaza (HTTP 451, «Spam detected when creating or editing program or audio») sin decir por qué. Decidido dejarlo de momento; se puede reintentar con más episodios o escribiendo a su soporte.
 
 ### Fase 6. Piloto
 - Dos semanas publicando sin difundir. Ajustar prompt, voz, modelo y duración.
