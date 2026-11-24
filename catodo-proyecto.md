@@ -40,7 +40,7 @@ Documento de arranque del proyecto. Contiene el concepto, las decisiones ya toma
 ## Estructura del episodio
 
 1. Sintonía corta.
-2. Saludo de Cátodo y un gancho de unos 10 segundos sobre la noticia más fuerte del día. Fórmula fija (la firma): "Buenos días, soy Cátodo, la IA que madruga por ti, y esta es tu dosis de tecnología de cada mañana" (el aviso de IA al principio es obligatorio, ver "Aspectos legales"). Sin decir la fecha del día: el episodio puede salir tarde, saltarse un día o escucharse más adelante.
+2. Saludo de Cátodo y un gancho de unos 10 segundos sobre la noticia más fuerte del día. Firma fija (decidida el 24 de noviembre de 2026, con un panel de branding, humor, guion de radio y oyente): "Buenos días, soy Cátodo, una inteligencia artificial escéptica." (el aviso de IA al principio es obligatorio, ver "Aspectos legales"). Después, un enlace breve al gancho que cambia cada día ("Hoy te traigo…", "Empezamos por…"); la voz se genera cada día, también la firma, para que suene natural. Reglas en `config/persona.md`. Sin decir la fecha del día: el episodio puede salir tarde, saltarse un día o escucharse más adelante.
 3. Cinco o seis noticias. La más importante primero, con unos 2 minutos; el resto, más breves. El reparto es flexible según el día (ver "Continuidad entre episodios"): seguimientos de días anteriores, noticias que no cupieron ayer, y en días flojos, más profundidad o contexto de alguna noticia.
 4. Transiciones habladas por el presentador. Sin cortinilla musical entre noticias.
 5. Cierre fijo: una recomendación o un dato curioso, aviso breve de que el guion y la voz se generan con IA y los revisa un humano (sin dar su nombre), la coletilla y la despedida.

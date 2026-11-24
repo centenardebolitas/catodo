@@ -18,6 +18,7 @@ las menciona.
 
 import argparse
 import json
+import re
 import sys
 from datetime import date, datetime, timedelta
 
@@ -27,6 +28,19 @@ from comun import EPISODIOS, cargar_yaml
 def leer(fecha):
     ruta = EPISODIOS / fecha / "memoria.json"
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
+
+
+def apertura(fecha):
+    """La frase que sigue a la firma en la apertura de un episodio (el enlace al gancho), o None."""
+    ruta = EPISODIOS / fecha / "guion.md"
+    if not ruta.exists():
+        return None
+    bloque = re.search(r"(?ms)^## Apertura\s*\n(.*?)(?=^## |\Z)", ruta.read_text(encoding="utf-8"))
+    if not bloque:
+        return None
+    texto = " ".join(bloque.group(1).split())
+    frases = re.split(r"(?<=[.:!?])\s+", texto)
+    return frases[1] if len(frases) > 1 else None
 
 
 def contexto(fecha, dias=7, dias_pendientes=3):
@@ -57,6 +71,13 @@ def contexto(fecha, dias=7, dias_pendientes=3):
         partes.append("\n## Correcciones que hay que mencionar en este episodio")
         for dia, c in correcciones:
             partes.append(f"- Sobre el episodio del {dia}: {c['texto']}")
+
+    aperturas = [(dia, apertura(dia)) for n, dia, m in episodios[:5]]
+    aperturas = [(dia, a) for dia, a in aperturas if a]
+    if aperturas:
+        partes.append("\n## Cómo enlazó la apertura con el gancho en episodios anteriores (no repitas la fórmula)")
+        for dia, a in aperturas:
+            partes.append(f"- ({dia}) {a}")
 
     pendientes = [(n, dia, p) for n, dia, m in episodios if n <= dias_pendientes
                   for p in m.get("pendientes", [])]
