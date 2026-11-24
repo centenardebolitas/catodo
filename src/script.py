@@ -10,7 +10,8 @@ Pasadas (cada una es una llamada independiente a `claude -p`):
   4. Abogado del diablo: rebate el guion.
   5. Versión final: aplica las correcciones.
 
-Deja en episodes/AAAA-MM-DD/: escaleta.json, guion.md, notas.md, revision.md (lo que
+Deja en episodes/AAAA-MM-DD/: escaleta.json, guion.md, notas.md, emojis.txt (el guion en
+emojis, para la portada del episodio), revision.md (lo que
 tiene que mirar el humano), revision-detalle.md (el trabajo de los revisores), memoria.json y, en pasadas/, la respuesta completa de cada pasada.
 Con --desde N se repite a partir de la pasada N reutilizando las anteriores.
 """
@@ -143,8 +144,9 @@ ESQUEMA_FINAL = {
                 "required": ["titulo", "resumen", "asuntos_abiertos"],
             },
         },
+        "emojis": {"type": "array", "items": {"type": "string"}},
     },
-    "required": ["guion", "notas", "cambios", "dudas_para_revisor", "contadas"],
+    "required": ["guion", "notas", "cambios", "dudas_para_revisor", "contadas", "emojis"],
 }
 
 # ---------------------------------------------------------------- prompts
@@ -275,7 +277,24 @@ Entre {palabras_min} y {palabras_max} palabras. Es un límite: si el guion se pa
 - "cambios": lista breve de lo que has cambiado respecto al guion anterior.
 - "dudas_para_revisor": lo que el humano que revisa debería mirar con atención (datos que no se pudieron confirmar del todo, decisiones discutibles).
 - "contadas": para la memoria de próximos episodios, una entrada por noticia contada con un resumen de lo que se dijo y los asuntos abiertos (lo que puede pasar después y conviene seguir).
+- "emojis": el guion final escrito en emojis, para la portada del episodio. Una cadena por párrafo, siguiendo estas reglas:
+
+{reglas_emojis}
 """
+
+
+def reglas_emojis():
+    """Las reglas de config/emojis.md, con el número de emojis de settings.yaml (portada)."""
+    objetivo = cargar_yaml("settings.yaml")["portada"]["emojis_objetivo"]
+    texto = (CONFIG / "emojis.md").read_text(encoding="utf-8")
+    return re.sub(r"(?m)^# .*\n+", "", texto).replace("{objetivo}", str(objetivo)).strip()
+
+
+def escribir_emojis(carpeta, lineas):
+    """episodes/FECHA/emojis.txt, de donde sale la portada del episodio."""
+    limpias = [l.strip() for l in lineas if l.strip()]
+    if limpias:
+        (carpeta / "emojis.txt").write_text("\n".join(limpias) + "\n", encoding="utf-8")
 
 # ---------------------------------------------------------------- utilidades
 
@@ -421,13 +440,14 @@ def main():
                                                 verificacion=json_bonito(verificacion),
                                                 critica=json_bonito(critica),
                                                 fuentes_leidas="\n".join(borrador.get("fuentes_leidas", [])) or "(ninguna)",
-                                                **comunes), ESQUEMA_FINAL)
+                                                reglas_emojis=reglas_emojis(), **comunes), ESQUEMA_FINAL)
     except claude_cli.ErrorClaude as e:
         sys.exit(f"\nNo se ha podido preparar el guion: {e}")
 
     palabras = contar_palabras(final["guion"])
     (carpeta / "guion.md").write_text(final["guion"].strip() + "\n", encoding="utf-8")
     (carpeta / "notas.md").write_text(final["notas"].strip() + "\n", encoding="utf-8")
+    escribir_emojis(carpeta, final.get("emojis", []))
     revision, detalle = informe_revision(escaleta, verificacion, critica, final, palabras, ep, args.fecha)
     (carpeta / "revision.md").write_text(revision, encoding="utf-8")
     (carpeta / "revision-detalle.md").write_text(detalle, encoding="utf-8")

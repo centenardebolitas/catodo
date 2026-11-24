@@ -71,7 +71,7 @@ def secciones(markdown):
     return resultado
 
 
-def cuerpo_decision(fecha, revision_md, url_audio, url_guion, minutos):
+def cuerpo_decision(fecha, revision_md, url_audio, url_guion, minutos, url_portada=None):
     """El cuerpo de la decisión: lo que hay que mirar, sin «Qué tienes que hacer» (es del Mac)."""
     partes = secciones(revision_md)
     cabecera = re.sub(r"(?m)^# .*\n?", "", partes.get("", "")).strip()
@@ -80,6 +80,7 @@ def cuerpo_decision(fecha, revision_md, url_audio, url_guion, minutos):
         "",
         f"- [Escuchar el episodio]({url_audio})",
         f"- [Leer el guion]({url_guion})",
+        *([f"- [Ver la portada]({url_portada}) (el guion en emojis)"] if url_portada else []),
         "",
         cabecera,
         "",
@@ -149,7 +150,21 @@ def preparar(fecha):
     for script, con_claude in PASOS:
         print(f"== {script}", flush=True)
         paso(script, fecha, token if con_claude else None)
+    portada(fecha)
     decision(fecha)
+
+
+def portada(fecha):
+    """La portada del episodio (src/portada_episodio.py). Si falla, el episodio sigue sin ella:
+    no es motivo para quedarse sin programa (publish.py solo la sube si existe)."""
+    carpeta = EPISODIOS / fecha
+    print("== src/portada_episodio.py", flush=True)
+    resultado = subprocess.run([sys.executable, "src/portada_episodio.py", "--fecha", fecha], cwd=RAIZ)
+    if resultado.returncode != 0:
+        print(f"Aviso: no se ha podido hacer la portada (código {resultado.returncode}); el episodio irá sin ella.",
+              flush=True)
+        for nombre in ("portada.jpg", "portada-web.jpg"):
+            (carpeta / nombre).unlink(missing_ok=True)
 
 
 def decision(fecha):
@@ -170,7 +185,7 @@ def decision(fecha):
     url_audio, url_guion = subir_revision(carpeta, fecha, env)
     datos = {
         "message": cuerpo_decision(fecha, revision.read_text(encoding="utf-8"), url_audio, url_guion,
-                                   publish.duracion(mp3) / 60),
+                                   publish.duracion(mp3) / 60, url_portada_revision(carpeta, env)),
         "decision": decision_episodio(fecha),
     }
     Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
@@ -198,10 +213,21 @@ def subir_revision(carpeta, fecha, env):
         "ContentType": "audio/mpeg", "CacheControl": "private, no-store"})
     r2.upload_file(str(carpeta / "guion.md"), bucket, claves["guion"], ExtraArgs={
         "ContentType": "text/plain; charset=utf-8", "CacheControl": "private, no-store"})
+    if (carpeta / "portada-web.jpg").exists():
+        claves["portada"] = f"{prefijo}-portada.jpg"
+        r2.upload_file(str(carpeta / "portada-web.jpg"), bucket, claves["portada"], ExtraArgs={
+            "ContentType": "image/jpeg", "CacheControl": "private, no-store"})
     (carpeta / "revision-ops.json").write_text(json.dumps(claves), encoding="utf-8")
     url_audio = f"{base_publica(env)}/{claves['audio']}"
     publish.comprobar_url(url_audio, mp3.stat().st_size)
     return url_audio, f"{base_publica(env)}/{claves['guion']}"
+
+
+def url_portada_revision(carpeta, env):
+    """La URL de la portada que subió subir_revision, o None si no hay."""
+    ruta = carpeta / "revision-ops.json"
+    clave = json.loads(ruta.read_text(encoding="utf-8")).get("portada") if ruta.exists() else None
+    return f"{base_publica(env)}/{clave}" if clave else None
 
 
 def borrar_revision(carpeta, env):
@@ -255,11 +281,14 @@ def corregir(fecha, comentario, hilo, nota):
                     if escaleta_ruta.exists() else "(no está)")
         guion = guion_ruta.read_text(encoding="utf-8")
         notas = notas_ruta.read_text(encoding="utf-8") if notas_ruta.exists() else ""
+        emojis_ruta = carpeta / "emojis.txt"
+        emojis = emojis_ruta.read_text(encoding="utf-8").strip() if emojis_ruta.exists() else ""
 
         print("Aplicando el comentario…", flush=True)
         correccion = claude_cli.llamar(
             comentarios.CORRECCION.format(persona=persona, escaleta=escaleta, comentario=comentario,
-                                          anteriores="\n\n".join(anteriores) or "(ninguno)", guion=guion, notas=notas),
+                                          anteriores="\n\n".join(anteriores) or "(ninguno)", guion=guion, notas=notas,
+                                          emojis=emojis or "(no hay)", reglas_emojis=script.reglas_emojis()),
             modelo=cl["modelo_guion"], esfuerzo=cl.get("esfuerzo_guion"), esquema=comentarios.ESQUEMA_CORRECCION,
             herramientas=script.LEER_FUENTES, registro=carpeta / "pasadas" / f"comentario-{version}.json",
             tiempo_max=cl["tiempo_max_pasada_s"])
@@ -283,6 +312,7 @@ def corregir(fecha, comentario, hilo, nota):
                  "notas_cambiadas": comentarios.diferencias(notas, notas_nuevas)}
         guion_ruta.write_text(nuevo, encoding="utf-8")
         notas_ruta.write_text(notas_nuevas, encoding="utf-8")
+        script.escribir_emojis(carpeta, correccion.get("emojis", []))
         comentarios.actualizar_memoria(carpeta / "memoria.json", correccion)
         with open(carpeta / "revision.md", "a", encoding="utf-8") as f:
             f.write(comentarios.apunte_revision(version, comentario, correccion, problemas))
@@ -292,12 +322,14 @@ def corregir(fecha, comentario, hilo, nota):
     # Siempre: tts.py solo rehace los bloques cuyo texto ha cambiado.
     python("src/tts.py", "--fecha", fecha)
     python("src/mix.py", "--fecha", fecha)
-    url_audio, url_guion = subir_revision(carpeta, fecha, cargar_env())
+    portada(fecha)  # por si el comentario ha cambiado el guion en emojis
+    env = cargar_env()
+    url_audio, url_guion = subir_revision(carpeta, fecha, env)
     mp3 = carpeta / f"catodo-{fecha}.mp3"
     ronda = {
         "message": comentarios.mensaje_ronda(fecha, hecho["version"], hecho["correccion"], hecho["problemas"],
                                              hecho["bloques"], url_audio, url_guion, publish.duracion(mp3) / 60,
-                                             hecho["notas_cambiadas"]),
+                                             hecho["notas_cambiadas"], url_portada_revision(carpeta, env)),
         "decision": decision_episodio(fecha),
     }
     Path(os.environ["OPS_DECISION_ROUND_FILE"]).write_text(json.dumps(ronda, ensure_ascii=False), encoding="utf-8")

@@ -7,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
@@ -119,6 +120,22 @@ with open({str(visto)!r}, "a") as f:
             with self.assertRaises(SystemExit) as salida:
                 ops.paso(str(falla), "2026-11-25", None)
             self.assertIn("código 3", str(salida.exception))
+
+    def test_la_decision_enlaza_la_portada_si_la_hay(self):
+        cuerpo = ops.cuerpo_decision("2026-11-25", REVISION, "https://a/x.mp3", "https://a/x.txt", 11,
+                                     "https://a/x-portada.jpg")
+        self.assertIn("[Ver la portada](https://a/x-portada.jpg)", cuerpo)
+        self.assertNotIn("portada", ops.cuerpo_decision("2026-11-25", REVISION, "https://a/x.mp3", "https://a/x.txt", 11))
+
+    def test_sin_portada_el_episodio_sigue(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            carpeta = Path(tmp) / "2026-11-25"
+            carpeta.mkdir()
+            (carpeta / "portada.jpg").write_bytes(b"vieja")
+            fallo = mock.Mock(returncode=1)
+            with mock.patch.object(ops, "EPISODIOS", Path(tmp)), mock.patch("subprocess.run", return_value=fallo):
+                ops.portada("2026-11-25")  # no lanza
+            self.assertFalse((carpeta / "portada.jpg").exists())
 
     def test_los_pasos_son_los_de_make_noche(self):
         self.assertEqual([p for p, _ in ops.PASOS],

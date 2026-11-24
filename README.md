@@ -19,7 +19,7 @@ make                   # lista los comandos
 
 Cátodo se prepara por la noche en [ops](https://ops.wmail.es), el centro de mando, y se publica solo a las 6:00 (hora de Madrid). El Mac no hace falta (`centenardebolitas/ops#118`):
 
-1. **23:00 (domingo a jueves), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas, voz y montaje del episodio de mañana. Sube el audio a una ruta de R2 no enlazada y te avisa en el móvil con una decisión: resumen, puntos a comprobar, orden del episodio y enlaces para escucharlo y leer el guion.
+1. **23:00 (domingo a jueves), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas, voz, montaje y portada del episodio de mañana (el guion escrito en emojis, `src/portada_episodio.py`; si falla, el episodio sigue sin ella). Sube el audio a una ruta de R2 no enlazada y te avisa en el móvil con una decisión: resumen, puntos a comprobar, orden del episodio y enlaces para escucharlo y leer el guion.
 2. **Tú, desde el móvil:** revisas y eliges:
    - **Aprobar y programar**: deja constancia de tu revisión en la memoria del episodio, sube el MP3 definitivo a R2 y regenera el feed y la web (`scripts/ops/responder.sh`). ops empuja el commit a la rama `programado`.
    - **No publicar** (la opción por defecto): no cambia nada.
@@ -47,6 +47,7 @@ make memoria                 # lo que Cátodo recuerda de días anteriores
 make marcar-publicado        # mete el episodio de hoy en la memoria (hasta que exista la Fase 4)
 make corregir FECHA=2026-11-23 TEXTO="..."   # registra una corrección de un episodio
 make reservas                # qué medios no permiten que una IA lea sus artículos
+make portada                 # portada del episodio: el guion en emojis (emojis.txt) en duotono
 make preparar FECHA=2026-11-24
 ```
 
