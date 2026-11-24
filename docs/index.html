@@ -36,7 +36,8 @@
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
   .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
-  .con-portada .mini { grid-row:span 2; width:112px; height:112px; border-radius:12px; display:block; }
+  .con-portada .mini { grid-row:span 2; display:block; }
+  .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 8px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
@@ -57,7 +58,7 @@
     <a href="/feed.xml">Feed RSS</a>
   </nav>
   <article class="episodio con-portada">
-    <a href="/episodios/2026-11-24.html"><img class="mini" src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-69972188.jpg" alt="" width="112" height="112" loading="lazy"></a>
+    <a class="mini" href="/episodios/2026-11-24.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-69972188.jpg" alt="" width="112" height="112"></a>
     <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2>
     <div class="suave">2026-11-24 · 10 min</div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3"></audio>

@@ -169,7 +169,8 @@ ESTILO = """
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
   .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
-  .con-portada .mini { grid-row:span 2; width:112px; height:112px; border-radius:12px; display:block; }
+  .con-portada .mini { grid-row:span 2; display:block; }
+  .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 8px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
@@ -230,8 +231,8 @@ def generar_portada(episodios, cfg):
     lista = []
     for ep in episodios:
         pagina = f"/episodios/{ep['fecha']}.html"
-        mini = (f'<a href="{pagina}"><img class="mini" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" alt="" '
-                f'width="112" height="112" loading="lazy"></a>\n    ' if ep.get("url_portada") else "")
+        mini = (f'<a class="mini" href="{pagina}"><img src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" '
+                f'alt="" width="112" height="112"></a>\n    ' if ep.get("url_portada") else "")
         lista.append(f"""  <article class="episodio{' con-portada' if mini else ''}">
     {mini}<h2><a href="{pagina}">{html.escape(ep['titulo'])}</a></h2>
     <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
