@@ -19,7 +19,7 @@ make                   # lista los comandos
 
 Cátodo se prepara y se publica solo cada mañana en [ops](https://ops.wmail.es), el centro de mando, sin revisión previa: lo revisan personas después, al escucharlo (decidido el 25 de noviembre de 2026; `centenardebolitas/ops#122`). El Mac no hace falta:
 
-1. **5:00 (lunes a viernes), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas con sus revisores automáticos, voz y montaje del episodio del día. Lo deja como publicación automática en su memoria, sube el MP3 a R2, regenera el feed y la web, y ops empuja el commit a `main` (`commandGitPush`). Hacia las 5:30 está en catodo.es, y Apple y Spotify lo recogen en su siguiente pasada.
+1. **5:00 (lunes a viernes), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas con sus revisores automáticos, voz, montaje y portada del episodio del día (el guion escrito en emojis, `src/portada_episodio.py`; si falla, sale sin ella). Lo deja como publicación automática en su memoria, sube el MP3 a R2, regenera el feed y la web, y ops empuja el commit a `main` (`commandGitPush`). Hacia las 5:30 está en catodo.es, y Apple y Spotify lo recogen en su siguiente pasada.
 2. **En el móvil:** un aviso con el enlace, los puntos a comprobar al escucharlo y el orden del episodio. Solo tiene la opción «Visto».
 3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) comprueba que el episodio del día está en `main`, y ops (`catodo.publicar`) avisa si no.
 4. **Si algo no cuadra al escucharlo:** `make corregir FECHA=… TEXTO="…"` lo añade a las notas del episodio y el siguiente lo menciona.
@@ -47,6 +47,9 @@ make memoria                 # lo que Cátodo recuerda de días anteriores
 make marcar-publicado        # mete el episodio de hoy en la memoria (hasta que exista la Fase 4)
 make corregir FECHA=2026-11-23 TEXTO="..."   # registra una corrección de un episodio
 make reservas                # qué medios no permiten que una IA lea sus artículos
+make portada                 # portada del episodio: el guion en emojis (emojis.txt) en duotono
+python src/capitulos.py --fecha AAAA-MM-DD   # capítulos del episodio (los hace mix.py; --incrustar los mete en el MP3)
+python src/enlaces.py        # enlace de cada episodio en Apple Podcasts (lo hace publish.py)
 make preparar FECHA=2026-11-24
 ```
 

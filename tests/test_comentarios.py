@@ -95,6 +95,7 @@ class Corregir(unittest.TestCase):
         self.pasos = []
         for nombre, valor in [("EPISODIOS", self.episodios),
                               ("python", lambda *a: self.pasos.append(a[0])),
+                              ("portada", lambda fecha: self.pasos.append("portada")),
                               ("subir_revision", lambda *a: ("https://a/v2.mp3", "https://a/v2.txt"))]:
             parche = mock.patch.object(ops, nombre, valor)
             parche.start()
@@ -125,13 +126,22 @@ class Corregir(unittest.TestCase):
         self.assertIn("+La directiva presuntamente", llamar.call_args_list[1].args[0])
         self.assertEqual((self.carpeta / "guion.md").read_text(), nuevo)
         self.assertEqual((self.carpeta / "notas.md").read_text(), "Notas\n")
-        self.assertEqual(self.pasos, ["src/tts.py", "src/mix.py"])
+        self.assertEqual(self.pasos, ["src/tts.py", "src/mix.py", "portada"])
         self.assertIn("Comentario de la revisión (versión 2)", (self.carpeta / "revision.md").read_text())
         ronda = json.loads(self.ronda.read_text())
         self.assertIn("Versión 2", ronda["message"])
         self.assertIn("Voz rehecha en: Noticia 1: Nvidia.", ronda["message"])
         self.assertEqual(ronda["decision"]["defaultOption"], "no-publicar")
         self.assertTrue(ronda["decision"]["allowFreeText"])
+
+    def test_el_comentario_pone_al_dia_el_guion_en_emojis(self):
+        (self.carpeta / "emojis.txt").write_text("👋\n🟩🕵️\n👋\n")
+        nuevo = GUION.replace("trabajaba", "presuntamente trabajaba")
+        correccion = {**self.correccion(nuevo, ["Noticia 1: añadido «presuntamente»"]), "emojis": ["👋", "🟩❓", "👋"]}
+        llamar = self.llamadas(correccion, {"problemas": [], "valoracion": "bien"})
+        ops.responder()
+        self.assertIn("🟩🕵️", llamar.call_args_list[0].args[0])  # le enseña el que hay
+        self.assertEqual((self.carpeta / "emojis.txt").read_text(), "👋\n🟩❓\n👋\n")
 
     def test_verifica_siempre_que_cambie_algo_aunque_sean_solo_las_notas(self):
         llamar = self.llamadas(self.correccion(GUION, [], notas="Notas\n- https://otra.example/x\n"),
@@ -162,7 +172,7 @@ class Corregir(unittest.TestCase):
         self.pasos.clear()
         ops.responder()
         self.assertEqual(llamar.call_count, 0)
-        self.assertEqual(self.pasos, ["src/tts.py", "src/mix.py"])
+        self.assertEqual(self.pasos, ["src/tts.py", "src/mix.py", "portada"])
         self.assertEqual((self.carpeta / "revision.md").read_text().count("Comentario de la revisión"), 1)
         ronda = json.loads(self.ronda.read_text())["message"]
         self.assertIn("Noticia 1: añadido «presuntamente»", ronda)

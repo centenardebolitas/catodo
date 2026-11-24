@@ -6,7 +6,7 @@ FECHA  ?= $(shell if [ $$(date +%H) -ge 15 ]; then date -v+1d +%Y-%m-%d; else da
 PLIST  := $(HOME)/Library/LaunchAgents/es.catodo.noche.plist
 
 .DEFAULT_GOAL := ayuda
-.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio noche programar instalar-noche desinstalar-noche publicar simulacro feed probar-voces
+.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio portada noche programar instalar-noche desinstalar-noche publicar simulacro feed probar-voces
 
 ayuda: ## Muestra esta ayuda
 	@echo "Cátodo: comandos disponibles"
@@ -51,11 +51,15 @@ voz: ## Sintetiza el guion por bloques con Gemini (solo repite los que cambian)
 audio: voz ## Voz + montaje: MP3 final con sintonía y volumen normalizado (Fase 3)
 	$(PYTHON) src/mix.py --fecha $(FECHA)
 
+portada: ## Portada del episodio: el guion en emojis (emojis.txt) en duotono
+	$(PYTHON) src/portada_episodio.py --fecha $(FECHA)
+
 noche: ## Lo que se lanza solo a las 22:00: guion y audio del episodio de mañana
 	scripts/noche.sh
 
 programar: ## Tras aprobar: audio al día, subida a R2 y publicación automática a las 6:00
 	$(MAKE) audio FECHA=$(FECHA)
+	-$(MAKE) portada FECHA=$(FECHA)
 	$(PYTHON) src/publish.py --fecha $(FECHA) --programar
 
 instalar-noche: ## Instala la preparación automática de las 22:00 (domingo a jueves)

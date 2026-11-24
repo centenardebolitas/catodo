@@ -25,16 +25,17 @@ import regex
 import requests
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
-from comun import EPISODIOS, RAIZ
+from comun import EPISODIOS, RAIZ, cargar_yaml
 
+AJUSTES = cargar_yaml("settings.yaml")["portada"]
 LADO = 3000
-COLUMNAS = 20                      # rejilla fija: 20 x 20 casillas de 150 px
+COLUMNAS = AJUSTES["columnas"]     # rejilla fija: los emojis tienen siempre el mismo tamaño
 CASILLA = LADO // COLUMNAS
-EMOJI = 118                        # tamaño de cada emoji dentro de su casilla
-MARCA = (9, 3)                    # casillas (ancho, alto) reservadas abajo a la derecha
+EMOJI = round(CASILLA * 0.79)      # tamaño de cada emoji dentro de su casilla
+MARCA = tuple(AJUSTES["marca"])    # casillas (ancho, alto) reservadas abajo a la derecha
+WEB = AJUSTES["lado_web_px"]       # lado de la versión para la web
 NOCHE, CIAN, NUCLEO = "#0e0d13", "#22d3ee", "#e8feff"
 OPACIDAD = 0.9
-WEB = 600                          # lado de la versión para la web
 
 NOTO = "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2026-09-24-unicode18_0"
 CACHE = Path(os.environ.get("CATODO_CACHE_EMOJI") or RAIZ / "cache" / "emoji")
