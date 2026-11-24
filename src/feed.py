@@ -212,7 +212,7 @@ ESTILO = """
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
 
-  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 8px; }
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 20px; }  /* abajo, lo mismo que hay bajo la raya (.episodio) */
   .insignias a { display:block; line-height:0; }
   .insignias img { height:40px; width:auto; }
   .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
