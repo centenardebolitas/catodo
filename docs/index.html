@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cátodo</title>
 <meta name="description" content="Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cátodo">
+<meta property="og:title" content="Cátodo">
+<meta property="og:description" content="Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.">
+<meta property="og:image" content="https://catodo.es/portada.jpg">
+<meta property="og:url" content="https://catodo.es/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="Cátodo" href="/feed.xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
@@ -28,6 +35,12 @@
   footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
+  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
+  .con-portada .mini { grid-row:span 2; width:112px; height:112px; border-radius:12px; display:block; }
+  .con-portada audio { grid-column:1 / -1; }
+  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 8px;
+                box-shadow:0 0 40px rgba(34,211,238,.18); }
+  .pie-portada { font-size:0.85rem; color:var(--suave); margin:0 0 8px; }
   .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
   .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
                 padding:6px 16px; font-size:0.95rem; }
@@ -43,7 +56,8 @@
     <a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Spotify</a>
     <a href="/feed.xml">Feed RSS</a>
   </nav>
-  <article class="episodio">
+  <article class="episodio con-portada">
+    <a href="/episodios/2026-11-24.html"><img class="mini" src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-69972188.jpg" alt="" width="112" height="112" loading="lazy"></a>
     <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2>
     <div class="suave">2026-11-24 · 10 min</div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3"></audio>

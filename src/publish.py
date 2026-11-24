@@ -6,7 +6,8 @@ Uso:
 Pasos:
   1. Comprueba que el episodio está aprobado (make aprobar) y que existe su MP3 (make audio).
   2. Limpia las notas: las redirecciones de Google News se quedan solo con el nombre del medio.
-  3. Sube el MP3 a Cloudflare R2 y comprueba que se descarga desde la URL pública.
+  3. Sube el MP3 a Cloudflare R2 y comprueba que se descarga desde la URL pública. Si hay
+     portada del episodio (portada.jpg, de portada_episodio.py), la sube también.
   4. Escribe publicacion.json y regenera docs/feed.xml, docs/index.html y docs/episodios/.
   5. Marca el episodio como publicado en la memoria.
   6. Commit y push de lo público: docs/ y guion, notas, memoria y publicación del episodio.
@@ -22,6 +23,7 @@ se publica en el momento.
 """
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -60,7 +62,7 @@ def limpiar_notas(ruta):
         print("  Notas: quitados los enlaces de redirección de Google News.")
 
 
-def subir_a_r2(mp3, clave_r2, env):
+def subir_a_r2(fichero, clave_r2, env, tipo="audio/mpeg"):
     import boto3  # solo hace falta al publicar de verdad
 
     faltan = [v for v in ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET")
@@ -71,18 +73,43 @@ def subir_a_r2(mp3, clave_r2, env):
         "s3", endpoint_url=f"https://{env['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
         aws_access_key_id=env["R2_ACCESS_KEY_ID"], aws_secret_access_key=env["R2_SECRET_ACCESS_KEY"],
         region_name="auto")
-    cliente.upload_file(str(mp3), env["R2_BUCKET"], clave_r2, ExtraArgs={
-        "ContentType": "audio/mpeg", "CacheControl": "public, max-age=31536000, immutable"})
+    cliente.upload_file(str(fichero), env["R2_BUCKET"], clave_r2, ExtraArgs={
+        "ContentType": tipo, "CacheControl": "public, max-age=31536000, immutable"})
 
 
 def comprobar_url(url, bytes_esperados):
     import requests
     r = requests.head(url, timeout=30, allow_redirects=True)
     if r.status_code != 200:
-        sys.exit(f"El audio no se descarga desde {url} (HTTP {r.status_code}). Revisa el dominio de R2.")
+        sys.exit(f"No se descarga {url} (HTTP {r.status_code}). Revisa el dominio de R2.")
     tamano = int(r.headers.get("Content-Length", 0))
     if tamano and tamano != bytes_esperados:
-        sys.exit(f"El tamaño publicado ({tamano}) no coincide con el del MP3 ({bytes_esperados}).")
+        sys.exit(f"El tamaño publicado de {url} ({tamano}) no coincide con el local ({bytes_esperados}).")
+
+
+def clave_portada(fecha, portada, sufijo=""):
+    """La portada del episodio lleva un trozo de su huella en el nombre: si se rehace,
+    cambia la URL y las apps no se quedan con la vieja (en R2 se guarda como inmutable)."""
+    huella = hashlib.sha256(portada.read_bytes()).hexdigest()[:8]
+    return f"{CARPETA_R2}/catodo-{fecha}{sufijo}-{huella}.jpg"
+
+
+def publicar_portada(fecha, env):
+    """Sube a R2 la portada del episodio (grande y, si está, la de la web).
+
+    Devuelve {"url_portada": ..., "url_portada_web": ...} con lo que haya, o {} si no
+    hay portada."""
+    base = env.get("R2_PUBLIC_BASE_URL", "https://audio.catodo.es").rstrip("/")
+    urls = {}
+    for nombre, campo in (("portada.jpg", "url_portada"), ("portada-web.jpg", "url_portada_web")):
+        fichero = EPISODIOS / fecha / nombre
+        if not fichero.exists():
+            continue
+        clave = clave_portada(fecha, fichero, sufijo="-web" if campo.endswith("web") else "")
+        subir_a_r2(fichero, clave, env, "image/jpeg")
+        comprobar_url(f"{base}/{clave}", fichero.stat().st_size)
+        urls[campo] = f"{base}/{clave}"
+    return urls
 
 
 def git(*argumentos):
@@ -157,6 +184,9 @@ def main():
     subir_a_r2(mp3, clave_r2, env)
     comprobar_url(url_audio, bytes_mp3)
     print(f"  Audio disponible en {url_audio}")
+    datos.update(publicar_portada(args.fecha, env))
+    if datos.get("url_portada"):
+        print(f"  Portada del episodio en {datos['url_portada']}")
     publicacion.write_text(json.dumps(datos, ensure_ascii=False, indent=2), encoding="utf-8")
     feed.generar_todo()
     memoria.marcar_publicado(args.fecha)
@@ -164,6 +194,8 @@ def main():
 
     publicos = ["docs", f"episodes/{args.fecha}/guion.md", f"episodes/{args.fecha}/notas.md",
                 f"episodes/{args.fecha}/memoria.json", f"episodes/{args.fecha}/publicacion.json"]
+    if (carpeta / "emojis.txt").exists():  # el guion en emojis de la portada (el JPEG va a R2)
+        publicos.append(f"episodes/{args.fecha}/emojis.txt")
     publicos += [str(p.relative_to(RAIZ)) for p in EPISODIOS.glob("*/memoria.json")]  # correcciones saldadas
     git("add", *publicos)
     git("commit", "-q", "-m", f"Episodio {numero} ({args.fecha})")

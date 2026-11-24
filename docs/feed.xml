@@ -47,6 +47,7 @@
 <hr>
 <p>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.</p>]]></description>
       <enclosure url="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3" length="7364267" type="audio/mpeg"/>
+      <itunes:image href="https://audio.catodo.es/episodios/catodo-2026-11-24-d5f3e948.jpg"/>
       <itunes:duration>00:10:14</itunes:duration>
       <itunes:episode>1</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>

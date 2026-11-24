@@ -46,3 +46,5 @@ assets/sintonia/original-*.wav
 logs/
 assets/favicon/variante-*
 assets/favicon/comparativa.png
+episodes/*/portada.jpg
+episodes/*/portada-web.jpg

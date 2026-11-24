@@ -112,6 +112,7 @@ def generar_feed(episodios, cfg):
       <pubDate>{fecha_rfc(ep['publicado_en'])}</pubDate>
       <description><![CDATA[{descripcion_episodio(ep, cfg)}]]></description>
       <enclosure url="{escape(ep['url_audio'])}" length="{ep['bytes']}" type="audio/mpeg"/>
+      {f'<itunes:image href="{escape(ep["url_portada"])}"/>' if ep.get("url_portada") else ""}
       <itunes:duration>{duracion_hms(ep['duracion_s'])}</itunes:duration>
       <itunes:episode>{ep['numero']}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
@@ -167,6 +168,12 @@ ESTILO = """
   footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
+  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
+  .con-portada .mini { grid-row:span 2; width:112px; height:112px; border-radius:12px; display:block; }
+  .con-portada audio { grid-column:1 / -1; }
+  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 8px;
+                box-shadow:0 0 40px rgba(34,211,238,.18); }
+  .pie-portada { font-size:0.85rem; color:var(--suave); margin:0 0 8px; }
   .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
   .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
                 padding:6px 16px; font-size:0.95rem; }
@@ -187,7 +194,8 @@ def enlaces_escuchar(cfg):
     return enlaces + [("Feed RSS", "/feed.xml")]
 
 
-def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
+def plantilla(titulo, descripcion, cuerpo, cfg, raiz="", imagen=None, url=None):
+    web = cfg["web"].rstrip("/")
     return f"""<!doctype html>
 <html lang="es">
 <head>
@@ -195,6 +203,13 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(titulo)}</title>
 <meta name="description" content="{html.escape(descripcion)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{html.escape(cfg['titulo'])}">
+<meta property="og:title" content="{html.escape(titulo)}">
+<meta property="og:description" content="{html.escape(descripcion)}">
+<meta property="og:image" content="{html.escape(imagen or cfg['imagen'])}">
+<meta property="og:url" content="{html.escape(url or web + '/')}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="{html.escape(cfg['titulo'])}" href="/feed.xml">
 {ICONOS}
 <style>{ESTILO}</style>
@@ -214,8 +229,11 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
 def generar_portada(episodios, cfg):
     lista = []
     for ep in episodios:
-        lista.append(f"""  <article class="episodio">
-    <h2><a href="/episodios/{ep['fecha']}.html">{html.escape(ep['titulo'])}</a></h2>
+        pagina = f"/episodios/{ep['fecha']}.html"
+        mini = (f'<a href="{pagina}"><img class="mini" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" alt="" '
+                f'width="112" height="112" loading="lazy"></a>\n    ' if ep.get("url_portada") else "")
+        lista.append(f"""  <article class="episodio{' con-portada' if mini else ''}">
+    {mini}<h2><a href="{pagina}">{html.escape(ep['titulo'])}</a></h2>
     <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
     <audio controls preload="none" src="{html.escape(ep['url_audio'])}"></audio>
   </article>""")
@@ -233,12 +251,23 @@ def generar_pagina_episodio(ep, cfg):
     cuerpo = f"""  <p><a href="/">← Cátodo</a></p>
   <h1 style="font-size:1.8rem">{html.escape(ep['titulo'])}</h1>
   <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
-  <audio controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
+  {portada_html(ep)}<audio controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
   {descripcion_episodio(ep, cfg)}
   <details><summary>Transcripción</summary>
   {transcripcion}
   </details>"""
-    return plantilla(f"{ep['titulo']} · Cátodo", ep["titulo"], cuerpo, cfg)
+    return plantilla(f"{ep['titulo']} · Cátodo", ep["titulo"], cuerpo, cfg, imagen=ep.get("url_portada"),
+                     url=f"{cfg['web'].rstrip('/')}/episodios/{ep['fecha']}.html")
+
+
+def portada_html(ep):
+    """La portada del episodio (el guion en emojis), si la tiene."""
+    if not ep.get("url_portada"):
+        return ""
+    return (f'<img class="portada-ep" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" width="440" height="440" '
+            f'alt="Portada del episodio: el guion, de principio a fin, escrito en emojis">\n'
+            f'  <p class="pie-portada">La portada es el guion de hoy escrito en emojis, '
+            f'de izquierda a derecha y de arriba abajo. ¿Lo sabrías leer?</p>\n  ')
 
 
 def generar_todo(destino=DOCS):
