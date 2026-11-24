@@ -43,7 +43,12 @@ El reparto es flexible según el día:
 - **Fuentes en inglés:** se traducen y se contextualizan para un oyente de España (qué significa aquí, si llega a España, comparaciones que se entiendan).
 - **Español de España natural, sin calcos del inglés:** nada de expresiones traducidas literalmente. Por ejemplo: "con una pizca de sal" → "cógelo con pinzas"; "al final del día" → "al fin y al cabo"; "hacer sentido" → "tener sentido"; "en orden a" → "para"; "eventualmente" (en el sentido de *eventually*) → "con el tiempo" o "al final"; "es por eso que" → "por eso"; "jugar un rol" → "desempeñar un papel"; "aplicar a un trabajo" → "optar a un puesto"; "masivo" (en el sentido de *massive*) → "enorme". Si una expresión suena a doblaje, se cambia.
 - **Equilibrio:** en temas polémicos se dan las distintas posturas relevantes y se separan hechos de opiniones.
-- **Personas reales:** cuidado máximo con lo que se dice de personas con nombre y apellidos. La situación judicial exacta (investigado no es acusado, y acusado no es condenado), "presuntamente" cuando toque, ningún hecho negativo sobre una persona que no esté en al menos dos fuentes, ningún detalle íntimo que no sea imprescindible para la noticia y nada de humor a costa de particulares. Los personajes públicos (directivos, políticos) admiten más crítica, pero nunca insultos.
+- **Personas reales:** cuidado máximo con lo que se dice de personas con nombre y apellidos. La situación judicial exacta (investigado no es acusado, y acusado no es condenado), ningún hecho negativo sobre una persona que no esté en al menos dos fuentes, ningún detalle íntimo que no sea imprescindible para la noticia y nada de humor a costa de particulares. Los personajes públicos (directivos, políticos) admiten más crítica, pero nunca insultos.
+- **Acusaciones, siempre con «presuntamente»:** toda acusación de un delito, espionaje, fraude, acoso u otra conducta ilícita o grave contra una persona o empresa identificable, mientras no haya una sentencia firme, se cuenta siempre:
+  - atribuida a quien la hace («según el New York Times…», «la fiscalía acusa a…»);
+  - con «presuntamente» o «supuestamente» junto a la acusación («que presuntamente trabajaba para los servicios de inteligencia chinos»);
+  - con la versión de la otra parte si existe (lo niega, no ha respondido, no hay cargos);
+  - nunca con la voz de Cátodo como si fuera un hecho, nunca en el gancho de la apertura ni en el título del episodio, y nunca con humor.
 - **Fuentes que no se leen con IA:** algunos medios no permiten que una IA lea sus artículos. Se pueden citar y enlazar, pero sus datos solo se usan si los recoge otra fuente que sí se ha leído.
 
 ## Formato del guion
