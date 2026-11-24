@@ -54,10 +54,15 @@ class Feed(unittest.TestCase):
         self.assertIn('href="https://podcasts.apple.com/es/podcast/x/id6838674796?i=1"', pagina)
         self.assertNotIn("<strong>Capítulos</strong>", pagina)  # en la web van como botones
 
-    def test_apple_va_primero_en_la_cabecera(self):
+    def test_insignias_bajo_la_descripcion_con_apple_primero_y_el_rss(self):
         portada = feed.generar_portada([EPISODIO], self.cfg)
-        cabecera = portada[portada.index('class="cabecera"'):portada.index("</header>")]
-        self.assertLess(cabecera.index("Apple Podcasts"), cabecera.index("Spotify"))
+        nav = portada[portada.index('<nav class="insignias"'):]
+        nav = nav[:nav.index("</nav>")]
+        self.assertLess(portada.index('class="suave">Tecnología'), portada.index('<nav class="insignias"'))
+        self.assertLess(nav.index("Apple Podcasts"), nav.index("Spotify"))
+        self.assertIn('href="/feed.xml"><img src="/insignias/rss.svg" alt="Suscríbete por RSS"', nav)
+        pie = portada[portada.index("<footer>"):]
+        self.assertEqual(pie.count('href="/feed.xml"'), 1)
 
 
 class Apple(unittest.TestCase):
