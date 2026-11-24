@@ -10,7 +10,8 @@ Dos etapas:
   2. Sintonía: assets/sintonia_intro.wav suena al principio y la voz entra a los
      SOLAPE_INTRO_S segundos mientras se funde; assets/sintonia_outro.wav suena al final.
      Un limitador evita que nada pase de -1,5 dB.
-Exporta episodes/AAAA-MM-DD/catodo-AAAA-MM-DD.mp3 en mono con las etiquetas del episodio.
+Exporta episodes/AAAA-MM-DD/catodo-AAAA-MM-DD.mp3 en mono con las etiquetas del episodio y sus
+capítulos (src/capitulos.py: capitulos.json y etiquetas ID3 en el MP3).
 """
 
 import argparse
@@ -146,6 +147,10 @@ def main():
            "-metadata", "album=Cátodo", "-metadata", "genre=Podcast",
            "-metadata", f"date={args.fecha[:4]}", "-metadata", f"comment={AVISO_IA}", str(mp3))
     mezcla.unlink()
+
+    # Capítulos (apertura, cada noticia y cierre): capitulos.json para el feed y la web, y ID3 en el MP3.
+    import capitulos  # aquí: capitulos importa mix
+    capitulos.incrustar(mp3, capitulos.escribir(carpeta))
 
     segundos = duracion(mp3)
     print(f"Episodio: {mp3.relative_to(EPISODIOS.parent)} — {int(segundos // 60)} min {int(segundos % 60)} s, "

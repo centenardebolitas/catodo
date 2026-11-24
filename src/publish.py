@@ -34,6 +34,7 @@ from datetime import date, datetime, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import enlaces
 import feed
 import memoria
 from comun import EPISODIOS, RAIZ, cargar_env
@@ -188,12 +189,16 @@ def main():
     if datos.get("url_portada"):
         print(f"  Portada del episodio en {datos['url_portada']}")
     publicacion.write_text(json.dumps(datos, ensure_ascii=False, indent=2), encoding="utf-8")
+    enlaces.actualizar()  # el enlace de Apple de los episodios anteriores, si ya los ha indexado
     feed.generar_todo()
     memoria.marcar_publicado(args.fecha)
     print("  Feed, web y memoria actualizados.")
 
     publicos = ["docs", f"episodes/{args.fecha}/guion.md", f"episodes/{args.fecha}/notas.md",
                 f"episodes/{args.fecha}/memoria.json", f"episodes/{args.fecha}/publicacion.json"]
+    if (carpeta / "capitulos.json").exists():
+        publicos.append(f"episodes/{args.fecha}/capitulos.json")
+    publicos += [str(p.relative_to(RAIZ)) for p in EPISODIOS.glob("*/publicacion.json")]  # enlaces de Apple
     if (carpeta / "emojis.txt").exists():  # el guion en emojis de la portada (el JPEG va a R2)
         publicos.append(f"episodes/{args.fecha}/emojis.txt")
     publicos += [str(p.relative_to(RAIZ)) for p in EPISODIOS.glob("*/memoria.json")]  # correcciones saldadas

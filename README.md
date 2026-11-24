@@ -48,6 +48,8 @@ make marcar-publicado        # mete el episodio de hoy en la memoria (hasta que 
 make corregir FECHA=2026-11-23 TEXTO="..."   # registra una corrección de un episodio
 make reservas                # qué medios no permiten que una IA lea sus artículos
 make portada                 # portada del episodio: el guion en emojis (emojis.txt) en duotono
+python src/capitulos.py --fecha AAAA-MM-DD   # capítulos del episodio (los hace mix.py; --incrustar los mete en el MP3)
+python src/enlaces.py        # enlace de cada episodio en Apple Podcasts (lo hace publish.py)
 make preparar FECHA=2026-11-24
 ```
 
