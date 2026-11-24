@@ -172,9 +172,9 @@ ESTILO = """
   .con-portada .mini { grid-row:span 2; display:block; }
   .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
-  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 8px;
+  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
-  .pie-portada { font-size:0.85rem; color:var(--suave); margin:0 0 8px; }
+
   .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
   .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
                 padding:6px 16px; font-size:0.95rem; }
@@ -265,10 +265,9 @@ def portada_html(ep):
     """La portada del episodio (el guion en emojis), si la tiene."""
     if not ep.get("url_portada"):
         return ""
-    return (f'<img class="portada-ep" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" width="440" height="440" '
-            f'alt="Portada del episodio: el guion, de principio a fin, escrito en emojis">\n'
-            f'  <p class="pie-portada">La portada es el guion de hoy escrito en emojis, '
-            f'de izquierda a derecha y de arriba abajo. ¿Lo sabrías leer?</p>\n  ')
+    # Sin explicación a propósito: que sea un huevo de pascua para quien se fije.
+    return (f'<img class="portada-ep" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" '
+            f'width="440" height="440" alt="Portada del episodio">\n  ')
 
 
 def generar_todo(destino=DOCS):
