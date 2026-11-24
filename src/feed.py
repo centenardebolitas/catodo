@@ -165,7 +165,17 @@ ESTILO = """
   footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
+  .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
+  .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
+                padding:6px 16px; font-size:0.95rem; }
+  .escuchar a:hover { background:rgba(34,211,238,.12); }
 """
+
+
+def enlaces_escuchar(cfg):
+    """Las plataformas de config/podcast.yaml (escuchar), más el feed RSS."""
+    enlaces = [(p["nombre"], p["url"]) for p in cfg.get("escuchar") or []]
+    return enlaces + [("Feed RSS", "/feed.xml")]
 
 
 def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
@@ -183,7 +193,8 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
 <main>
 {cuerpo}
   <footer>{html.escape(cfg['aviso_ia'])}<br>
-  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/feed.xml">Feed RSS</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></footer>
+  {' · '.join(f'<a href="{html.escape(url)}">{html.escape(nombre)}</a>' for nombre, url in enlaces_escuchar(cfg))}<br>
+  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></footer>
 </main>
 </body>
 </html>
@@ -200,6 +211,9 @@ def generar_portada(episodios, cfg):
   </article>""")
     cuerpo = f"""  <h1 class="neon">Cátodo.</h1>
   <p class="suave">{html.escape(cfg['subtitulo'])}. {html.escape(cfg['descripcion'])}</p>
+  <nav class="escuchar" aria-label="Dónde escucharlo">
+    {chr(10).join(f'    <a href="{html.escape(url)}">{html.escape(nombre)}</a>' for nombre, url in enlaces_escuchar(cfg)).lstrip()}
+  </nav>
 {chr(10).join(lista) if lista else '  <p>Muy pronto, el primer episodio.</p>'}"""
     return plantilla(cfg["titulo"], cfg["descripcion"], cuerpo, cfg)
 

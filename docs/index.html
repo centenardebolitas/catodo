@@ -22,19 +22,29 @@
   footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
   footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
+  .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
+  .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
+                padding:6px 16px; font-size:0.95rem; }
+  .escuchar a:hover { background:rgba(34,211,238,.12); }
 </style>
 </head>
 <body>
 <main>
   <h1 class="neon">Cátodo.</h1>
   <p class="suave">Tecnología cada mañana. Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</p>
+  <nav class="escuchar" aria-label="Dónde escucharlo">
+    <a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796">Apple Podcasts</a>
+    <a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Spotify</a>
+    <a href="/feed.xml">Feed RSS</a>
+  </nav>
   <article class="episodio">
     <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2>
     <div class="suave">2026-11-24 · 10 min</div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3"></audio>
   </article>
   <footer>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.<br>
-  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/feed.xml">Feed RSS</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>
+  <a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796">Apple Podcasts</a> · <a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Spotify</a> · <a href="/feed.xml">Feed RSS</a><br>
+  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>
 </main>
 </body>
 </html>

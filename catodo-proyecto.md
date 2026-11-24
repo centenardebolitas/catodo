@@ -252,6 +252,10 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 ### Fase 5. Distribución (la hago yo, con tu guía)
 - Alta del feed `https://catodo.es/feed.xml` en Apple Podcasts Connect y en Spotify (feed externo).
 - Requisitos: portada 3000x3000 px, título, descripción (con el aviso de IA), categoría Tecnología, idioma español.
+- Estado (24 de noviembre de 2026):
+  - **Apple Podcasts:** dado de alta con un Apple ID propio de Cátodo (hola@catodo.es). Estado «Disponible», ID 6838674796: https://podcasts.apple.com/us/podcast/cátodo/id6838674796. Declarado «sin contenido de terceros», frecuencia diaria, todos los países.
+  - **Spotify:** dado de alta en Spotify for Creators (feed externo, verificado con código a hola@catodo.es). País España, idioma español, categoría Business & Technology › Technology (no se puede cambiar). Enlace: https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4 (tarda unas horas en aparecer).
+  - Pendiente: comprobar que ambos enlaces funcionan y, si quieres, añadirlos a la web. Opcional: iVoox.
 
 ### Fase 6. Piloto
 - Dos semanas publicando sin difundir. Ajustar prompt, voz, modelo y duración.

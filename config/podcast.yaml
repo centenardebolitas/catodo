@@ -21,3 +21,10 @@ explicito: false
 web: https://catodo.es
 imagen: https://catodo.es/portada.jpg      # 3000x3000 px, pendiente
 copyright: Cátodo
+
+# Dónde escucharlo: se muestran en la web (portada y pie de todas las páginas).
+escuchar:
+  - nombre: Apple Podcasts
+    url: https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796
+  - nombre: Spotify
+    url: https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4
