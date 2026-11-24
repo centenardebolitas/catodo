@@ -23,6 +23,7 @@ Cátodo se prepara por la noche en [ops](https://ops.wmail.es), el centro de man
 2. **Tú, desde el móvil:** revisas y eliges:
    - **Aprobar y programar**: deja constancia de tu revisión en la memoria del episodio, sube el MP3 definitivo a R2 y regenera el feed y la web (`scripts/ops/responder.sh`). ops empuja el commit a la rama `programado`.
    - **No publicar** (la opción por defecto): no cambia nada.
+   - **Un comentario** en texto libre («en la noticia 1 añade "presuntamente" y quita el chiste de Bessent»): Claude lo aplica al guion respetando `config/persona.md`, vuelve a verificar si cambian datos, rehace solo los bloques de voz que cambian y te pasa la versión nueva con las mismas opciones (`src/comentarios.py`). Puede haber varias rondas, y cada comentario queda apuntado en `revision.md`. Un comentario nunca publica: solo «Aprobar y programar».
 3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) pasa `programado` a `main` y actualiza la web y el feed. ops lo vigila (`catodo.publicar`) y avisa si a esa hora no se publica.
 
 Si hay que corregir el guion antes de aprobar, se hace en el Mac, como antes:
