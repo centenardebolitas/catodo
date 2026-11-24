@@ -188,6 +188,7 @@ def generar_feed(episodios, cfg):
 
 ESTILO = """
   :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
+  html { background:var(--fondo); }
   body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
          line-height:1.6; padding:0 16px; }
   main { max-width:680px; margin:48px auto 64px; }
