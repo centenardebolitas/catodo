@@ -16,7 +16,9 @@ que ops abre en el móvil: resumen, puntos a comprobar, orden del episodio y los
 enlaces para escucharlo y leerlo. Opciones: «Aprobar y programar» y «No publicar»,
 que es la de por defecto porque no cambia nada.
 
-responder: lo corre ops cuando Ulises elige una opción (OPS_DECISION_OPTION). Con
+responder: lo corre ops cuando Ulises contesta. Con un texto (OPS_DECISION_TEXT, sin
+opción) aplica el comentario al guion y deja una versión nueva para revisar
+(corregir; ver src/comentarios.py). Con una opción (OPS_DECISION_OPTION). Con
 «aprobar» deja la aprobación humana en la memoria del episodio y lo programa como
 `make programar`, pero sin push: deja el commit y lo empuja ops a la rama
 programado. En los dos casos borra el audio y el guion de revisión de R2. Lo que
@@ -33,6 +35,7 @@ import sys
 from pathlib import Path
 
 import claude_cli
+import comentarios
 import memoria
 from comun import EPISODIOS, RAIZ, cargar_env
 
@@ -91,7 +94,8 @@ def cuerpo_decision(fecha, revision_md, url_audio, url_guion, minutos):
     if partes.get("Se queda para otro día"):
         lineas += ["", "## Se queda para otro día", "", partes["Se queda para otro día"]]
     lineas += ["", "«Aprobar y programar» deja constancia de tu revisión y lo publica a las 6:00. "
-                   "«No publicar» no cambia nada."]
+                   "«No publicar» no cambia nada. También puedes responder con comentarios "
+                   "(«en la noticia 1 añade “presuntamente”»): los aplico y te paso la versión nueva."]
     texto = "\n".join(lineas).strip()
     if len(texto) > MAX_CUERPO:
         aviso = "\n\n(Recortado: el resto, en revision.md del estado del trabajo.)"
@@ -163,6 +167,28 @@ def decision(fecha):
         sys.exit("Falta OPS_DECISION_FILE: esto lo lanza ops (scripts/ops/preparar.sh).")
 
     env = cargar_env()
+    url_audio, url_guion = subir_revision(carpeta, fecha, env)
+    datos = {
+        "message": cuerpo_decision(fecha, revision.read_text(encoding="utf-8"), url_audio, url_guion,
+                                   publish.duracion(mp3) / 60),
+        "decision": decision_episodio(fecha),
+    }
+    Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+    print(f"Decisión lista para ops: {titulo(fecha)}")
+
+
+def decision_episodio(fecha):
+    """Las opciones de siempre, y texto libre para los comentarios (ops los atiende con responder)."""
+    return {"title": titulo(fecha), "options": OPCIONES, "defaultOption": OPCION_NO_PUBLICAR,
+            "allowFreeText": True}
+
+
+def subir_revision(carpeta, fecha, env):
+    """Sube el MP3 y el guion a una ruta nueva no enlazada de R2 (borra la anterior). Devuelve sus URL."""
+    import publish
+
+    borrar_revision(carpeta, env)
+    mp3 = carpeta / f"catodo-{fecha}.mp3"
     bucket = env.get("R2_BUCKET", "catodo-audio")
     prefijo = f"{CARPETA_REVISION}/{fecha}-{secrets.token_urlsafe(16)}"
     claves = {"audio": f"{prefijo}.mp3", "guion": f"{prefijo}-guion.txt"}
@@ -170,19 +196,12 @@ def decision(fecha):
     # Sin caché: es una ruta de un solo uso, y se borra al contestar.
     r2.upload_file(str(mp3), bucket, claves["audio"], ExtraArgs={
         "ContentType": "audio/mpeg", "CacheControl": "private, no-store"})
-    r2.upload_file(str(guion), bucket, claves["guion"], ExtraArgs={
+    r2.upload_file(str(carpeta / "guion.md"), bucket, claves["guion"], ExtraArgs={
         "ContentType": "text/plain; charset=utf-8", "CacheControl": "private, no-store"})
     (carpeta / "revision-ops.json").write_text(json.dumps(claves), encoding="utf-8")
     url_audio = f"{base_publica(env)}/{claves['audio']}"
     publish.comprobar_url(url_audio, mp3.stat().st_size)
-
-    datos = {
-        "message": cuerpo_decision(fecha, revision.read_text(encoding="utf-8"), url_audio,
-                                   f"{base_publica(env)}/{claves['guion']}", publish.duracion(mp3) / 60),
-        "decision": {"title": titulo(fecha), "options": OPCIONES, "defaultOption": OPCION_NO_PUBLICAR},
-    }
-    Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
-    print(f"Decisión lista para ops: {titulo(fecha)}")
+    return url_audio, f"{base_publica(env)}/{claves['guion']}"
 
 
 def borrar_revision(carpeta, env):
@@ -201,14 +220,107 @@ def python(*argumentos):
     subprocess.run([sys.executable, *argumentos], cwd=RAIZ, check=True)
 
 
+def corregir(fecha, comentario, hilo, nota):
+    """Aplica un comentario de Ulises y deja la ronda nueva en OPS_DECISION_ROUND_FILE.
+
+    Se puede repetir: si systemd lo reintenta (falló la voz, R2 u ops), el comentario
+    ya aplicado no se vuelve a aplicar (comentarios-ops/<mensaje>.json), y la voz, el
+    montaje y la subida se rehacen siempre (tts.py y mix.py van por caché): lo que se
+    enseña es siempre lo que hay en guion.md.
+    """
+    import publish
+    import script
+    from comun import CONFIG, cargar_yaml
+    from reservas import Reservas
+
+    carpeta = EPISODIOS / fecha
+    guion_ruta, notas_ruta = carpeta / "guion.md", carpeta / "notas.md"
+    if not guion_ruta.exists() or not (carpeta / f"catodo-{fecha}.mp3").exists():
+        nota(f"El episodio del {fecha} ya no está en ops (lo ha limpiado una preparación posterior): "
+             "no puedo aplicar el comentario.")
+        return
+    anteriores = comentarios.comentarios_anteriores(hilo)
+    version = len(anteriores) + 2  # la 1 es la de la preparación
+    hecho_ruta = carpeta / "comentarios-ops" / f"{comentarios.clave_comentario(hilo)}.json"
+    if hecho_ruta.exists():
+        print("Comentario ya aplicado en un intento anterior: rehago la voz y la subida.", flush=True)
+        hecho = json.loads(hecho_ruta.read_text(encoding="utf-8"))
+    else:
+        ajustes = cargar_yaml("settings.yaml")
+        cl = ajustes["claude"]
+        persona = (CONFIG / "persona.md").read_text(encoding="utf-8")
+        escaleta_ruta = carpeta / "escaleta.json"
+        escaleta = (script.json_bonito(script.preparar_escaleta(json.loads(escaleta_ruta.read_text(encoding="utf-8")),
+                                                                Reservas()))
+                    if escaleta_ruta.exists() else "(no está)")
+        guion = guion_ruta.read_text(encoding="utf-8")
+        notas = notas_ruta.read_text(encoding="utf-8") if notas_ruta.exists() else ""
+
+        print("Aplicando el comentario…", flush=True)
+        correccion = claude_cli.llamar(
+            comentarios.CORRECCION.format(persona=persona, escaleta=escaleta, comentario=comentario,
+                                          anteriores="\n\n".join(anteriores) or "(ninguno)", guion=guion, notas=notas),
+            modelo=cl["modelo_guion"], esfuerzo=cl.get("esfuerzo_guion"), esquema=comentarios.ESQUEMA_CORRECCION,
+            herramientas=script.LEER_FUENTES, registro=carpeta / "pasadas" / f"comentario-{version}.json",
+            tiempo_max=cl["tiempo_max_pasada_s"])
+        nuevo = correccion["guion"].strip() + "\n"
+        notas_nuevas = (correccion["notas"].strip() + "\n") if correccion["notas"].strip() else notas
+        cambios_texto = comentarios.diferencias(guion, nuevo) + "\n" + comentarios.diferencias(notas, notas_nuevas)
+        problemas = []
+        # Siempre que cambie algo: lo que diga el modelo de sí mismo no basta.
+        if cambios_texto.strip():
+            print("Verificando lo que ha cambiado…", flush=True)
+            verificacion = claude_cli.llamar(
+                script.VERIFICACION.format(persona=persona, escaleta=escaleta, guion=nuevo)
+                + comentarios.VERIFICAR_CAMBIOS.format(diferencias=cambios_texto),
+                modelo=cl["modelo_guion"], esfuerzo=cl.get("esfuerzo_guion"), esquema=script.ESQUEMA_VERIFICACION,
+                herramientas=script.LEER_FUENTES,
+                registro=carpeta / "pasadas" / f"comentario-{version}-verificacion.json",
+                tiempo_max=cl["tiempo_max_pasada_s"])
+            problemas = verificacion["problemas"]
+        hecho = {"version": version, "correccion": correccion, "problemas": problemas,
+                 "bloques": comentarios.bloques_cambiados(guion, nuevo),
+                 "notas_cambiadas": comentarios.diferencias(notas, notas_nuevas)}
+        guion_ruta.write_text(nuevo, encoding="utf-8")
+        notas_ruta.write_text(notas_nuevas, encoding="utf-8")
+        comentarios.actualizar_memoria(carpeta / "memoria.json", correccion)
+        with open(carpeta / "revision.md", "a", encoding="utf-8") as f:
+            f.write(comentarios.apunte_revision(version, comentario, correccion, problemas))
+        hecho_ruta.parent.mkdir(exist_ok=True)
+        hecho_ruta.write_text(json.dumps(hecho, ensure_ascii=False), encoding="utf-8")
+
+    # Siempre: tts.py solo rehace los bloques cuyo texto ha cambiado.
+    python("src/tts.py", "--fecha", fecha)
+    python("src/mix.py", "--fecha", fecha)
+    url_audio, url_guion = subir_revision(carpeta, fecha, cargar_env())
+    mp3 = carpeta / f"catodo-{fecha}.mp3"
+    ronda = {
+        "message": comentarios.mensaje_ronda(fecha, hecho["version"], hecho["correccion"], hecho["problemas"],
+                                             hecho["bloques"], url_audio, url_guion, publish.duracion(mp3) / 60,
+                                             hecho["notas_cambiadas"]),
+        "decision": decision_episodio(fecha),
+    }
+    Path(os.environ["OPS_DECISION_ROUND_FILE"]).write_text(json.dumps(ronda, ensure_ascii=False), encoding="utf-8")
+    print(ronda["message"])
+
+
+def nota_de_aprobacion(hilo, id_decision):
+    """La nota de la aprobación: lo que haya escrito Ulises junto a la opción, como NOTA= en el Mac."""
+    texto = next((m.get("body") for m in reversed(hilo.get("messages", []))
+                  if m.get("author") == "user" and m.get("optionKey") and (m.get("body") or "").strip()), None)
+    base = f"Aprobado en ops (decisión {id_decision}), tras revisar los puntos a comprobar y escuchar el audio."
+    return f"{base} {texto.strip()}" if texto else base
+
+
 def responder():
     opcion = os.environ.get("OPS_DECISION_OPTION")
+    texto = os.environ.get("OPS_DECISION_TEXT")
     id_decision = os.environ.get("OPS_DECISION_ID", "?")
     nota_ruta = os.environ.get("OPS_REPLY_NOTE_FILE")
     with open(os.environ["OPS_DECISION_JSON"], encoding="utf-8") as f:
         hilo = json.load(f)
-    if not opcion or not nota_ruta:
-        sys.exit("Faltan OPS_DECISION_OPTION u OPS_REPLY_NOTE_FILE: esto lo lanza ops.")
+    if not (opcion or texto) or not nota_ruta:
+        sys.exit("Faltan OPS_DECISION_OPTION (o OPS_DECISION_TEXT) u OPS_REPLY_NOTE_FILE: esto lo lanza ops.")
 
     def nota(texto):
         Path(nota_ruta).write_text(texto, encoding="utf-8")
@@ -221,6 +333,10 @@ def responder():
     carpeta = EPISODIOS / fecha
     env = cargar_env()
 
+    if not opcion:
+        # Un comentario: el texto no autoriza a publicar, solo a preparar otra versión.
+        corregir(fecha, texto, hilo, nota)
+        return
     if opcion == OPCION_NO_PUBLICAR:
         borrar_revision(carpeta, env)
         nota(f"No se publica el episodio del {fecha}. Se ha borrado el audio de revisión.")
@@ -235,8 +351,7 @@ def responder():
         nota(f"El episodio del {fecha} ya no está en ops (lo ha limpiado una preparación posterior): "
              "no se ha programado nada.")
         return
-    memoria.aprobar(fecha, f"Aprobado en ops (decisión {id_decision}), "
-                           "tras revisar los puntos a comprobar y escuchar el audio.")
+    memoria.aprobar(fecha, nota_de_aprobacion(hilo, id_decision))
     # Como `make programar`, sin push: el commit lo empuja ops a la rama programado.
     python("src/tts.py", "--fecha", fecha)
     python("src/mix.py", "--fecha", fecha)

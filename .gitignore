@@ -22,6 +22,8 @@ episodes/*/revision.md
 episodes/*/revision-detalle.md
 # Dónde dejó ops el audio de revisión en R2 (ruta no enlazada)
 episodes/*/revision-ops.json
+# Comentarios ya aplicados desde ops (para no aplicarlos dos veces)
+episodes/*/comentarios-ops/
 
 # Investigación interna
 investigacion/
