@@ -8,7 +8,7 @@
     <language>es-ES</language>
     <copyright>Cátodo</copyright>
     <description>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</description>
-    <lastBuildDate>Mon, 23 Nov 2026 23:37:06 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 09:14:29 +0100</lastBuildDate>
     <itunes:subtitle>Tecnología cada mañana</itunes:subtitle>
     <itunes:summary>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</itunes:summary>
     <itunes:author>Cátodo</itunes:author>
@@ -21,6 +21,36 @@
     <itunes:category text="Technology"><itunes:category text="Tech News"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
-
+    <item>
+      <title>Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</title>
+      <link>https://catodo.es/episodios/2026-11-24.html</link>
+      <guid isPermaLink="false">catodo-2026-11-24</guid>
+      <pubDate>Tue, 24 Nov 2026 09:14:29 +0100</pubDate>
+      <description><![CDATA[<h4>Jensen Huang recupera el mando de Nvidia con el empujón de la Casa Blanca</h4>
+<p>El consejo de Nvidia readmite por unanimidad a Huang menos de dos semanas después de su dimisión, tras la presión pública de Trump. Ese mismo día, Comercio mete en su lista negra a Megaspeed, la empresa de Singapur que está en el centro del escándalo.</p>
+<p><a href="https://9to5mac.com/2026/11/23/jensen-huang-reinstated-as-ceo-of-nvidia-despite-companys-previous-statement/">9to5Mac</a> · <a href="https://www.tomshardware.com/tech-industry/big-tech/president-trump-says-nvidia-board-rehiring-jensen-huang-would-be-best-for-the-company-and-the-us-treasury-sec-bessent-walks-back-outsider-ceo-comments-claims-huang-is-technically-an-outsider-now">Tom's Hardware</a> · <a href="https://techcrunch.com/2026/11/23/megaspeed-the-company-at-the-center-of-the-jensen-huang-scandal-appears-headed-for-a-u-s-blacklist/">TechCrunch</a> · <a href="https://www.ms.now/news/nvidia-board-reinstates-jensen-huang-as-ceo">MS NOW</a> · <a href="https://www.foxbusiness.com/politics/trump-admin-adds-megaspeed-commerce-department-trade-blacklist-after-nvidia-scandal">Fox Business</a> · <a href="https://www.yahoo.com/news/politics/articles/u-adds-megaspeed-trade-blacklist-215540991.html">Yahoo</a> · <a href="https://www.newsweek.com/trump-jensen-huang-nvidia-reinstatement-scrutiny-12757470">Newsweek</a> · <a href="https://www.aljazeera.com/news/2026/11/15/us-treasury-chief-calls-for-outsider-to-lead-embattled-tech-firm-nvidia">Al Jazeera</a> · <a href="https://www.dagens.com/technology/trump-backs-huangs-return-to-nvidia-as-treasury-secretary-softens-stance">Dagens</a> · <a href="https://www.elconfidencial.com/tecnologia/2026-11-23/el-consejo-de-nvidia-restituye-a-jensen-huang-como-ceo-_4470790/">El Confidencial</a> · <a href="https://www.washingtonpost.com/technology/2026/11/23/trump-urges-nvidia-reinstate-jensen-huang-calling-him-best-thing-us/">The Washington Post</a> · <a href="https://www.businessinsider.es/big-tech/consejo-scott-bessent-nvidia-fue-contratar-alguien-fuera-ahora-dice-que-jensen-huang-es_7064379_0.html">Business Insider España</a> · <a href="https://www.businessinsider.es/mercados/los-futuros-wall-street-se-disparan-con-nvidia-mientras-las-bolsas-asiaticas-se-desploman-puede-haber-mas-problemas-horizonte_7064381_0.html">Business Insider España</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/nvidia-reinstates-jensen-huang-as-ceo-with-government-input">Bloomberg</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/us-to-blacklist-megaspeed-the-firm-at-center-of-nvidia-scandal">Bloomberg</a> · <a href="https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html">CNBC</a> · <a href="https://www.nytimes.com/2026/11/23/business/trump-administration-megaspeed-trade-blacklist-nvidia.html">The New York Times</a></p>
+<h4>CrowdStrike se queda con Zscaler en una compra gigante de ciberseguridad</h4>
+<p>CrowdStrike pagará unos 44.000 millones de dólares, todo en acciones, por Zscaler. Las dos empresas justifican la operación por los ataques hechos con inteligencia artificial, aunque concentrar tanta seguridad en un solo proveedor tiene sus riesgos.</p>
+<p><a href="https://techcrunch.com/2026/11/23/crowdstrike-to-acquire-zscaler-for-44-billion/">TechCrunch</a> · <a href="https://therecord.media/crowdstrike-zscaler">The Record</a> · <a href="https://cyberscoop.com/crowdstrike-to-acquire-zscaler/">CyberScoop</a> · <a href="https://abcnews.com/Business/wireStory/crowdstrike-acquire-zscaler-44-billion-deal-create-cybersecurity-138373706">ABC News</a> · <a href="https://www.businessinsider.es/mercados/crowdstrike-compra-zscaler-por-43-900-millones-para-dominar-ciberseguridad-ia_7064630_0.html">Business Insider España</a> · <a href="https://www.cnbc.com/2026/11/23/crowdstrike-zscaler-aquisition-ai-cyberattacks.html">CNBC</a></p>
+<h4>Dos estados de EEUU demandan a SpaceX por los deepfakes sexuales de Grok</h4>
+<p>Oregón y Virginia acusan a la dueña de X y de xAI de permitir que Grok genere imágenes sexuales no consentidas y de engañar a los usuarios sobre su protección. Piden sanciones, indemnizaciones y una orden judicial.</p>
+<p><a href="https://www.engadget.com/2325111/two-states-sue-spacex-over-sexually-explicit-grok-deepfakes/">Engadget</a> · <a href="https://cyberscoop.com/virginia-oregon-sue-spacex-grok-deepfakes/">CyberScoop</a> · <a href="https://www.nytimes.com/2026/11/23/technology/spacex-lawsuit-ai-sexualized-images.html">The New York Times</a> · <a href="https://www.cnbc.com/2026/11/23/oregon-virginia-spacex-grok-deepfake-lawsuits.html">CNBC</a> · <a href="https://arstechnica.com/tech-policy/2026/11/states-sue-spacex-to-stop-grok-from-generating-child-sex-images-revenge-porn/">Ars Technica</a></p>
+<h4>El buscador de Google quiere conocer tu cartera y tus documentos</h4>
+<p>El Modo IA de Google ya puede usar Google Wallet, y pronto sumará Drive y Gemini, para dar respuestas personalizadas. Es voluntario y de momento no llega a Europa.</p>
+<p><a href="https://techcrunch.com/2026/11/23/google-searchs-ai-mode-can-now-tap-into-drive-and-wallet-for-more-personalized-responses/">TechCrunch</a> · <a href="https://www.macrumors.com/2026/11/23/google-search-wallet-access/">MacRumors</a> · <a href="https://thenextweb.com/news/google-ai-mode-personal-intelligence-wallet-drive-gemini">The Next Web</a> · <a href="https://www.androidauthority.com/personal-intelligence-ai-mode-3738563/">Android Authority</a></p>
+<h4>Claude Ship: agentes de IA que revisan, arreglan y aprueban código</h4>
+<p>Anthropic lanza unos agentes para GitHub que revisan cambios, arreglan lo que falla y pueden aprobar código según las normas de cada equipo. Una noticia que nos toca de cerca, porque el guion de Cátodo lo escribe Claude.</p>
+<p><a href="https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes/">TechCrunch</a> · <a href="https://9to5mac.com/2026/11/23/anthropic-launches-new-claude-ship-feature-for-builders/">9to5Mac</a> · <a href="https://www.theverge.com/ai-artificial-intelligence/1040134/anthropic-claude-ship-ai-pull-requests">The Verge</a> · <a href="https://www.zdnet.com/innovation/claude-ship-code-how-to-try/">ZDNet</a></p>
+<h4>BepiColombo llega a Mercurio, pero a una órbita que no estaba prevista</h4>
+<p>Después de unos ocho años de viaje, la sonda de la ESA y JAXA ya orbita Mercurio. Un fallo de software cortó la frenada final antes de tiempo. La órbita es estable, pero todavía no se sabe qué consecuencias tendrá para la misión.</p>
+<p><a href="https://www.theregister.com/science/2026/11/23/software-issues-have-even-reached-mercury-as-bepicolombo-probe-arrives-in-uncertain-state/5311554">The Register</a> · <a href="http://www.microsiervos.com/archivo/espacio/bepicolombo-orbita-erronea-mercurio.html">Microsiervos</a> · <a href="https://gizmodo.com/bepicolombo-reached-mercury-after-8-years-theres-just-one-problem-2000843996">Gizmodo</a></p>
+<hr>
+<p>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.</p>]]></description>
+      <enclosure url="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3" length="7364267" type="audio/mpeg"/>
+      <itunes:duration>00:10:14</itunes:duration>
+      <itunes:episode>1</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
   </channel>
 </rss>

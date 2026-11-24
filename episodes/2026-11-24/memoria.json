@@ -1,0 +1,142 @@
+{
+  "fecha": "2026-11-24",
+  "publicado": true,
+  "contadas": [
+    {
+      "titulo": "Jensen Huang vuelve a Nvidia empujado por Trump",
+      "resumen": "Conté que Huang dimitió a mediados de noviembre tras varias informaciones del NYT sobre su vida privada, entre ellas una relación con una antigua directiva de Megaspeed. Según el NYT, la inteligencia de EEUU sospecha que ella trabajaba para China; Pekín lo niega y no constan cargos. El consejo lo readmitió por unanimidad pese a haber dicho lo contrario a los inversores, y Nvidia alegó que había escuchado a altos cargos del gobierno. Trump pidió su vuelta y presumió de haberla conseguido. Bessent dijo que Huang ya 'es de fuera' (chiste del test). La acción subió más de un 30 por ciento. Hubo críticas de los dos partidos, entre ellas la pregunta de Cornyn en X. Comercio metió a Megaspeed en su lista negra ese mismo día, y Justicia la investiga por posible desvío de chips a China; Megaspeed lo niega. Opinión: es un precedente raro, ¿quién manda, el consejo o la Casa Blanca?",
+      "asuntos_abiertos": [
+        "Comparecencia de Huang ante el Senado a principios de diciembre (sesión sobre controles a la exportación de chips)",
+        "Investigación del Departamento de Justicia sobre Megaspeed y posibles cargos",
+        "Reacción del Congreso y posibles iniciativas sobre la intervención del gobierno",
+        "Si Megaspeed recurre su inclusión en la lista negra o hay nuevas sanciones",
+        "Evolución de la acción de Nvidia y críticas al gobierno corporativo"
+      ]
+    },
+    {
+      "titulo": "CrowdStrike compra Zscaler por unos 44.000 millones",
+      "resumen": "Conté la compra, pagada entera en acciones, como la mayor de la historia de CrowdStrike. Recordé la caída de 2024, que afectó a millones de ordenadores con Windows y a aeropuertos, también en España. Expliqué qué hace cada empresa (protección de equipos frente a acceso a la red y la nube con confianza cero), el argumento de la IA y la cita de Jay Chaudhry sobre los agentes de IA como nuevo eslabón débil. Falta el visto bueno de los reguladores y de los accionistas, y el cierre se espera en un año aproximadamente. Planteé si no se ponen todos los huevos en la misma cesta.",
+      "asuntos_abiertos": [
+        "Aprobaciones regulatorias, incluida la posible revisión de Bruselas",
+        "Votación de los accionistas de Zscaler",
+        "Cierre previsto en la segunda mitad del año fiscal 2028 de CrowdStrike",
+        "Reacción de la competencia y posibles nuevas fusiones en ciberseguridad"
+      ]
+    },
+    {
+      "titulo": "Oregón y Virginia demandan a SpaceX por los deepfakes de Grok",
+      "resumen": "Conté que los fiscales generales de Oregón y Virginia han demandado a SpaceX, ahora dueña de X y de xAI, por las imágenes sexuales no consentidas que genera Grok, también de menores según las demandas. Las demandas mencionan además un modo promocionado para crear desnudos y acusan a la empresa de engañar a los usuarios sobre su protección. Se basan en leyes de consumo y piden sanciones, indemnizaciones y una orden judicial. Subrayé que son acusaciones, que SpaceX no ha respondido y que X Safety había dicho antes que refuerza las protecciones. Mencioné la investigación de Ofcom en el Reino Unido.",
+      "asuntos_abiertos": [
+        "Respuesta de SpaceX o xAI a las demandas",
+        "Si se suman otros estados (no mencioné California por no estar verificado)",
+        "Resultado de la investigación de Ofcom",
+        "Posibles actuaciones en la Unión Europea (no contadas por no estar verificadas)"
+      ]
+    },
+    {
+      "titulo": "El Modo IA de Google conecta Wallet, y pronto Drive y Gemini",
+      "resumen": "Conté que, según The Next Web, la función no se ofrece en Europa ni en el Reino Unido. Personal Intelligence ya usaba Gmail, el calendario y las fotos; ahora suma Wallet (solo lectura, con ideas para ahorrar y sacar partido a los puntos) y en semanas sumará Drive (ejemplo de los impuestos) y Gemini. Es voluntaria, viene desactivada y tendrá un icono con los datos usados. Según The Next Web, desde octubre la política de Google permite que el contenido de las apps conectadas influya en los anuncios, aunque no directamente el correo ni las fotos.",
+      "asuntos_abiertos": [
+        "Llegada efectiva de Drive y Gemini en las próximas semanas",
+        "Si la función llega a Europa y a España, y en qué condiciones",
+        "Reacciones de reguladores o expertos en privacidad sobre el uso publicitario"
+      ]
+    },
+    {
+      "titulo": "Anthropic lanza Claude Ship",
+      "resumen": "Avisé al principio de que el guion lo escribe Claude, de Anthropic. Expliqué los tres agentes para GitHub: uno revisa, otro arregla comprobaciones fallidas, conflictos y comentarios, y el tercero aprueba por su cuenta lo que permiten las normas del equipo, escritas en lenguaje normal. La revisión ya está disponible y el resto, en beta para los planes de pago de equipos y empresas. Anthropic reconoce que la mayoría de los equipos quieren que una persona apruebe cada cambio. Pregunté quién responde si la IA aprueba un fallo e hice el guiño de 'en mi máquina funciona'.",
+      "asuntos_abiertos": [
+        "Salida de la beta y disponibilidad general",
+        "Primeros casos de uso o problemas con aprobaciones automáticas",
+        "Respuesta de la competencia (GitHub, OpenAI, Google) con herramientas parecidas"
+      ]
+    },
+    {
+      "titulo": "BepiColombo llega a Mercurio con una órbita distinta a la prevista",
+      "resumen": "Conté que la misión de la ESA y JAXA entró en órbita de Mercurio tras unos ocho años de viaje, con sobrevuelos de la Tierra, Venus y Mercurio para frenar. Un fallo de software apagó los motores antes de tiempo en la maniobra final. Según Microsiervos, logró unas tres cuartas partes del frenado y entró en modo seguro. La órbita es estable y la nave está a salvo, pero no es la planeada y no se saben las consecuencias. La ESA investiga el fallo, y Microsiervos cree que habrá combustible para corregirlo (por confirmar). La ciencia empezaría en la primavera de 2027. En el cierre conté el dato curioso de Giuseppe 'Bepi' Colombo, la Mariner 10 y la resonancia de Mercurio.",
+      "asuntos_abiertos": [
+        "Resultado de la investigación de la ESA sobre el fallo de software",
+        "Maniobras de corrección de la órbita y combustible disponible",
+        "Impacto en la ciencia y en la separación de los dos orbitadores",
+        "Inicio de la fase científica, previsto para la primavera de 2027"
+      ]
+    }
+  ],
+  "pendientes": [
+    {
+      "candidata": 5,
+      "titulo": "Filtrada la versión de Xbox de GTA VI, con posible port no oficial a PC",
+      "resumen": "El grupo CyberLeek afirma haber publicado todos los archivos de la versión de Xbox, incluido el ejecutable. Eso podría permitir un port no oficial a PC antes del oficial.",
+      "motivo": "Interesa mucho al público, pero hoy es una afirmación de un grupo de hackers sin verificar. Si en los próximos días aparece el port, o reacciona Rockstar o Take-Two, entra como noticia con más hechos. Cuidado de no animar a la piratería.",
+      "enlaces": [
+        "https://www.muycomputer.com/2026/11/23/port-no-oficial-de-gta-vi-para-pc-ya-en-desarrollo-podria-llegar-en-unos-dias/",
+        "https://news.google.com/rss/articles/CBMifkFVX3lxTE5xY1gzVEkzYmlDY1VoUkpOY3BRcksteUlyUktDZkl2U0xNYkdqeHRZNmVqN2U1UDNhdXcwVnY2ZWZsOHk5OV9ab0FuclhGZ0tBdnNpQ0hkcWVnOURrVjlNNUZXSWxFbDhZd2Z4dFNHdno5OGFtMFJnSFNZOGNfQQ?oc=5",
+        "https://www.pcmag.com/news/gta-6-leaker-releases-all-files-for-alleged-xbox-build-of-game",
+        "https://hipertextual.com/videojuegos/gta-6-para-pc-recompilacion-filtracion-cyberleek/",
+        "https://news.google.com/rss/articles/CBMikwFBVV95cUxOczZaRFpBMk1SbHEzZTgxUlpjN3UxREc4TzBvWGdPQWJfQlJLSnF5Zm14R0tYV0hvVHgzYWNlUTY0eGpmdzU5ZXRhcG5mZ2hOU1d6NlRueHFaMUU3SnJfTzFaaFhIY2d2Y2pJSHh4V0kzVVNjQWRCSFNaNTlsRlQ1dE1hV3hCdV9NZzJvZHBOc3hFX28?oc=5"
+      ]
+    },
+    {
+      "candidata": 9,
+      "titulo": "Rusia podría lanzar pronto un satélite con arma nuclear",
+      "resumen": "Según informes de inteligencia, el Sputnik-S podría lanzarse en diciembre y dañar miles de satélites en órbita baja. El Kremlin lo niega.",
+      "motivo": "Es muy relevante, pero se basa en informes de inteligencia que Rusia desmiente. Hay que contarlo con calma y con las dos posturas. Puede entrar mañana o si hay confirmación de otros gobiernos u organismos.",
+      "enlaces": [
+        "https://www.elconfidencial.com/tecnologia/novaceno/2026-11-23/rusia-satelite-arma-nuclear-espacio-sputnik-otan_4470620/",
+        "https://www.tomshardware.com/tech-industry/space/russia-readying-nuclear-armed-satellite-that-could-destroy-every-low-earth-orbit-satellite-report-claims-kremlin-blasts-sputnik-s-claims-as-unfounded-allegations-and-propaganda",
+        "https://arstechnica.com/space/2026/11/russia-may-launch-a-nuclear-armed-satellite-far-sooner-than-we-thought/"
+      ]
+    },
+    {
+      "candidata": 11,
+      "titulo": "Amazon compra la tecnología de Decart por unos 7.500 millones",
+      "resumen": "Amazon se queda con la tecnología de optimización de IA de Decart y ficha a su equipo, mientras se prepara para vender sus chips Trainium.",
+      "motivo": "No cabe junto a la compra de CrowdStrike. Encajaría bien en una noticia sobre la competencia con Nvidia en chips de IA.",
+      "enlaces": [
+        "https://techcrunch.com/2026/11/23/amazon-snaps-up-decarts-ai-optimization-tech-for-7-5b-as-it-prepares-to-sell-trainium-chips/",
+        "https://www.cnbc.com/2026/11/23/amazon-decarts-ai-acquisition.html",
+        "https://www.theregister.com/ai-and-ml/2026/11/23/amazon-scoops-up-ai-accelerator-tech-to-keep-chips-busy-at-all-times/5311754"
+      ]
+    },
+    {
+      "candidata": 15,
+      "titulo": "Los grandes bancos de EEUU bloquean a los agentes de IA",
+      "resumen": "JPMorgan, Citi, Bank of America y otros bloquean a los agentes de IA de terceros que acceden a las cuentas de sus clientes.",
+      "motivo": "Es un buen contrapunto a Claude Ship y a los agentes en general. Puede entrar mañana, sobre todo si hay más noticias de agentes.",
+      "enlaces": [
+        "https://9to5mac.com/2026/11/23/as-apple-works-on-ai-agent-features-banks-are-already-blocking-them/",
+        "https://wwwhatsnew.com/2026/11/23/bancos-eeuu-bloquean-agentes-ia-cuentas-clientes/",
+        "https://gizmodo.com/banks-are-getting-scared-of-ai-agents-including-their-own-2000844134"
+      ]
+    },
+    {
+      "candidata": 8,
+      "titulo": "Anthropic ofrece retención cero de datos para sus modelos más avanzados",
+      "resumen": "Las empresas pueden usar los modelos más capaces de Anthropic sin que se guarden sus prompts, con un sistema que vigila el mal uso sin conservar los datos.",
+      "motivo": "Hoy ya hay una noticia de Anthropic (Claude Ship) y otra de privacidad (Google). Puede entrar otro día con un enfoque sobre privacidad en la IA para empresas.",
+      "enlaces": [
+        "https://www.bloomberg.com/news/articles/2026-11-23/anthropic-rolls-out-zero-data-retention-policy-for-advanced-ai",
+        "https://www.engadget.com/2325684/anthropic-softens-its-data-retention-policy-for-mythos-and-fable-model-use/",
+        "https://thenextweb.com/news/anthropic-enterprise-frontier-safeguards-zero-data-retention-beta"
+      ]
+    },
+    {
+      "candidata": 16,
+      "titulo": "Tras la oleada de caídas, EEUU avisa de que habrá más",
+      "resumen": "El director de Inteligencia Nacional advierte de más caídas por la renovación de sistemas. Varios análisis las atribuyen a la deuda técnica, no a la IA ni a un ataque.",
+      "motivo": "Es un buen tema para profundizar sobre la deuda técnica en un día flojo. Las fuentes legibles son sobre todo análisis (The Register, 9to5mac), así que hay que tener cuidado de no copiar sus enfoques.",
+      "enlaces": [
+        "https://www.theregister.com/columnists/2026/11/23/when-microsoft-apple-and-the-faa-cant-keep-it-up-its-a-system-of-a-down/5311363",
+        "https://9to5mac.com/2026/11/23/five-recent-tech-outages-were-not-due-to-ai-the-next-round-will-be/",
+        "https://www.theregister.com/off-prem/2026/11/23/everything-going-down-at-once-wasnt-evidence-of-a-conspiracy-but-the-truth-may-be-scarier/5311458",
+        "https://gizmodo.com/u-s-intelligence-chief-warns-americans-to-brace-for-more-tech-outages-2000843670",
+        "http://twitter.com/home?status=US+Intelligence+Chief+Predicts+More+Tech+Outages+As+Systems+Undergo+Upgrades%3A+https%3A%2F%2Ftech.slashdot.org%2Fstory%2F26%2F11%2F23%2F0657200%2F%3Futm_source%3Dtwitter%26utm_medium%3Dtwitter"
+      ]
+    }
+  ],
+  "revision_humana": {
+    "aprobado": true,
+    "cuando": "2026-11-24T09:14",
+    "nota": "todo ok"
+  }
+}
