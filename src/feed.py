@@ -150,15 +150,14 @@ def generar_feed(episodios, cfg):
 # ---------------------------------------------------------------- web
 
 ESTILO = """
-  :root { --fondo:#fafaf7; --texto:#1d1d1b; --suave:#6b6b66; --acento:#c2410c; --borde:#e4e4de; }
-  @media (prefers-color-scheme: dark) {
-    :root { --fondo:#141413; --texto:#ecece8; --suave:#9a9a94; --acento:#fb923c; --borde:#2c2c2a; } }
+  :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
   body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
          line-height:1.6; padding:0 16px; }
   main { max-width:680px; margin:48px auto 64px; }
   a { color:var(--acento); }
   h1 { font-size:clamp(2.2rem,7vw,3.4rem); margin:0; letter-spacing:-0.02em; }
   h1 span { color:var(--acento); }
+  .neon { color:#e8feff; text-shadow:0 0 4px #22d3ee,0 0 12px #22d3ee,0 0 30px rgba(34,211,238,.6),0 0 70px rgba(34,211,238,.35); }
   .suave { color:var(--suave); }
   .episodio { padding:20px 0; border-top:1px solid var(--borde); }
   .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
@@ -199,7 +198,7 @@ def generar_portada(episodios, cfg):
     <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
     <audio controls preload="none" src="{html.escape(ep['url_audio'])}"></audio>
   </article>""")
-    cuerpo = f"""  <h1>Cátodo<span>.</span></h1>
+    cuerpo = f"""  <h1 class="neon">Cátodo.</h1>
   <p class="suave">{html.escape(cfg['subtitulo'])}. {html.escape(cfg['descripcion'])}</p>
 {chr(10).join(lista) if lista else '  <p>Muy pronto, el primer episodio.</p>'}"""
     return plantilla(cfg["titulo"], cfg["descripcion"], cuerpo, cfg)
