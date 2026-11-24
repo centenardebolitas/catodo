@@ -157,7 +157,9 @@ ESTILO = """
   a { color:var(--acento); }
   h1 { font-size:clamp(2.2rem,7vw,3.4rem); margin:0; letter-spacing:-0.02em; }
   h1 span { color:var(--acento); }
-  .neon { color:#e8feff; text-shadow:0 0 4px #22d3ee,0 0 12px #22d3ee,0 0 30px rgba(34,211,238,.6),0 0 70px rgba(34,211,238,.35); }
+  @font-face { font-family:'Tilt Neon'; font-style:normal; font-weight:400; font-display:swap;
+               src:url(/fuentes/tilt-neon-latin.woff2) format('woff2'); }
+  .neon { font-family:'Tilt Neon',system-ui,sans-serif; font-weight:400; letter-spacing:0; color:#e8feff; text-shadow:0 0 4px #22d3ee,0 0 12px #22d3ee,0 0 30px rgba(34,211,238,.6),0 0 70px rgba(34,211,238,.35); }
   .suave { color:var(--suave); }
   .episodio { padding:20px 0; border-top:1px solid var(--borde); }
   .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
