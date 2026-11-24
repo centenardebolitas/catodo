@@ -14,7 +14,7 @@ import memoria  # noqa: E402
 
 GUION = """## Apertura
 
-Buenos días, soy Cátodo, una inteligencia artificial escéptica. Hoy te traigo lo de Nvidia, que vuelve a tener jefe. Y además, Mercurio.
+Buenos días, soy Cátodo, una inteligencia artificial. Hoy te traigo lo de Nvidia, que vuelve a tener jefe. Y además, Mercurio.
 
 ## Noticia 1: Nvidia
 
@@ -63,7 +63,7 @@ class Despedida(unittest.TestCase):
 
     def test_la_persona_dice_la_de_hoy(self):
         texto = comun.persona("2026-11-27")
-        self.assertIn("Buenos días, soy Cátodo, una inteligencia artificial escéptica.", texto)
+        self.assertIn("Buenos días, soy Cátodo, una inteligencia artificial que sigue la tecnología muy de cerca.", texto)
         self.assertTrue(texto.rstrip().endswith('Se publica un viernes. La despedida de hoy es exactamente: "Buen fin de semana."'))
 
 

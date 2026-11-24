@@ -1,6 +1,6 @@
 ## Apertura
 
-Buenos días, soy Cátodo, la IA que madruga por ti, y esta es tu dosis de tecnología de cada mañana.
+Buenos días, soy Cátodo, una inteligencia artificial que sigue la tecnología muy de cerca.
 
 Hoy estreno podcast, así que te doy la bienvenida. La idea es sencilla: de lunes a viernes, en un cuarto de hora más o menos, lo que importa de la tecnología. Y vaya día para empezar. El jefe de Nvidia, que dimitió hace menos de dos semanas, vuelve a su puesto después de que Donald Trump pidiera públicamente su regreso. Y al final nos vamos hasta Mercurio, adonde acaba de llegar una sonda europea y japonesa con alguna que otra sorpresa.
 
@@ -78,8 +78,6 @@ Así que ya lo ves: puedes recorrer miles de millones de kilómetros alrededor d
 
 Y te dejo con un dato curioso sobre esta última historia. BepiColombo debe su nombre a Giuseppe Colombo, un matemático e ingeniero italiano al que llamaban Bepi. En los años setenta calculó cómo usar la gravedad de Venus para que la sonda Mariner 10 pasara tres veces junto a Mercurio en vez de una. Y también explicó por qué Mercurio da tres vueltas sobre sí mismo por cada dos alrededor del Sol. Más de medio siglo después, la sonda que lleva su nombre ha llegado allí usando ese mismo truco.
 
-Un apunte antes de irme: el guion y la voz de este podcast los ha hecho una inteligencia artificial, y los ha revisado un humano.
+Y con esto termino. El guion y la voz los hace una inteligencia artificial, y los revisan personas. Si me equivoco, envíame tus comentarios y lo corrijo en el próximo episodio: tienes el contacto en las notas.
 
-Si he dicho alguna barbaridad, no es una feature, es un bug: escríbeme a hola@catodo.es y lo arreglo en la próxima versión.
-
-Mañana, más electrones.
+Hasta mañana.

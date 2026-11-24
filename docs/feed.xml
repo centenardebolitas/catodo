@@ -8,10 +8,10 @@
     <atom:link href="https://catodo.es/feed.xml" rel="self" type="application/rss+xml"/>
     <language>es-ES</language>
     <copyright>Cátodo</copyright>
-    <description>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</description>
+    <description>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta.</description>
     <lastBuildDate>Tue, 24 Nov 2026 09:14:29 +0100</lastBuildDate>
     <itunes:subtitle>Tecnología cada mañana</itunes:subtitle>
-    <itunes:summary>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</itunes:summary>
+    <itunes:summary>Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta.</itunes:summary>
     <itunes:author>Cátodo</itunes:author>
     <itunes:owner>
       <itunes:name>Cátodo</itunes:name>
@@ -27,7 +27,7 @@
       <link>https://catodo.es/episodios/2026-11-24.html</link>
       <guid isPermaLink="false">catodo-2026-11-24</guid>
       <pubDate>Tue, 24 Nov 2026 09:14:29 +0100</pubDate>
-      <description><![CDATA[<p><strong>Capítulos</strong><br>0:00 Apertura<br>0:34 Huang vuelve a Nvidia<br>3:01 CrowdStrike compra Zscaler<br>4:19 Demandas contra SpaceX por Grok<br>5:35 Google quiere leer tu cartera<br>6:52 Claude Ship<br>8:04 BepiColombo llega a Mercurio<br>9:17 Cierre</p>
+      <description><![CDATA[<p><strong>Capítulos</strong><br>0:00 Apertura<br>0:37 Huang vuelve a Nvidia<br>3:04 CrowdStrike compra Zscaler<br>4:22 Demandas contra SpaceX por Grok<br>5:38 Google quiere leer tu cartera<br>6:56 Claude Ship<br>8:08 BepiColombo llega a Mercurio<br>9:21 Cierre</p>
 <h4>Jensen Huang recupera el mando de Nvidia con el empujón de la Casa Blanca</h4>
 <p>El consejo de Nvidia readmite por unanimidad a Huang menos de dos semanas después de su dimisión, tras la presión pública de Trump. Ese mismo día, Comercio mete en su lista negra a Megaspeed, la empresa de Singapur que está en el centro del escándalo.</p>
 <p><a href="https://9to5mac.com/2026/11/23/jensen-huang-reinstated-as-ceo-of-nvidia-despite-companys-previous-statement/">9to5Mac</a> · <a href="https://www.tomshardware.com/tech-industry/big-tech/president-trump-says-nvidia-board-rehiring-jensen-huang-would-be-best-for-the-company-and-the-us-treasury-sec-bessent-walks-back-outsider-ceo-comments-claims-huang-is-technically-an-outsider-now">Tom's Hardware</a> · <a href="https://techcrunch.com/2026/11/23/megaspeed-the-company-at-the-center-of-the-jensen-huang-scandal-appears-headed-for-a-u-s-blacklist/">TechCrunch</a> · <a href="https://www.ms.now/news/nvidia-board-reinstates-jensen-huang-as-ceo">MS NOW</a> · <a href="https://www.foxbusiness.com/politics/trump-admin-adds-megaspeed-commerce-department-trade-blacklist-after-nvidia-scandal">Fox Business</a> · <a href="https://www.yahoo.com/news/politics/articles/u-adds-megaspeed-trade-blacklist-215540991.html">Yahoo</a> · <a href="https://www.newsweek.com/trump-jensen-huang-nvidia-reinstatement-scrutiny-12757470">Newsweek</a> · <a href="https://www.aljazeera.com/news/2026/11/15/us-treasury-chief-calls-for-outsider-to-lead-embattled-tech-firm-nvidia">Al Jazeera</a> · <a href="https://www.dagens.com/technology/trump-backs-huangs-return-to-nvidia-as-treasury-secretary-softens-stance">Dagens</a> · <a href="https://www.elconfidencial.com/tecnologia/2026-11-23/el-consejo-de-nvidia-restituye-a-jensen-huang-como-ceo-_4470790/">El Confidencial</a> · <a href="https://www.washingtonpost.com/technology/2026/11/23/trump-urges-nvidia-reinstate-jensen-huang-calling-him-best-thing-us/">The Washington Post</a> · <a href="https://www.businessinsider.es/big-tech/consejo-scott-bessent-nvidia-fue-contratar-alguien-fuera-ahora-dice-que-jensen-huang-es_7064379_0.html">Business Insider España</a> · <a href="https://www.businessinsider.es/mercados/los-futuros-wall-street-se-disparan-con-nvidia-mientras-las-bolsas-asiaticas-se-desploman-puede-haber-mas-problemas-horizonte_7064381_0.html">Business Insider España</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/nvidia-reinstates-jensen-huang-as-ceo-with-government-input">Bloomberg</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/us-to-blacklist-megaspeed-the-firm-at-center-of-nvidia-scandal">Bloomberg</a> · <a href="https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html">CNBC</a> · <a href="https://www.nytimes.com/2026/11/23/business/trump-administration-megaspeed-trade-blacklist-nvidia.html">The New York Times</a></p>
@@ -48,20 +48,20 @@
 <p><a href="https://www.theregister.com/science/2026/11/23/software-issues-have-even-reached-mercury-as-bepicolombo-probe-arrives-in-uncertain-state/5311554">The Register</a> · <a href="http://www.microsiervos.com/archivo/espacio/bepicolombo-orbita-erronea-mercurio.html">Microsiervos</a> · <a href="https://gizmodo.com/bepicolombo-reached-mercury-after-8-years-theres-just-one-problem-2000843996">Gizmodo</a></p>
 <hr>
 <p>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.</p>]]></description>
-      <enclosure url="https://audio.catodo.es/episodios/catodo-2026-11-24-997e47ab.mp3" length="7364975" type="audio/mpeg"/>
+      <enclosure url="https://audio.catodo.es/episodios/catodo-2026-11-24-cbc9d6ed.mp3" length="7361527" type="audio/mpeg"/>
       <itunes:image href="https://audio.catodo.es/episodios/catodo-2026-11-24-39dde662.jpg"/>
       <podcast:chapters url="https://catodo.es/episodios/2026-11-24-capitulos.json" type="application/json+chapters"/>
       <psc:chapters version="1.2">
         <psc:chapter start="00:00:00.000" title="Apertura"/>
-        <psc:chapter start="00:00:34.300" title="Huang vuelve a Nvidia"/>
-        <psc:chapter start="00:03:01.140" title="CrowdStrike compra Zscaler"/>
-        <psc:chapter start="00:04:19.380" title="Demandas contra SpaceX por Grok"/>
-        <psc:chapter start="00:05:35.220" title="Google quiere leer tu cartera"/>
-        <psc:chapter start="00:06:52.820" title="Claude Ship"/>
-        <psc:chapter start="00:08:04.820" title="BepiColombo llega a Mercurio"/>
-        <psc:chapter start="00:09:17.460" title="Cierre"/>
+        <psc:chapter start="00:00:37.860" title="Huang vuelve a Nvidia"/>
+        <psc:chapter start="00:03:04.700" title="CrowdStrike compra Zscaler"/>
+        <psc:chapter start="00:04:22.940" title="Demandas contra SpaceX por Grok"/>
+        <psc:chapter start="00:05:38.780" title="Google quiere leer tu cartera"/>
+        <psc:chapter start="00:06:56.380" title="Claude Ship"/>
+        <psc:chapter start="00:08:08.380" title="BepiColombo llega a Mercurio"/>
+        <psc:chapter start="00:09:21.020" title="Cierre"/>
       </psc:chapters>
-      <itunes:duration>00:10:14</itunes:duration>
+      <itunes:duration>00:10:13</itunes:duration>
       <itunes:episode>1</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>false</itunes:explicit>
