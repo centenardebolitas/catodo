@@ -60,7 +60,7 @@ class Feed(unittest.TestCase):
         nav = nav[:nav.index("</nav>")]
         self.assertLess(portada.index('class="suave">Tecnología'), portada.index('<nav class="insignias"'))
         self.assertLess(nav.index("Apple Podcasts"), nav.index("Spotify"))
-        self.assertIn('href="/feed.xml"><img src="/insignias/rss.svg" alt="Suscríbete por RSS"', nav)
+        self.assertRegex(nav, r'href="/feed.xml"><img src="/insignias/rss.svg\?v=[0-9a-f]{8}" alt="Suscríbete por RSS"')
         pie = portada[portada.index("<footer>"):]
         self.assertEqual(pie.count('href="/feed.xml"'), 1)
 

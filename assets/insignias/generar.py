@@ -57,13 +57,16 @@ def icono_spotify():
 
 
 def icono_rss():
-    """El icono de feed de siempre (naranja, punto y dos arcos)."""
+    """El icono de feed de siempre (el de Mozilla, de uso libre): cuadrado naranja con
+    degradado, punto y dos arcos, en su proporción original (lienzo de 256)."""
     x, y, l = ICONO_X, ICONO_Y, ICONO_LADO
-    return (f'<rect x="{x}" y="{y}" width="{l}" height="{l}" rx="6" fill="#F78422"/>\n'
-            f'  <g transform="translate({x + 6.2} {y + 6.2}) scale(0.0533)" fill="#fff">'
-            f'<circle cx="45" cy="205" r="45"/>'
-            f'<path d="M0 85v60a105 105 0 0 1 105 105h60A165 165 0 0 0 0 85z"/>'
-            f'<path d="M0 0v60a190 190 0 0 1 190 190h60A250 250 0 0 0 0 0z"/></g>')
+    return (f'<defs><linearGradient id="rss" x1="0" y1="0" x2="1" y2="1">'
+            f'<stop offset="0" stop-color="#F9A243"/><stop offset="1" stop-color="#E8591F"/></linearGradient></defs>\n'
+            f'  <g transform="translate({x} {y}) scale({l / 256})">'
+            f'<rect width="256" height="256" rx="58" fill="url(#rss)"/>'
+            f'<circle cx="68" cy="189" r="24" fill="#fff"/>'
+            f'<path d="M160 213h-34a82 82 0 0 0-82-82V97a116 116 0 0 1 116 116z" fill="#fff"/>'
+            f'<path d="M184 213A140 140 0 0 0 44 73V38a175 175 0 0 1 175 175z" fill="#fff"/></g>')
 
 
 def main():

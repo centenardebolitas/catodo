@@ -10,6 +10,7 @@ que escribe publish.py) y regenera:
   - docs/episodios/AAAA-MM-DD.html: una página por episodio con notas y transcripción.
 """
 
+import hashlib
 import html
 import json
 import re
@@ -232,6 +233,14 @@ ICONOS = """<link rel="icon" href="/favicon.ico" sizes="32x32">
 <meta name="theme-color" content="#0e0d13">"""
 
 
+def con_version(ruta):
+    """/insignias/x.svg?v=huella: si cambia el fichero, cambia la URL y nadie ve la vieja en caché."""
+    fichero = DOCS / ruta.lstrip("/")
+    if not ruta.startswith("/") or not fichero.exists():
+        return ruta
+    return f"{ruta}?v={hashlib.sha256(fichero.read_bytes()).hexdigest()[:8]}"
+
+
 def insignias(cfg, ep=None, clase="insignias"):
     """Las insignias oficiales de config/podcast.yaml (escuchar), en el orden que piden (Apple primero).
 
@@ -245,7 +254,7 @@ def insignias(cfg, ep=None, clase="insignias"):
             url = ep["url_spotify"]
         texto = p.get("texto") or f"Escúchalo en {p['nombre']}"
         if p.get("insignia"):
-            enlaces.append(f'<a href="{html.escape(url)}"><img src="{html.escape(p["insignia"])}" '
+            enlaces.append(f'<a href="{html.escape(url)}"><img src="{html.escape(con_version(p["insignia"]))}" '
                            f'alt="{html.escape(texto)}"></a>')
         else:
             enlaces.append(f'<a class="texto" href="{html.escape(url)}">{html.escape(texto)}</a>')

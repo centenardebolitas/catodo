@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="105.2" height="40" viewBox="0 0 105.2 40">
   <title>Suscríbete por RSS</title>
   <rect x="0.5" y="0.5" width="104.2" height="39" rx="8" fill="#000" stroke="#A6A6A6"/>
-  <rect x="8" y="7" width="26" height="26" rx="6" fill="#F78422"/>
-  <g transform="translate(14.2 13.2) scale(0.0533)" fill="#fff"><circle cx="45" cy="205" r="45"/><path d="M0 85v60a105 105 0 0 1 105 105h60A165 165 0 0 0 0 85z"/><path d="M0 0v60a190 190 0 0 1 190 190h60A250 250 0 0 0 0 0z"/></g>
+  <defs><linearGradient id="rss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F9A243"/><stop offset="1" stop-color="#E8591F"/></linearGradient></defs>
+  <g transform="translate(8 7) scale(0.1015625)"><rect width="256" height="256" rx="58" fill="url(#rss)"/><circle cx="68" cy="189" r="24" fill="#fff"/><path d="M160 213h-34a82 82 0 0 0-82-82V97a116 116 0 0 1 116 116z" fill="#fff"/><path d="M184 213A140 140 0 0 0 44 73V38a175 175 0 0 1 175 175z" fill="#fff"/></g>
   <text x="39.5" y="15.2" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="8.4">Suscríbete por</text>
   <text x="38.9" y="31.2" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17.8" font-weight="400" letter-spacing="-0.2">RSS</text>
 </svg>
