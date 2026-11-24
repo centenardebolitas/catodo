@@ -42,10 +42,19 @@
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
 
-  .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
-  .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
-                padding:6px 16px; font-size:0.95rem; }
-  .escuchar a:hover { background:rgba(34,211,238,.12); }
+  .cabecera { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 24px; }
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .insignias a { display:block; line-height:0; }
+  .insignias img { height:40px; width:auto; }
+  .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
+                      border-radius:8px; padding:9px 14px; font-size:0.95rem; }
+  .episodio-insignias { margin:6px 0 4px; }
+  .episodio-insignias img { height:34px; }
+  .capitulos { list-style:none; padding:0; margin:18px 0; }
+  .capitulos li { margin:4px 0; }
+  .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
+                      border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
+  .capitulos button:hover { border-color:var(--acento); }
 </style>
 </head>
 <body>
@@ -54,7 +63,23 @@
   <h1 style="font-size:1.8rem">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</h1>
   <div class="suave">2026-11-24 · 10 min</div>
   <img class="portada-ep" src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-b7de7af0.jpg" width="440" height="440" alt="Portada del episodio">
-  <audio controls preload="metadata" src="https://audio.catodo.es/episodios/catodo-2026-11-24.mp3"></audio>
+  <audio id="audio" controls preload="metadata" src="https://audio.catodo.es/episodios/catodo-2026-11-24-54869096.mp3"></audio>
+  <nav class="insignias episodio-insignias" aria-label="Dónde escucharlo"><a href="https://podcasts.apple.com/es/podcast/huang-vuelve-a-nvidia-crowdstrike-compra-zscaler-y/id6838674796?i=1000803764263"><img src="/insignias/apple-podcasts.svg" alt="Escúchalo en Apple Podcasts"></a><a class="texto" href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Escúchalo en Spotify</a></nav>
+  <ol class="capitulos" aria-label="Capítulos">
+    <li><button type="button" data-t="0">0:00</button>Apertura</li>
+    <li><button type="button" data-t="34.3">0:34</button>Huang vuelve a Nvidia</li>
+    <li><button type="button" data-t="181.14">3:01</button>CrowdStrike compra Zscaler</li>
+    <li><button type="button" data-t="259.38">4:19</button>Demandas contra SpaceX por Grok</li>
+    <li><button type="button" data-t="335.22">5:35</button>Google quiere leer tu cartera</li>
+    <li><button type="button" data-t="412.82">6:52</button>Claude Ship</li>
+    <li><button type="button" data-t="484.82">8:04</button>BepiColombo llega a Mercurio</li>
+    <li><button type="button" data-t="557.46">9:17</button>Cierre</li>
+  </ol>
+  <script>
+  document.querySelectorAll('.capitulos [data-t]').forEach(b => b.addEventListener('click', () => {
+    const a = document.getElementById('audio'); a.currentTime = parseFloat(b.dataset.t); a.play();
+  }));
+  </script>
   <h4>Jensen Huang recupera el mando de Nvidia con el empujón de la Casa Blanca</h4>
 <p>El consejo de Nvidia readmite por unanimidad a Huang menos de dos semanas después de su dimisión, tras la presión pública de Trump. Ese mismo día, Comercio mete en su lista negra a Megaspeed, la empresa de Singapur que está en el centro del escándalo.</p>
 <p><a href="https://9to5mac.com/2026/11/23/jensen-huang-reinstated-as-ceo-of-nvidia-despite-companys-previous-statement/">9to5Mac</a> · <a href="https://www.tomshardware.com/tech-industry/big-tech/president-trump-says-nvidia-board-rehiring-jensen-huang-would-be-best-for-the-company-and-the-us-treasury-sec-bessent-walks-back-outsider-ceo-comments-claims-huang-is-technically-an-outsider-now">Tom's Hardware</a> · <a href="https://techcrunch.com/2026/11/23/megaspeed-the-company-at-the-center-of-the-jensen-huang-scandal-appears-headed-for-a-u-s-blacklist/">TechCrunch</a> · <a href="https://www.ms.now/news/nvidia-board-reinstates-jensen-huang-as-ceo">MS NOW</a> · <a href="https://www.foxbusiness.com/politics/trump-admin-adds-megaspeed-commerce-department-trade-blacklist-after-nvidia-scandal">Fox Business</a> · <a href="https://www.yahoo.com/news/politics/articles/u-adds-megaspeed-trade-blacklist-215540991.html">Yahoo</a> · <a href="https://www.newsweek.com/trump-jensen-huang-nvidia-reinstatement-scrutiny-12757470">Newsweek</a> · <a href="https://www.aljazeera.com/news/2026/11/15/us-treasury-chief-calls-for-outsider-to-lead-embattled-tech-firm-nvidia">Al Jazeera</a> · <a href="https://www.dagens.com/technology/trump-backs-huangs-return-to-nvidia-as-treasury-secretary-softens-stance">Dagens</a> · <a href="https://www.elconfidencial.com/tecnologia/2026-11-23/el-consejo-de-nvidia-restituye-a-jensen-huang-como-ceo-_4470790/">El Confidencial</a> · <a href="https://www.washingtonpost.com/technology/2026/11/23/trump-urges-nvidia-reinstate-jensen-huang-calling-him-best-thing-us/">The Washington Post</a> · <a href="https://www.businessinsider.es/big-tech/consejo-scott-bessent-nvidia-fue-contratar-alguien-fuera-ahora-dice-que-jensen-huang-es_7064379_0.html">Business Insider España</a> · <a href="https://www.businessinsider.es/mercados/los-futuros-wall-street-se-disparan-con-nvidia-mientras-las-bolsas-asiaticas-se-desploman-puede-haber-mas-problemas-horizonte_7064381_0.html">Business Insider España</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/nvidia-reinstates-jensen-huang-as-ceo-with-government-input">Bloomberg</a> · <a href="https://www.bloomberg.com/news/articles/2026-11-23/us-to-blacklist-megaspeed-the-firm-at-center-of-nvidia-scandal">Bloomberg</a> · <a href="https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html">CNBC</a> · <a href="https://www.nytimes.com/2026/11/23/business/trump-administration-megaspeed-trade-blacklist-nvidia.html">The New York Times</a></p>

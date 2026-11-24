@@ -77,6 +77,9 @@ def episodios_publicados():
         datos["titulo"] = datos.get("titulo") or (titulo.group(1).strip() if titulo else f"Cátodo · {datos['fecha']}")
         datos["notas_md"] = re.sub(r"(?m)^#\s+.+$\n?", "", notas, count=1).strip()
         datos["guion_md"] = (carpeta / "guion.md").read_text(encoding="utf-8")
+        capitulos = carpeta / "capitulos.json"
+        datos["capitulos"] = (json.loads(capitulos.read_text(encoding="utf-8"))["chapters"]
+                              if capitulos.exists() else [])
         episodios.append(datos)
     return episodios
 
@@ -90,14 +93,44 @@ def fecha_rfc(iso):
     return format_datetime(datetime.fromisoformat(iso))
 
 
-def descripcion_episodio(ep, cfg):
-    cuerpo = md_a_html(ep["notas_md"], nivel_titulos=3)
+def marca(segundos):
+    """0:41 o 1:02:05, como se escriben los capítulos en las notas."""
+    s = int(segundos)
+    return f"{s // 3600}:{s % 3600 // 60:02d}:{s % 60:02d}" if s >= 3600 else f"{s // 60}:{s % 60:02d}"
+
+
+def hms(segundos):
+    """00:00:41.250, para Podlove Simple Chapters."""
+    ms = round(segundos * 1000)
+    return f"{ms // 3600000:02d}:{ms % 3600000 // 60000:02d}:{ms % 60000 // 1000:02d}.{ms % 1000:03d}"
+
+
+def capitulos_texto(ep):
+    """Los capítulos en las notas del feed: Apple los hace pulsables y Spotify los usa si no hay otros."""
+    if not ep.get("capitulos"):
+        return ""
+    lineas = "<br>".join(f"{marca(c['startTime'])} {html.escape(c['title'])}" for c in ep["capitulos"])
+    return f"<p><strong>Capítulos</strong><br>{lineas}</p>"
+
+
+def descripcion_episodio(ep, cfg, capitulos=True):
+    cuerpo = (capitulos_texto(ep) + "\n" if capitulos and ep.get("capitulos") else "") + md_a_html(ep["notas_md"], nivel_titulos=3)
     if "inteligencia artificial" not in ep["notas_md"].lower():
         cuerpo += f"\n<p>{html.escape(cfg['aviso_ia'])}</p>"
     return cuerpo
 
 
 # ---------------------------------------------------------------- feed RSS
+
+
+def capitulos_feed(ep, web):
+    """Capítulos en el feed: JSON de Podcasting 2.0 (enlazado) y Podlove Simple Chapters (Spotify)."""
+    if not ep.get("capitulos"):
+        return ""
+    psc = "\n".join(f'        <psc:chapter start="{hms(c["startTime"])}" title="{escape(c["title"], {chr(34): "&quot;"})}"/>'
+                    for c in ep["capitulos"])
+    return (f'      <podcast:chapters url="{web}/episodios/{ep["fecha"]}-capitulos.json" type="application/json+chapters"/>\n'
+            f'      <psc:chapters version="1.2">\n{psc}\n      </psc:chapters>')
 
 
 def generar_feed(episodios, cfg):
@@ -113,6 +146,7 @@ def generar_feed(episodios, cfg):
       <description><![CDATA[{descripcion_episodio(ep, cfg)}]]></description>
       <enclosure url="{escape(ep['url_audio'])}" length="{ep['bytes']}" type="audio/mpeg"/>
       {f'<itunes:image href="{escape(ep["url_portada"])}"/>' if ep.get("url_portada") else ""}
+{capitulos_feed(ep, web)}
       <itunes:duration>{duracion_hms(ep['duracion_s'])}</itunes:duration>
       <itunes:episode>{ep['numero']}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
@@ -121,7 +155,8 @@ def generar_feed(episodios, cfg):
     ultima = fecha_rfc(episodios[0]["publicado_en"]) if episodios else format_datetime(datetime.now().astimezone())
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
-     xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+     xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:psc="http://podlove.org/simple-chapters">
   <channel>
     <title>{escape(cfg['titulo'])}</title>
     <link>{web}</link>
@@ -175,10 +210,19 @@ ESTILO = """
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
 
-  .escuchar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 8px; }
-  .escuchar a { color:var(--acento); text-decoration:none; border:1px solid var(--acento); border-radius:999px;
-                padding:6px 16px; font-size:0.95rem; }
-  .escuchar a:hover { background:rgba(34,211,238,.12); }
+  .cabecera { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 24px; }
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .insignias a { display:block; line-height:0; }
+  .insignias img { height:40px; width:auto; }
+  .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
+                      border-radius:8px; padding:9px 14px; font-size:0.95rem; }
+  .episodio-insignias { margin:6px 0 4px; }
+  .episodio-insignias img { height:34px; }
+  .capitulos { list-style:none; padding:0; margin:18px 0; }
+  .capitulos li { margin:4px 0; }
+  .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
+                      border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
+  .capitulos button:hover { border-color:var(--acento); }
 """
 
 
@@ -187,6 +231,26 @@ ICONOS = """<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0e0d13">"""
+
+
+def insignias(cfg, ep=None, clase="insignias"):
+    """Las insignias oficiales de config/podcast.yaml (escuchar), en el orden que piden (Apple primero).
+
+    Con un episodio, Apple enlaza al episodio si ya sabemos su enlace (url_apple)."""
+    enlaces = []
+    for p in cfg.get("escuchar") or []:
+        url = p["url"]
+        if ep and p["nombre"] == "Apple Podcasts" and ep.get("url_apple"):
+            url = ep["url_apple"]
+        if ep and p["nombre"] == "Spotify" and ep.get("url_spotify"):
+            url = ep["url_spotify"]
+        texto = f"Escúchalo en {p['nombre']}"
+        if p.get("insignia"):
+            enlaces.append(f'<a href="{html.escape(url)}"><img src="{html.escape(p["insignia"])}" '
+                           f'alt="{html.escape(texto)}"></a>')
+        else:
+            enlaces.append(f'<a class="texto" href="{html.escape(url)}">{html.escape(texto)}</a>')
+    return f'<nav class="{clase}" aria-label="Dónde escucharlo">{"".join(enlaces)}</nav>'
 
 
 def enlaces_escuchar(cfg):
@@ -238,11 +302,11 @@ def generar_portada(episodios, cfg):
     <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
     <audio controls preload="none" src="{html.escape(ep['url_audio'])}"></audio>
   </article>""")
-    cuerpo = f"""  <h1 class="neon">Cátodo.</h1>
+    cuerpo = f"""  <header class="cabecera">
+    <h1 class="neon">Cátodo.</h1>
+    {insignias(cfg)}
+  </header>
   <p class="suave">{html.escape(cfg['subtitulo'])}. {html.escape(cfg['descripcion'])}</p>
-  <nav class="escuchar" aria-label="Dónde escucharlo">
-    {chr(10).join(f'    <a href="{html.escape(url)}">{html.escape(nombre)}</a>' for nombre, url in enlaces_escuchar(cfg)).lstrip()}
-  </nav>
 {chr(10).join(lista) if lista else '  <p>Muy pronto, el primer episodio.</p>'}"""
     return plantilla(cfg["titulo"], cfg["descripcion"], cuerpo, cfg)
 
@@ -252,13 +316,31 @@ def generar_pagina_episodio(ep, cfg):
     cuerpo = f"""  <p><a href="/">← Cátodo</a></p>
   <h1 style="font-size:1.8rem">{html.escape(ep['titulo'])}</h1>
   <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
-  {portada_html(ep)}<audio controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
-  {descripcion_episodio(ep, cfg)}
+  {portada_html(ep)}<audio id="audio" controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
+  {insignias(cfg, ep, "insignias episodio-insignias")}
+  {capitulos_html(ep)}{descripcion_episodio(ep, cfg, capitulos=False)}
   <details><summary>Transcripción</summary>
   {transcripcion}
   </details>"""
     return plantilla(f"{ep['titulo']} · Cátodo", ep["titulo"], cuerpo, cfg, imagen=ep.get("url_portada"),
                      url=f"{cfg['web'].rstrip('/')}/episodios/{ep['fecha']}.html")
+
+
+def capitulos_html(ep):
+    """Los capítulos en la web: cada marca salta a ese punto del audio."""
+    if not ep.get("capitulos"):
+        return ""
+    filas = "\n".join(f'    <li><button type="button" data-t="{c["startTime"]}">{marca(c["startTime"])}</button>'
+                      f'{html.escape(c["title"])}</li>' for c in ep["capitulos"])
+    return f"""<ol class="capitulos" aria-label="Capítulos">
+{filas}
+  </ol>
+  <script>
+  document.querySelectorAll('.capitulos [data-t]').forEach(b => b.addEventListener('click', () => {{
+    const a = document.getElementById('audio'); a.currentTime = parseFloat(b.dataset.t); a.play();
+  }}));
+  </script>
+  """
 
 
 def portada_html(ep):
@@ -278,6 +360,10 @@ def generar_todo(destino=DOCS):
     (destino / "index.html").write_text(generar_portada(episodios, cfg), encoding="utf-8")
     for ep in episodios:
         (destino / "episodios" / f"{ep['fecha']}.html").write_text(generar_pagina_episodio(ep, cfg), encoding="utf-8")
+        if ep.get("capitulos"):  # lo que enlaza <podcast:chapters>
+            (destino / "episodios" / f"{ep['fecha']}-capitulos.json").write_text(
+                json.dumps({"version": "1.2.0", "chapters": ep["capitulos"]}, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8")
     return episodios
 
 

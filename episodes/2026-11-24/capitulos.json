@@ -1,0 +1,37 @@
+{
+  "version": "1.2.0",
+  "chapters": [
+    {
+      "startTime": 0,
+      "title": "Apertura"
+    },
+    {
+      "startTime": 34.3,
+      "title": "Huang vuelve a Nvidia"
+    },
+    {
+      "startTime": 181.14,
+      "title": "CrowdStrike compra Zscaler"
+    },
+    {
+      "startTime": 259.38,
+      "title": "Demandas contra SpaceX por Grok"
+    },
+    {
+      "startTime": 335.22,
+      "title": "Google quiere leer tu cartera"
+    },
+    {
+      "startTime": 412.82,
+      "title": "Claude Ship"
+    },
+    {
+      "startTime": 484.82,
+      "title": "BepiColombo llega a Mercurio"
+    },
+    {
+      "startTime": 557.46,
+      "title": "Cierre"
+    }
+  ]
+}
