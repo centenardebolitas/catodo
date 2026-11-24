@@ -17,14 +17,14 @@ make                   # lista los comandos
 
 ## Uso diario
 
-Cátodo se prepara por la noche en [ops](https://ops.wmail.es), el centro de mando, y se publica solo a las 6:00 (hora de Madrid). El Mac no hace falta (`centenardebolitas/ops#118`):
+Cátodo se prepara y se publica solo cada mañana en [ops](https://ops.wmail.es), el centro de mando, sin revisión previa: lo revisan personas después, al escucharlo (decidido el 25 de noviembre de 2026; `centenardebolitas/ops#122`). El Mac no hace falta:
 
-1. **22:00 (domingo a jueves), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas, voz y montaje del episodio de mañana. Sube el audio a una ruta de R2 no enlazada y te avisa en el móvil con una decisión: resumen, puntos a comprobar, orden del episodio y enlaces para escucharlo y leer el guion.
-2. **Tú, desde el móvil:** revisas y eliges:
-   - **Aprobar y programar**: deja constancia de tu revisión en la memoria del episodio, sube el MP3 definitivo a R2 y regenera el feed y la web (`scripts/ops/responder.sh`). ops empuja el commit a la rama `programado`.
-   - **No publicar** (la opción por defecto): no cambia nada.
-   - **Un comentario** en texto libre («en la noticia 1 añade "presuntamente" y quita el chiste de Bessent»): Claude lo aplica al guion respetando `config/persona.md`, vuelve a verificar si cambian datos, rehace solo los bloques de voz que cambian y te pasa la versión nueva con las mismas opciones (`src/comentarios.py`). Puede haber varias rondas, y cada comentario queda apuntado en `revision.md`. Un comentario nunca publica: solo «Aprobar y programar».
-3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) pasa `programado` a `main` y actualiza la web y el feed. ops lo vigila (`catodo.publicar`) y avisa si a esa hora no se publica.
+1. **5:00 (lunes a viernes), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas con sus revisores automáticos, voz y montaje del episodio del día. Lo deja como publicación automática en su memoria, sube el MP3 a R2, regenera el feed y la web, y ops empuja el commit a `main` (`commandGitPush`). Hacia las 5:30 está en catodo.es, y Apple y Spotify lo recogen en su siguiente pasada.
+2. **En el móvil:** un aviso con el enlace, los puntos a comprobar al escucharlo y el orden del episodio. Solo tiene la opción «Visto».
+3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) comprueba que el episodio del día está en `main`, y ops (`catodo.publicar`) avisa si no.
+4. **Si algo no cuadra al escucharlo:** `make corregir FECHA=… TEXTO="…"` lo añade a las notas del episodio y el siguiente lo menciona.
+
+El flujo anterior (preparar a las 22:00, «Aprobar y programar» desde el móvil y publicar a las 6:00 desde la rama `programado`) sigue en el código (`src/ops.py preparar` y `responder`), pero ops ya no lo lanza.
 
 Si hay que corregir el guion antes de aprobar, se hace en el Mac, como antes:
 

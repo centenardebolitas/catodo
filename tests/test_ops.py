@@ -6,6 +6,7 @@ import stat
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
@@ -67,6 +68,45 @@ class Decision(unittest.TestCase):
         self.assertEqual(ops.OPCION_NO_PUBLICAR, "no-publicar")
 
 
+class PublicacionSola(unittest.TestCase):
+    """Desde el 26 de noviembre de 2026 el episodio sale solo y se revisa después (ops#122)."""
+
+    def test_aviso_con_el_enlace_y_lo_que_hay_que_mirar(self):
+        publicacion = {"numero": 2, "url_audio": "https://a/x-1234abcd.mp3", "duracion_s": 610}
+        cuerpo = ops.cuerpo_aviso("2026-11-26", REVISION, publicacion, "main")
+        self.assertIn("Episodio 2 del **2026-11-26**, unos 10 minutos. Publicado solo", cuerpo)
+        self.assertIn("[Escuchar el episodio](https://a/x-1234abcd.mp3)", cuerpo)
+        self.assertIn("https://catodo.es/episodios/2026-11-26.html", cuerpo)
+        self.assertIn("1. La cifra de ventas de la noticia 2.", cuerpo)
+        self.assertIn("make corregir", cuerpo)
+        self.assertNotIn("make aprobar", cuerpo)
+
+    def test_aviso_en_el_fichero_de_ops_con_una_sola_opcion(self):
+        with tempfile.TemporaryDirectory() as dir:
+            carpeta = Path(dir) / "2026-11-26"
+            carpeta.mkdir()
+            (carpeta / "revision.md").write_text(REVISION)
+            (carpeta / "publicacion.json").write_text(json.dumps({"numero": 2, "url_audio": "u", "duracion_s": 60}))
+            destino = Path(dir) / "decision.json"
+            entorno = dict(os.environ)
+            self.addCleanup(lambda: (os.environ.clear(), os.environ.update(entorno)))
+            os.environ["OPS_DECISION_FILE"] = str(destino)
+            with unittest.mock.patch.object(ops, "EPISODIOS", Path(dir)):
+                ops.aviso_publicado("2026-11-26")
+            datos = json.loads(destino.read_text())
+            self.assertEqual(datos["decision"]["options"], [{"key": "visto", "label": "Visto"}])
+            self.assertEqual(datos["decision"]["defaultOption"], "visto")
+            self.assertFalse(datos["decision"]["allowFreeText"])
+            self.assertEqual(ops.fecha_de_titulo(datos["decision"]["title"]), "2026-11-26")
+
+    def test_se_puede_publicar_aprobado_o_solo(self):
+        import memoria
+        self.assertTrue(memoria.se_puede_publicar({"revision_humana": {"aprobado": True}}))
+        self.assertTrue(memoria.se_puede_publicar({"revision_humana": {"aprobado": False, "publicacion_automatica": True}}))
+        self.assertFalse(memoria.se_puede_publicar({}))
+        self.assertFalse(memoria.se_puede_publicar(None))
+
+
 class Respuesta(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.TemporaryDirectory()
@@ -90,6 +130,9 @@ class Respuesta(unittest.TestCase):
     def test_aprobar_un_episodio_que_ya_no_esta_no_programa_nada(self):
         nota = self.responder("aprobar", ops.titulo("1999-01-01"))
         self.assertIn("ya no está en ops", nota)
+
+    def test_visto(self):
+        self.assertIn("Visto el episodio del 2026-11-26", self.responder("visto", "Cátodo 2026-11-26: publicado"))
 
     def test_opcion_desconocida(self):
         self.assertIn("Opción desconocida", self.responder("otra", ops.titulo("1999-01-01")))

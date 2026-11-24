@@ -125,10 +125,27 @@ def aprobar(fecha, nota=""):
                     + (f" {nota}" if nota else "") + "\n")
 
 
+def publicacion_automatica(fecha, nota=""):
+    """Deja constancia de que se publica solo, sin revisión humana previa: tras las
+    comprobaciones automáticas, y lo revisan personas después, al escucharlo (decidido
+    el 25 de noviembre de 2026)."""
+    ruta = _ruta(fecha)
+    m = json.loads(ruta.read_text(encoding="utf-8"))
+    m["revision_humana"] = {"aprobado": False, "publicacion_automatica": True,
+                            "cuando": datetime.now().isoformat(timespec="minutes"), "nota": nota}
+    _guardar(ruta, m)
+
+
+def se_puede_publicar(m):
+    """Aprobado por una persona o publicado solo (publicacion_automatica)."""
+    revision = (m or {}).get("revision_humana", {})
+    return bool(revision.get("aprobado") or revision.get("publicacion_automatica"))
+
+
 def marcar_publicado(fecha, valor=True):
     ruta = _ruta(fecha)
     m = json.loads(ruta.read_text(encoding="utf-8"))
-    if valor and not m.get("revision_humana", {}).get("aprobado"):
+    if valor and not se_puede_publicar(m):
         sys.exit(f"El episodio {fecha} no está aprobado: revísalo y ejecuta `make aprobar FECHA={fecha}`.")
     m["publicado"] = valor
     _guardar(ruta, m)

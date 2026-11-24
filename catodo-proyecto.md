@@ -88,7 +88,7 @@ Basado en un análisis informativo hecho con IA (`investigacion/analisis-legal.m
 - **Lectura por IA:** se respetan las reservas de los medios. Las fuentes con `leer_con_ia: false` en `sources.yaml`, y los dominios cuyo robots.txt o TDMRep lo reservan (`src/reservas.py`), cuentan para la regla de dos grupos y se enlazan, pero Claude no abre sus artículos.
 - **Aviso de IA (Reglamento de IA, art. 50, y normas de Apple Podcasts):** al principio y al final del audio, en las notas de cada episodio, en la `<description>` de cada episodio del feed y en la descripción del programa.
 - **Notas:** el texto de cada enlace es el nombre del medio, nunca su titular copiado. Nunca se enlazan copias que saltan muros de pago.
-- **Revisión humana documentada:** `make aprobar` deja constancia en el episodio. No se publica sin aprobación.
+- **Revisión humana documentada:** hasta el 25 de noviembre de 2026, `make aprobar` dejaba constancia en el episodio y no se publicaba sin aprobación. Desde el 26, por decisión del editor (de momento no hay más oyentes que él), cada episodio se publica solo a las 5:00 tras las comprobaciones automáticas y lo revisan personas después, al escucharlo; la memoria lo deja como «publicación automática» y la descripción, las notas, Sobre y el aviso legal lo cuentan así.
 - **Correcciones:** `make corregir` las añade a las notas del episodio afectado y el siguiente episodio las menciona.
 - **Web:** página `docs/legal.html` con responsable editorial ("el editor de Cátodo"), contacto, privacidad y uso de IA. Sin cookies ni analítica.
 

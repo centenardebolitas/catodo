@@ -1,9 +1,17 @@
-"""Cátodo en ops (trabajo catodo.preparar, ops#118): la decisión y la respuesta.
+"""Cátodo en ops (trabajo catodo.preparar, ops#118 y ops#122): publicación, decisión y respuesta.
 
 Uso (lo lanzan scripts/ops/preparar.sh y scripts/ops/responder.sh):
+    python src/ops.py publicar --fecha AAAA-MM-DD
     python src/ops.py preparar --fecha AAAA-MM-DD
     python src/ops.py decision --fecha AAAA-MM-DD
     python src/ops.py responder
+
+publicar: lo de cada mañana desde el 26 de noviembre de 2026. Prepara el episodio
+del día como preparar y lo publica solo, sin revisión previa: lo deja como
+publicación automática en su memoria, sube el MP3 a R2, regenera feed y web y deja el
+commit, que ops empuja a main (commandGitPush). Las personas lo revisan después, al
+escucharlo, y se corrige con `make corregir`. Abre un aviso con el enlace y los puntos
+a comprobar, con una sola opción: «Visto».
 
 preparar: lo de `make noche`, paso a paso. El token de Claude que da ops por el
 descriptor de OPS_CLAUDE_TOKEN_FD solo se puede leer una vez: se lee aquí, lo
@@ -41,6 +49,7 @@ from comun import EPISODIOS, RAIZ, cargar_env
 from comun import persona as persona_del_dia
 
 CARPETA_REVISION = "revision"
+OPCION_VISTO = "visto"
 OPCION_APROBAR = "aprobar"
 OPCION_NO_PUBLICAR = "no-publicar"
 OPCIONES = [
@@ -151,6 +160,69 @@ def preparar(fecha):
         print(f"== {script}", flush=True)
         paso(script, fecha, token if con_claude else None)
     decision(fecha)
+
+
+def publicar(fecha):
+    """Prepara el episodio del día y lo publica solo (commit sin push: lo empuja ops)."""
+    token = claude_cli.token_ops()  # lo primero: luego ya no se puede leer
+    for script, con_claude in PASOS:
+        print(f"== {script}", flush=True)
+        paso(script, fecha, token if con_claude else None)
+    memoria.publicacion_automatica(fecha, "Publicado solo tras las comprobaciones automáticas; "
+                                          "lo revisan personas después, al escucharlo.")
+    print("== src/publish.py", flush=True)
+    python("src/publish.py", "--fecha", fecha, "--sin-push")
+    aviso_publicado(fecha)
+
+
+def cuerpo_aviso(fecha, revision_md, publicacion, rama):
+    """El aviso de un episodio que ya ha salido: el enlace y lo que conviene mirar al escucharlo."""
+    partes = secciones(revision_md)
+    cabecera = re.sub(r"(?m)^# .*\n?", "", partes.get("", "")).strip()
+    minutos = publicacion.get("duracion_s", 0) / 60
+    lineas = [
+        f"Episodio {publicacion['numero']} del **{fecha}**, unos {minutos:.0f} minutos. "
+        f"Publicado solo: ops lo empuja a `{rama}` y en unos minutos está en catodo.es y en las apps.",
+        "",
+        f"- [Escuchar el episodio]({publicacion['url_audio']})",
+        f"- [Página del episodio](https://catodo.es/episodios/{fecha}.html)",
+        "",
+        cabecera,
+        "",
+        "## Puntos a comprobar al escucharlo",
+        "",
+        partes.get("Puntos a comprobar", "Nada destacado."),
+        "",
+        "## Orden del episodio",
+        "",
+        partes.get("Orden del episodio", ""),
+        "",
+        "Si algo no cuadra, corrígelo con `make corregir`: va a las notas del episodio y se menciona en el siguiente.",
+    ]
+    texto = "\n".join(lineas).strip()
+    if len(texto) > MAX_CUERPO:
+        aviso = "\n\n(Recortado: el resto, en revision.md del estado del trabajo.)"
+        texto = texto[:MAX_CUERPO - len(aviso)].rstrip() + aviso
+    return texto
+
+
+def aviso_publicado(fecha):
+    """Deja en OPS_DECISION_FILE el aviso del episodio publicado, con una sola opción."""
+    destino = os.environ.get("OPS_DECISION_FILE")
+    if not destino:
+        print("Sin OPS_DECISION_FILE: no dejo aviso (fuera de ops).")
+        return
+    carpeta = EPISODIOS / fecha
+    revision = carpeta / "revision.md"
+    publicacion = json.loads((carpeta / "publicacion.json").read_text(encoding="utf-8"))
+    datos = {
+        "message": cuerpo_aviso(fecha, revision.read_text(encoding="utf-8") if revision.exists() else "",
+                                publicacion, os.environ.get("OPS_GIT_PUSH", "main")),
+        "decision": {"title": f"Cátodo {fecha}: publicado", "options": [{"key": OPCION_VISTO, "label": "Visto"}],
+                     "defaultOption": OPCION_VISTO, "allowFreeText": False},
+    }
+    Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+    print(f"Aviso listo para ops: Cátodo {fecha}: publicado")
 
 
 def decision(fecha):
@@ -334,6 +406,9 @@ def responder():
     carpeta = EPISODIOS / fecha
     env = cargar_env()
 
+    if opcion == OPCION_VISTO:
+        nota(f"Visto el episodio del {fecha}.")
+        return
     if not opcion:
         # Un comentario: el texto no autoriza a publicar, solo a preparar otra versión.
         corregir(fecha, texto, hilo, nota)
@@ -370,13 +445,17 @@ def responder():
 def main():
     parser = argparse.ArgumentParser(description="Cátodo en ops: decisión y respuesta")
     ordenes = parser.add_subparsers(dest="orden", required=True)
+    solo = ordenes.add_parser("publicar", help="prepara el episodio del día y lo publica solo (lo empuja ops)")
+    solo.add_argument("--fecha", required=True)
     todo = ordenes.add_parser("preparar", help="prepara el episodio y deja la decisión para ops")
     todo.add_argument("--fecha", required=True)
     abrir = ordenes.add_parser("decision", help="sube el audio de revisión y deja la decisión para ops")
     abrir.add_argument("--fecha", required=True)
     ordenes.add_parser("responder", help="aplica la opción que ha elegido Ulises")
     args = parser.parse_args()
-    if args.orden == "preparar":
+    if args.orden == "publicar":
+        publicar(args.fecha)
+    elif args.orden == "preparar":
         preparar(args.fecha)
     elif args.orden == "decision":
         decision(args.fecha)

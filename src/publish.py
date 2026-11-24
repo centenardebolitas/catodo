@@ -129,7 +129,7 @@ def main():
     mem = memoria.leer(args.fecha)
     if mem is None:
         sys.exit(f"No hay guion para {args.fecha}.")
-    if not mem.get("revision_humana", {}).get("aprobado"):
+    if not memoria.se_puede_publicar(mem):
         if args.simulacro:
             print("Aviso: el episodio no está aprobado (en un simulacro se permite).")
         else:
@@ -139,7 +139,9 @@ def main():
         sys.exit(f"No existe {mp3.name}: ejecuta antes `make audio FECHA={args.fecha}`.")
 
     env = cargar_env()
-    clave_r2 = f"{CARPETA_R2}/{mp3.name}"
+    # Con la huella en el nombre: el MP3 se sirve como inmutable, así que una versión
+    # nueva del mismo día nunca puede quedarse escondida detrás de la vieja en caché.
+    clave_r2 = f"{CARPETA_R2}/catodo-{args.fecha}-{hashlib.sha256(mp3.read_bytes()).hexdigest()[:8]}.mp3"
     url_audio = f"{env.get('R2_PUBLIC_BASE_URL', 'https://audio.catodo.es').rstrip('/')}/{clave_r2}"
     bytes_mp3 = mp3.stat().st_size
 
