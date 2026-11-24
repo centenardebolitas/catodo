@@ -107,6 +107,14 @@ jobs:
             exit 1
           fi
 
+      # Desde ops#122 el episodio lo empuja ops a main a las 5:00, sin pasar por
+      # programado: se pide igualmente el build, por si el push no lo lanzó.
+      - name: Regenerar GitHub Pages (episodio publicado por ops)
+        if: steps.hora.outputs.toca == 'si' && steps.fusion.outputs.publicado != 'si'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+
       - name: Avisar a ops del resultado
         if: always() && steps.hora.outputs.toca == 'si' && env.OPS_TOKEN != ''
         env:
