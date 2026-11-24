@@ -172,6 +172,13 @@ ESTILO = """
 """
 
 
+# Favicon e iconos (assets/favicon/generar.py). Copiados tal cual en docs/sobre.html y docs/legal.html.
+ICONOS = """<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0d13">"""
+
+
 def enlaces_escuchar(cfg):
     """Las plataformas de config/podcast.yaml (escuchar), más el feed RSS."""
     enlaces = [(p["nombre"], p["url"]) for p in cfg.get("escuchar") or []]
@@ -187,6 +194,7 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz=""):
 <title>{html.escape(titulo)}</title>
 <meta name="description" content="{html.escape(descripcion)}">
 <link rel="alternate" type="application/rss+xml" title="{html.escape(cfg['titulo'])}" href="/feed.xml">
+{ICONOS}
 <style>{ESTILO}</style>
 </head>
 <body>
