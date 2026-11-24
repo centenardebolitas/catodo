@@ -18,6 +18,7 @@ las menciona.
 
 import argparse
 import json
+import re
 import sys
 from datetime import date, datetime, timedelta
 
@@ -27,6 +28,30 @@ from comun import EPISODIOS, cargar_yaml
 def leer(fecha):
     ruta = EPISODIOS / fecha / "memoria.json"
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
+
+
+def _frases(fecha, bloque):
+    """Las frases de un bloque del guion de un episodio («Apertura», «Cierre»), o []."""
+    ruta = EPISODIOS / fecha / "guion.md"
+    if not ruta.exists():
+        return []
+    m = re.search(rf"(?ms)^## {bloque}\s*\n(.*?)(?=^## |\Z)", ruta.read_text(encoding="utf-8"))
+    return re.split(r"(?<=[.:!?])\s+", " ".join(m.group(1).split())) if m else []
+
+
+def apertura(fecha):
+    """La frase que sigue a la firma en la apertura de un episodio (el enlace al gancho), o None."""
+    frases = _frases(fecha, "Apertura")
+    return frases[1] if len(frases) > 1 else None
+
+
+def cierre(fecha):
+    """El paso que precede a la parte fija del cierre («Y con esto termino.»), o None."""
+    frases = _frases(fecha, "Cierre")
+    for n, f in enumerate(frases):
+        if n and f.lower().startswith("el guion y la voz"):
+            return frases[n - 1]
+    return None
 
 
 def contexto(fecha, dias=7, dias_pendientes=3):
@@ -57,6 +82,13 @@ def contexto(fecha, dias=7, dias_pendientes=3):
         partes.append("\n## Correcciones que hay que mencionar en este episodio")
         for dia, c in correcciones:
             partes.append(f"- Sobre el episodio del {dia}: {c['texto']}")
+
+    formulas = [(dia, apertura(dia), cierre(dia)) for n, dia, m in episodios[:5]]
+    formulas = [(dia, a, c) for dia, a, c in formulas if a or c]
+    if formulas:
+        partes.append("\n## Cómo enlazaron la apertura y el cierre en episodios anteriores (no repitas las fórmulas)")
+        for dia, a, c in formulas:
+            partes.append(f"- ({dia}) Apertura: {a or '(sin dato)'} Cierre: {c or '(sin dato)'}")
 
     pendientes = [(n, dia, p) for n, dia, m in episodios if n <= dias_pendientes
                   for p in m.get("pendientes", [])]
