@@ -63,6 +63,7 @@ audio:
   loudness_lufs: -16
   bitrate_kbps: 96
   canales: 1                       # mono
+  respiraciones_db: 12             # cuánto se bajan las inspiraciones de la voz (src/respiraciones.py); 0 = como salen
 
 portada:                           # portada de cada episodio: el guion en emojis (src/portada_episodio.py)
   columnas: 20                     # rejilla fija de columnas x columnas casillas; los emojis no cambian de tamaño

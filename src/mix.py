@@ -4,7 +4,8 @@ Uso:
     python src/mix.py [--fecha AAAA-MM-DD]
 
 Dos etapas:
-  1. Voz: une los bloques de episodes/AAAA-MM-DD/bloques/ (los genera tts.py) con una
+  1. Voz: baja las inspiraciones de cada bloque (src/respiraciones.py, audio.respiraciones_db)
+     y une los bloques de episodes/AAAA-MM-DD/bloques/ (los genera tts.py) con una
      pausa breve entre ellos y assets/separador.wav (el «bzz») al final de cada noticia,
      y normaliza el volumen (por defecto -16 LUFS, en dos pasadas).
   2. Sintonía: assets/sintonia_intro.wav suena al principio y la voz entra a los
@@ -20,8 +21,11 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import date
+from pathlib import Path
 
+import respiraciones
 from comun import EPISODIOS, RAIZ, cargar_yaml
 
 FRECUENCIA = 44100
@@ -75,6 +79,17 @@ def main():
     if faltan:
         sys.exit(f"Faltan bloques de audio ({', '.join(faltan)}): ejecuta antes `make voz FECHA={args.fecha}`.")
 
+    # Las inspiraciones de la voz, más bajas (no quitadas): en copias, la caché de tts.py no se toca.
+    temporal = tempfile.TemporaryDirectory(prefix="catodo-mix-")
+    db_aire = audio.get("respiraciones_db", 0)
+    if db_aire:
+        suaves = []
+        for b in bloques:
+            suave = Path(temporal.name) / b.name
+            respiraciones.suavizar(b, suave, db_aire)
+            suaves.append(suave)
+        bloques = suaves
+
     intro = RAIZ / "assets" / "sintonia_intro.wav"
     outro = RAIZ / "assets" / "sintonia_outro.wav"
     piezas = []  # (ruta o None para silencio, segundos de silencio)
@@ -109,6 +124,7 @@ def main():
     voz = carpeta / "montaje-voz.wav"
     ffmpeg("-i", str(crudo), "-af", segunda, "-ar", str(FRECUENCIA), str(voz))
     crudo.unlink()
+    temporal.cleanup()
 
     # Etapa 2: sintonía de entrada solapada con el saludo y sintonía de salida al final.
     entradas, filtros, cadena = ["-i", str(voz)], [], "[0:a]"
