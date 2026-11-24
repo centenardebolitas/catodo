@@ -1,10 +1,11 @@
 {
   "fecha": "2026-11-24",
   "numero": 1,
-  "url_audio": "https://audio.catodo.es/episodios/catodo-2026-11-24.mp3",
-  "bytes": 7364267,
+  "url_audio": "https://audio.catodo.es/episodios/catodo-2026-11-24-54869096.mp3",
+  "bytes": 7364975,
   "duracion_s": 613.6,
   "publicado_en": "2026-11-24T09:14:29+01:00",
-  "url_portada": "https://audio.catodo.es/episodios/catodo-2026-11-24-d5f3e948.jpg",
-  "url_portada_web": "https://audio.catodo.es/episodios/catodo-2026-11-24-web-69972188.jpg"
+  "url_portada": "https://audio.catodo.es/episodios/catodo-2026-11-24-39dde662.jpg",
+  "url_portada_web": "https://audio.catodo.es/episodios/catodo-2026-11-24-web-b7de7af0.jpg",
+  "url_apple": "https://podcasts.apple.com/es/podcast/huang-vuelve-a-nvidia-crowdstrike-compra-zscaler-y/id6838674796?i=1000803764263"
 }
