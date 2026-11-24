@@ -30,3 +30,4 @@ escuchar:
     insignia: /insignias/apple-podcasts.svg   # oficial, sin tocar (toolbox.marketingtools.apple.com)
   - nombre: Spotify
     url: https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4
+    insignia: /insignias/spotify.svg          # logo oficial de Spotify (kit de prensa) en el mismo formato que la de Apple
