@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Preparación nocturna de Cátodo (la lanza launchd a las 23:00, de domingo a jueves).
+# Preparación nocturna de Cátodo (la lanza launchd a las 22:00, de domingo a jueves).
 # Actualiza el repositorio, prepara el guion y el audio del episodio de mañana y avisa
 # con una notificación. Deja el registro en logs/noche-AAAA-MM-DD.log.
 
