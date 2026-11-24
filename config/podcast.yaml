@@ -22,7 +22,7 @@ web: https://catodo.es
 imagen: https://catodo.es/portada.jpg      # 3000x3000 px, pendiente
 copyright: Cátodo
 
-# Dónde escucharlo: insignias en la cabecera de la web y en cada episodio, y enlaces en el pie.
+# Dónde escucharlo: insignias bajo la descripción de la web y en cada episodio, y enlaces en el pie.
 # Apple va primero (lo piden sus normas de marca). Sin insignia, sale un botón de texto.
 escuchar:
   - nombre: Apple Podcasts
@@ -30,3 +30,8 @@ escuchar:
     insignia: /insignias/apple-podcasts.svg   # oficial, sin tocar (toolbox.marketingtools.apple.com)
   - nombre: Spotify
     url: https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4
+    insignia: /insignias/spotify.svg          # su icono oficial, con el formato de la de Apple (assets/insignias/generar.py)
+  - nombre: Feed RSS
+    url: /feed.xml
+    insignia: /insignias/rss.svg
+    texto: Suscríbete por RSS

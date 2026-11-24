@@ -10,6 +10,7 @@ que escribe publish.py) y regenera:
   - docs/episodios/AAAA-MM-DD.html: una página por episodio con notas y transcripción.
 """
 
+import hashlib
 import html
 import json
 import re
@@ -187,6 +188,7 @@ def generar_feed(episodios, cfg):
 
 ESTILO = """
   :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
+  html { background:var(--fondo); }
   body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
          line-height:1.6; padding:0 16px; }
   main { max-width:680px; margin:48px auto 64px; }
@@ -210,8 +212,7 @@ ESTILO = """
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
 
-  .cabecera { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 24px; }
-  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 20px; }  /* abajo, lo mismo que hay bajo la raya (.episodio) */
   .insignias a { display:block; line-height:0; }
   .insignias img { height:40px; width:auto; }
   .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
@@ -233,6 +234,14 @@ ICONOS = """<link rel="icon" href="/favicon.ico" sizes="32x32">
 <meta name="theme-color" content="#0e0d13">"""
 
 
+def con_version(ruta):
+    """/insignias/x.svg?v=huella: si cambia el fichero, cambia la URL y nadie ve la vieja en caché."""
+    fichero = DOCS / ruta.lstrip("/")
+    if not ruta.startswith("/") or not fichero.exists():
+        return ruta
+    return f"{ruta}?v={hashlib.sha256(fichero.read_bytes()).hexdigest()[:8]}"
+
+
 def insignias(cfg, ep=None, clase="insignias"):
     """Las insignias oficiales de config/podcast.yaml (escuchar), en el orden que piden (Apple primero).
 
@@ -244,9 +253,9 @@ def insignias(cfg, ep=None, clase="insignias"):
             url = ep["url_apple"]
         if ep and p["nombre"] == "Spotify" and ep.get("url_spotify"):
             url = ep["url_spotify"]
-        texto = f"Escúchalo en {p['nombre']}"
+        texto = p.get("texto") or f"Escúchalo en {p['nombre']}"
         if p.get("insignia"):
-            enlaces.append(f'<a href="{html.escape(url)}"><img src="{html.escape(p["insignia"])}" '
+            enlaces.append(f'<a href="{html.escape(url)}"><img src="{html.escape(con_version(p["insignia"]))}" '
                            f'alt="{html.escape(texto)}"></a>')
         else:
             enlaces.append(f'<a class="texto" href="{html.escape(url)}">{html.escape(texto)}</a>')
@@ -254,9 +263,9 @@ def insignias(cfg, ep=None, clase="insignias"):
 
 
 def enlaces_escuchar(cfg):
-    """Las plataformas de config/podcast.yaml (escuchar), más el feed RSS."""
+    """Las plataformas de config/podcast.yaml (escuchar), con el feed RSS siempre."""
     enlaces = [(p["nombre"], p["url"]) for p in cfg.get("escuchar") or []]
-    return enlaces + [("Feed RSS", "/feed.xml")]
+    return enlaces if any(url == "/feed.xml" for _, url in enlaces) else enlaces + [("Feed RSS", "/feed.xml")]
 
 
 def plantilla(titulo, descripcion, cuerpo, cfg, raiz="", imagen=None, url=None):
@@ -302,11 +311,9 @@ def generar_portada(episodios, cfg):
     <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
     <audio controls preload="none" src="{html.escape(ep['url_audio'])}"></audio>
   </article>""")
-    cuerpo = f"""  <header class="cabecera">
-    <h1 class="neon">Cátodo.</h1>
-    {insignias(cfg)}
-  </header>
+    cuerpo = f"""  <h1 class="neon">Cátodo.</h1>
   <p class="suave">{html.escape(cfg['subtitulo'])}. {html.escape(cfg['descripcion'])}</p>
+  {insignias(cfg)}
 {chr(10).join(lista) if lista else '  <p>Muy pronto, el primer episodio.</p>'}"""
     return plantilla(cfg["titulo"], cfg["descripcion"], cuerpo, cfg)
 

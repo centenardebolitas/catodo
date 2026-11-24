@@ -19,6 +19,7 @@
 <meta name="theme-color" content="#0e0d13">
 <style>
   :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
+  html { background:var(--fondo); }
   body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
          line-height:1.6; padding:0 16px; }
   main { max-width:680px; margin:48px auto 64px; }
@@ -42,8 +43,7 @@
   .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
                 box-shadow:0 0 40px rgba(34,211,238,.18); }
 
-  .cabecera { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 24px; }
-  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 20px; }  /* abajo, lo mismo que hay bajo la raya (.episodio) */
   .insignias a { display:block; line-height:0; }
   .insignias img { height:40px; width:auto; }
   .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
@@ -59,11 +59,9 @@
 </head>
 <body>
 <main>
-  <header class="cabecera">
-    <h1 class="neon">Cátodo.</h1>
-    <nav class="insignias" aria-label="Dónde escucharlo"><a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796"><img src="/insignias/apple-podcasts.svg" alt="Escúchalo en Apple Podcasts"></a><a class="texto" href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Escúchalo en Spotify</a></nav>
-  </header>
+  <h1 class="neon">Cátodo.</h1>
   <p class="suave">Tecnología cada mañana. Cátodo es un podcast diario de noticias de tecnología en español, de lunes a viernes, en unos diez o quince minutos. Lo que importa de la tecnología, contado con calma, con un punto de escepticismo y algo de humor. Solo cuenta noticias publicadas por al menos dos grupos editoriales independientes y enlaza siempre las fuentes. Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse.</p>
+  <nav class="insignias" aria-label="Dónde escucharlo"><a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796"><img src="/insignias/apple-podcasts.svg?v=51176dcf" alt="Escúchalo en Apple Podcasts"></a><a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4"><img src="/insignias/spotify.svg?v=65f8dd72" alt="Escúchalo en Spotify"></a><a href="/feed.xml"><img src="/insignias/rss.svg?v=e6b33080" alt="Suscríbete por RSS"></a></nav>
   <article class="episodio con-portada">
     <a class="mini" href="/episodios/2026-11-24.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-b7de7af0.jpg" alt="" width="112" height="112"></a>
     <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2>
