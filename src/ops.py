@@ -38,6 +38,7 @@ import claude_cli
 import comentarios
 import memoria
 from comun import EPISODIOS, RAIZ, cargar_env
+from comun import persona as persona_del_dia
 
 CARPETA_REVISION = "revision"
 OPCION_APROBAR = "aprobar"
@@ -248,7 +249,7 @@ def corregir(fecha, comentario, hilo, nota):
     else:
         ajustes = cargar_yaml("settings.yaml")
         cl = ajustes["claude"]
-        persona = (CONFIG / "persona.md").read_text(encoding="utf-8")
+        persona = persona_del_dia(fecha)
         escaleta_ruta = carpeta / "escaleta.json"
         escaleta = (script.json_bonito(script.preparar_escaleta(json.loads(escaleta_ruta.read_text(encoding="utf-8")),
                                                                 Reservas()))

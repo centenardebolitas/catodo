@@ -30,17 +30,28 @@ def leer(fecha):
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
 
 
-def apertura(fecha):
-    """La frase que sigue a la firma en la apertura de un episodio (el enlace al gancho), o None."""
+def _frases(fecha, bloque):
+    """Las frases de un bloque del guion de un episodio («Apertura», «Cierre»), o []."""
     ruta = EPISODIOS / fecha / "guion.md"
     if not ruta.exists():
-        return None
-    bloque = re.search(r"(?ms)^## Apertura\s*\n(.*?)(?=^## |\Z)", ruta.read_text(encoding="utf-8"))
-    if not bloque:
-        return None
-    texto = " ".join(bloque.group(1).split())
-    frases = re.split(r"(?<=[.:!?])\s+", texto)
+        return []
+    m = re.search(rf"(?ms)^## {bloque}\s*\n(.*?)(?=^## |\Z)", ruta.read_text(encoding="utf-8"))
+    return re.split(r"(?<=[.:!?])\s+", " ".join(m.group(1).split())) if m else []
+
+
+def apertura(fecha):
+    """La frase que sigue a la firma en la apertura de un episodio (el enlace al gancho), o None."""
+    frases = _frases(fecha, "Apertura")
     return frases[1] if len(frases) > 1 else None
+
+
+def cierre(fecha):
+    """El paso que precede a la parte fija del cierre («Y con esto termino.»), o None."""
+    frases = _frases(fecha, "Cierre")
+    for n, f in enumerate(frases):
+        if n and f.lower().startswith("el guion y la voz"):
+            return frases[n - 1]
+    return None
 
 
 def contexto(fecha, dias=7, dias_pendientes=3):
@@ -72,12 +83,12 @@ def contexto(fecha, dias=7, dias_pendientes=3):
         for dia, c in correcciones:
             partes.append(f"- Sobre el episodio del {dia}: {c['texto']}")
 
-    aperturas = [(dia, apertura(dia)) for n, dia, m in episodios[:5]]
-    aperturas = [(dia, a) for dia, a in aperturas if a]
-    if aperturas:
-        partes.append("\n## Cómo enlazó la apertura con el gancho en episodios anteriores (no repitas la fórmula)")
-        for dia, a in aperturas:
-            partes.append(f"- ({dia}) {a}")
+    formulas = [(dia, apertura(dia), cierre(dia)) for n, dia, m in episodios[:5]]
+    formulas = [(dia, a, c) for dia, a, c in formulas if a or c]
+    if formulas:
+        partes.append("\n## Cómo enlazaron la apertura y el cierre en episodios anteriores (no repitas las fórmulas)")
+        for dia, a, c in formulas:
+            partes.append(f"- ({dia}) Apertura: {a or '(sin dato)'} Cierre: {c or '(sin dato)'}")
 
     pendientes = [(n, dia, p) for n, dia, m in episodios if n <= dias_pendientes
                   for p in m.get("pendientes", [])]

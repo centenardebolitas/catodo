@@ -25,6 +25,7 @@ import claude_cli
 import memoria
 from reservas import Reservas
 from comun import CONFIG, EPISODIOS, cargar_yaml
+from comun import persona as persona_del_dia
 
 LEER_FUENTES = ["WebFetch", "WebSearch"]
 
@@ -198,7 +199,7 @@ Entre {palabras_min} y {palabras_max} palabras en total. Respeta aproximadamente
 2. Escribe con palabras propias. No copies frases de los artículos, ni siquiera traducidas literalmente.
 3. Usa solo datos que aparezcan en las fuentes que has leído. Atribuye lo que venga de un medio concreto.
 4. Sigue las reglas de fechas y cifras: solo las imprescindibles.
-5. Escribe el aviso de IA, la coletilla y la despedida tal y como dice la persona.
+5. Escribe la apertura y el cierre tal y como dice la persona: la firma y la parte fija del cierre palabra por palabra, el enlace y el paso de cada día sin repetir los de la memoria, y la despedida de hoy.
 
 Devuelve el guion en "guion" (Markdown con los bloques indicados), las URL que has leído de verdad en "fuentes_leidas" y en "avisos" lo que no hayas podido comprobar.
 """
@@ -381,7 +382,7 @@ def main():
     if not news_ruta.exists():
         sys.exit(f"No existe {news_ruta}: ejecuta antes `make noticias FECHA={args.fecha}`.")
     news = json.loads(news_ruta.read_text(encoding="utf-8"))
-    persona = (CONFIG / "persona.md").read_text(encoding="utf-8")
+    persona = persona_del_dia(args.fecha)
     reservas = Reservas()
     contexto = memoria.contexto(args.fecha, mem["dias"], mem["dias_pendientes"])
     comunes = {"persona": persona, "memoria": contexto, "minutos": ep["duracion_objetivo_min"],
