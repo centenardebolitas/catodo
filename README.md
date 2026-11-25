@@ -1,6 +1,6 @@
 # Cátodo
 
-Podcast diario de noticias de tecnología en español, de lunes a viernes. El guion y la voz se generan con IA y una persona los revisa antes de publicar.
+Podcast diario de noticias de tecnología en español, de lunes a viernes. El guion y la voz se generan con IA, pasan comprobaciones automáticas antes de publicarse y luego los revisan personas al escucharlos.
 
 - Web y feed: https://catodo.es (GitHub Pages, carpeta `docs/`)
 - Audio: https://audio.catodo.es (Cloudflare R2)

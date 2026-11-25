@@ -35,7 +35,7 @@ SOLAPE_INTRO_S = 5.0
 PAUSA_ANTES_SEPARADOR_S = 0.35
 PAUSA_TRAS_SEPARADOR_S = 0.45
 PICO_MAXIMO_DB = -1.5
-AVISO_IA = "Guion y voz generados con inteligencia artificial y revisados por una persona."
+AVISO_IA = "Guion y voz generados con inteligencia artificial y revisados por personas, que escuchan cada episodio."
 
 
 def ffmpeg(*argumentos):
