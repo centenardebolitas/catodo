@@ -211,7 +211,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 **Estado (23 de noviembre de 2026):**
 - 0.1 hecho: DNS de `catodo.es` en Cloudflare (servidores `sara` y `zod`), con los registros de correo de OVH y los de GitHub Pages en modo «solo DNS». Propagándose.
 - 0.2 hecho: R2 activado, bucket `catodo-audio` en Europa Occidental, dominio `audio.catodo.es` (TLS mínimo 1.2) y token de cuenta `catodo-publicar`, con lectura y escritura de objetos solo en ese bucket, guardado en `.env`. Probado: subida por la API y descarga pública por `https://audio.catodo.es`.
-- 0.3 hecho a falta de HTTPS: repositorio `centenardebolitas/catodo` con GitHub Pages desde `docs/`. Falta activar «Enforce HTTPS» cuando GitHub emita el certificado, que llegará tras la propagación del DNS.
+- 0.3 hecho: repositorio `centenardebolitas/catodo` con GitHub Pages desde `docs/` y HTTPS obligatorio (comprobado el 25 de noviembre de 2026).
 
 ### Fase 1. Recogida y selección de noticias
 - `fetch.py`: lee los feeds de `sources.yaml` y se queda con lo publicado en las últimas 24 h.
@@ -238,7 +238,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 - `mix.py`: une bloques con `ffmpeg`, añade sintonía de entrada y salida, normaliza a -16 LUFS y exporta MP3 mono a 96 kbps.
 - Mostrar al final la duración del episodio y su coste aproximado (tokens de audio: 25 por segundo).
 - Hecho cuando: obtengo un MP3 escuchable del guion aprobado.
-- Estado (23 de noviembre de 2026): `tts.py` y `mix.py` escritos (`make voz`, `make audio`). La voz se genera por la Agent Platform de Google Cloud (antes Vertex AI), región `eu`, con las credenciales de `gcloud` (`gcloud auth application-default login`, una vez): la API de AI Studio aplicaba la cuota gratuita de 10 peticiones al día aunque el proyecto estuviera en el nivel de pago. La vía de AI Studio sigue disponible (`tts.via: gemini_api`). Primer episodio completo generado: 10 minutos para 1.935 palabras (la voz lee a unas 190 palabras por minuto). Falta la sintonía (`assets/sintonia_intro.mp3` y `assets/sintonia_outro.mp3`); sin ella el episodio se monta igual.
+- Estado (23 de noviembre de 2026): `tts.py` y `mix.py` escritos (`make voz`, `make audio`). La voz se genera por la Agent Platform de Google Cloud (antes Vertex AI), región `eu`, con las credenciales de `gcloud` (`gcloud auth application-default login`, una vez): la API de AI Studio aplicaba la cuota gratuita de 10 peticiones al día aunque el proyecto estuviera en el nivel de pago. La vía de AI Studio sigue disponible (`tts.via: gemini_api`). Primer episodio completo generado: 10 minutos para 1.935 palabras (la voz lee a unas 190 palabras por minuto). Desde el 24 de noviembre, con sintonía de entrada y salida, el «bzz» entre noticias y capítulos.
 
 ### Fase 4. Publicación
 - `publish.py`: sube el MP3 a R2 y obtiene la URL pública en `audio.catodo.es`.
@@ -247,7 +247,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 - La `<description>` de cada episodio incluye el aviso de IA (lo exige Apple Podcasts).
 - Solo publica episodios aprobados (`make aprobar`) y los marca como publicados para la memoria.
 - Hecho cuando: el feed pasa un validador de podcasts y el episodio se reproduce desde `https://audio.catodo.es`.
-- Estado (23 de noviembre de 2026): `publish.py` y `feed.py` escritos (`make publicar`, `make simulacro`, `make feed`); los datos del programa están en `config/podcast.yaml`. Probado en local: el feed es un RSS válido. Falta R2 (Fase 0.2) para publicar de verdad.
+- Estado (23 de noviembre de 2026): `publish.py` y `feed.py` escritos (`make publicar`, `make simulacro`, `make feed`); los datos del programa están en `config/podcast.yaml`. Desde el 24 de noviembre publica de verdad; desde el 26, solo y desde ops (ver «Revisión humana documentada»).
 
 ### Fase 5. Distribución (la hago yo, con tu guía)
 - Alta del feed `https://catodo.es/feed.xml` en Apple Podcasts Connect y en Spotify (feed externo).
@@ -260,6 +260,7 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 
 ### Fase 6. Piloto
 - Dos semanas publicando sin difundir. Ajustar prompt, voz, modelo y duración.
+- En marcha desde el episodio 1 (24 de noviembre de 2026); termina hacia el 8 de diciembre. Hasta ahora: apertura y cierre nuevos, publicación automática a las 5:00 desde ops, ritmo de voz más pausado, anuncios del próximo episodio e índice de temas.
 
 ## Presupuesto estimado (sin contar la IA de desarrollo)
 
@@ -291,12 +292,12 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 ## Decisiones pendientes
 
 - Subtítulo del podcast (propuesta: "tecnología cada mañana").
-- Comprobar que hola@catodo.es existe como redirección en OVH (es la dirección para recibir correcciones).
 - Confirmar el grupo editorial de las fuentes marcadas «por confirmar» en `sources.yaml`.
 - Comprobar la marca "Cátodo" en la OEPM y en TMview (clases 9, 38 y 41).
 - Valorar una consulta con un abogado (anonimato frente a la identificación del responsable en la política de privacidad, límite de cita, lectura por IA). Las preguntas están en `investigacion/analisis-legal.md`.
 - Valorar usar una clave de API de Anthropic para el proceso nocturno en lugar del plan Max.
-- Portada (3000x3000 px, `docs/portada.jpg`) y sintonía, con licencia que cubra podcasts.
-- Sintonía y portada.
+- Licencia de la sintonía: confirmar que las condiciones de Google Cloud cubren su uso en un podcast.
+- Rotar las claves que aparecieron en la conversación de desarrollo (Gemini `catodo-produccion-2` y el secreto de R2).
+- Enlaces de Spotify por episodio: hoy no se automatizan (Apple sí).
 - Sección fija o muletilla del presentador, si la hay.
 - Handles en redes sociales.
