@@ -303,7 +303,7 @@ Solo redes en las que se pueda publicar de forma automática. Sin X: su API ya n
 - **Cuándo:** un trabajo nuevo de ops, `catodo.difundir`, de lunes a viernes a las 8:30, después de la escucha de las 7:30 (`scripts/ops/difundir.sh`). Comprueba antes que la página del episodio y el audio ya están publicados. En el aviso de las 5:00 aparece la opción «No difundir en redes»: si se elige, ese día no se publica nada en redes.
 - **Seguridad ante fallos:** lo publicado se apunta en R2 (`difusion/FECHA.json`) red a red, así que repetir el trabajo no publica dos veces. Si una red falla, las demás salen igual y el trabajo termina con error para que ops avise.
 - **Activación:** `redes.activas` en `config/settings.yaml` (vacío hasta tener las cuentas). `make redes` hace los vídeos y enseña los textos sin publicar nada.
-- **Estado:** código y pruebas hechos el 25 de noviembre de 2026. Falta crear las cuentas, guardar las credenciales en ops y dar de alta el trabajo en el manifiesto de ops. Se activa al terminar el piloto (hacia el 8 de diciembre).
+- **Estado:** código y pruebas hechos el 25 de noviembre de 2026. **Bluesky en marcha desde ese mismo día** (`@catodo.es`, con la etiqueta de automatización; contraseña de aplicación `catodo-ops` en `catodo-bluesky-app-password`): `catodo.difundir` dado de alta en ops (ops#124) y primera publicación, la del episodio 2, lanzada a mano. Faltan Meta y YouTube: al tenerlas, sus secretos se añaden a `catodo.difundir` en el manifiesto de ops y la red a `redes.activas`.
 
 Alta de cuentas (las crea Ulises, con hola@catodo.es; los secretos se guardan en ops con `pbpaste | ssh ops 'sudo ops-jobs secret set NOMBRE'`):
 
