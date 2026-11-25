@@ -281,7 +281,7 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 - Proveedor: Gemini TTS, por precio. Modelo `gemini-3.8-flash-tts`, voz `es-es-csagent-3` (Call Center Agent 3: castellano, 32 años, "engaging and empathic").
 - Se eligió en dos pruebas a ciegas (`pruebas/`). En la primera, la voz favorita fue ElevenLabs "David Martin - Confident and Friendly" (Eleven v4), pero Gemini sale unas tres veces más barato. En la segunda se probaron las voces nativas de España del catálogo ampliado de Gemini (`es-es-*`).
 - Producción en la capa de pago: la gratuita solo permite 10 peticiones al día y Google usa esos datos para mejorar sus productos.
-- Configurado: proyecto `catodo` en Google AI Studio (Nivel 1, con facturación), clave `catodo-produccion` en `.env` y límite de gasto de la API de Gemini de 10 €/mes (función experimental de AI Studio; puede pasarse unos minutos antes de cortar). El crédito de bienvenida de Google Cloud no sirve para pagar la API de Gemini.
+- Configurado: proyecto `catodo` en Google AI Studio (Nivel 1, con facturación), clave `catodo-produccion-3` en `.env` (solo para la vía de respaldo `gemini_api`; rotada el 25 de noviembre de 2026, igual que el token de R2, ahora `catodo-publicar-2`) y límite de gasto de la API de Gemini de 10 €/mes (función experimental de AI Studio; puede pasarse unos minutos antes de cortar). El crédito de bienvenida de Google Cloud no sirve para pagar la API de Gemini.
 
 ## Ritmo (25 de noviembre de 2026)
 
@@ -297,7 +297,6 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 - Valorar una consulta con un abogado (anonimato frente a la identificación del responsable en la política de privacidad, límite de cita, lectura por IA). Las preguntas están en `investigacion/analisis-legal.md`.
 - Valorar usar una clave de API de Anthropic para el proceso nocturno en lugar del plan Max.
 - Licencia de la sintonía: confirmar que las condiciones de Google Cloud cubren su uso en un podcast.
-- Rotar las claves que aparecieron en la conversación de desarrollo (Gemini `catodo-produccion-2` y el secreto de R2).
 - Enlaces de Spotify por episodio: hoy no se automatizan (Apple sí).
 - Sección fija o muletilla del presentador, si la hay.
 - Handles en redes sociales.
