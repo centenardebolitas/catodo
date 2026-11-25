@@ -1,0 +1,112 @@
+{
+  "fecha": "2026-11-25",
+  "publicado": true,
+  "contadas": [
+    {
+      "titulo": "Huang pide perdón en Nvidia y le espera el Congreso",
+      "resumen": "En su primera reunión con la plantilla tras volver, Huang pidió perdón, admitió que se había saltado el código de conducta y dio las gracias al gobierno de Trump. Según Reuters, negó también que volviera por la presión de Trump. Sigue rechazando un plan de sucesión. Trump, en el New York Post, no descarta indultarle aunque cree que no hará falta, y ve posible que el gobierno entre en el capital. Recordamos que Huang no tiene cargos, aunque hay investigaciones abiertas, y que las sospechas del NYT apuntan a una antigua directiva de Megaspeed (presuntamente vinculada a la inteligencia china; Pekín y Megaspeed lo niegan). Comparecerá el 1 de diciembre en la Cámara (tres comités, entre ellos el de China) y el 3 en el comité de Banca del Senado. Nvidia cayó casi un seis por ciento al día siguiente del subidón, y se notó en Europa.",
+      "asuntos_abiertos": [
+        "Comparecencias del 1 y el 3 de diciembre: qué dice Huang y si se acoge a su derecho a no declarar",
+        "Investigaciones del FBI, el Departamento de Justicia y la SEC",
+        "Si el gobierno de EEUU entra en el capital de Nvidia",
+        "Evolución en bolsa y debate sobre el plan de sucesión",
+        "Posibles cambios en los controles de exportación de chips a China"
+      ]
+    },
+    {
+      "titulo": "Veredicto de un jurado contra Huawei en Estados Unidos",
+      "resumen": "Un jurado federal de Brooklyn declaró culpable a Huawei en diez de doce cargos (conspiración para robar secretos comerciales, fraude bancario, negocios con países sancionados como Irán) y la absolvió de crimen organizado y obstrucción. No hay sentencia firme. La pena tardará meses y Huawei recurrirá: dice que eran disputas civiles ya resueltas. Recordamos el caso de Meng Wanzhou, que volvió a China en 2021 tras un acuerdo con la fiscalía. Lo vinculamos al debate europeo sobre proveedores chinos.",
+      "asuntos_abiertos": [
+        "Fecha y cuantía de la pena",
+        "Recurso de Huawei",
+        "Reacción de China y efectos en el debate europeo sobre proveedores de telecomunicaciones"
+      ]
+    },
+    {
+      "titulo": "Tidal prohíbe la música generada por completo con IA",
+      "resumen": "Desde el 9 de diciembre, Tidal retira cerca de treinta millones de pistas generadas por completo con IA. Según la empresa, más de cuatro de cada diez canciones subidas en los últimos tres meses eran de IA y casi ninguna tenía oyentes. Se permite la música hecha con ayuda de IA y la detección se hará con metadatos y herramientas, con derecho a reclamar. Antes solo Bandcamp había hecho algo así. Apple Music confía en la etiqueta que ponen las discográficas.",
+      "asuntos_abiertos": [
+        "Cómo funciona la detección a partir del 9 de diciembre y cuántas reclamaciones hay",
+        "Si Spotify, Apple Music u otras plataformas siguen el mismo camino"
+      ]
+    },
+    {
+      "titulo": "Microsoft declara un código rojo tras su gran caída",
+      "resumen": "Según memorandos publicados por Reuters, tras una caída de casi 24 horas de Outlook, Teams y Copilot, Microsoft declara un código rojo. El origen fue un fallo de Windows dormido desde el verano en servidores clave de su red; no fue un ataque. El objetivo es resolver cualquier incidente mundial en una hora, cuando ahora un parche urgente tarda casi una semana. Nadella pidió disculpas y avisa de que habrá más caídas. Lo enlazamos con la oleada de caídas recientes y con la duda de los huevos en la misma cesta (CrowdStrike y Zscaler).",
+      "asuntos_abiertos": [
+        "Si Microsoft cumple el objetivo de una hora",
+        "Nuevas caídas en grandes servicios",
+        "Informe final de la causa"
+      ]
+    },
+    {
+      "titulo": "Muse, el agente de Meta, llega a Instagram y al Reino Unido",
+      "resumen": "Muse llega a los mensajes directos de Instagram para organizar lo guardado (Estados Unidos y unos pocos países más; nada confirmado para la Unión Europea). En el Reino Unido se lanza con capacidad para comprar, reservar y reclamar reembolsos. Según Reuters, empleados detectaron que leía mensajes cifrados; Meta habla de incidentes aislados, y los reguladores británicos advierten de riesgos como el fraude. Zuckerberg cree que podría generar más ingresos que sus aplicaciones actuales. Grandes bancos de EEUU frenan a los agentes de terceros.",
+      "asuntos_abiertos": [
+        "Si Muse llega a la Unión Europea y a España",
+        "Respuesta de los reguladores británicos",
+        "Más bancos que bloqueen agentes de IA"
+      ]
+    },
+    {
+      "titulo": "Take-Two tumba Leonida, el proyecto de GTA VI en PC",
+      "resumen": "CyberLeek asegura haber filtrado la versión de Xbox de GTA VI. Con ese material, el proyecto Leonida logró que el juego arrancara en PC, aunque no era jugable. Take-Two lo ha tumbado: han caído su Discord, con casi 180.000 miembros, y su GitHub, y según Tom's Hardware la cuenta de su responsable está suspendida dos años. No hay versión oficial para PC; los rumores, según Engadget, apuntan a principios del año que viene. En consola va a 30 fotogramas por segundo.",
+      "asuntos_abiertos": [
+        "Anuncio oficial de la versión de PC",
+        "Acciones legales de Take-Two contra otros proyectos o contra los responsables de la filtración"
+      ]
+    }
+  ],
+  "pendientes": [
+    {
+      "titulo": "Las acciones de Anthropic caen por debajo de su precio de salida a bolsa",
+      "candidata": 15,
+      "resumen": "Anthropic ha cerrado por debajo de los 83 dólares de su salida a bolsa, y eso podría presionar las valoraciones de las startups de IA. Según la candidata 2, Anthropic y Nvidia cayeron hasta un 8 por ciento al volver el miedo a la IA.",
+      "motivo": "Hoy la bolsa ya sale dentro de la noticia de Huang. Si se cuenta, hay que avisar de que Claude es de Anthropic. Puede entrar si sigue cayendo o en una noticia sobre la burbuja de la IA.",
+      "enlaces": [
+        "https://techcrunch.com/2026/11/24/anthropic-shares-fall-below-ipo-price-a-worrying-sign-for-ai-startups/",
+        "https://news.google.com/rss/articles/CBMiqgFBVV95cUxONldMSWViNlNReXZoVk9IclFHQmd3RFZab1NjdG9IN1pucUE3aWhQQ3oxX3BEWV9qaXJHSG1HcTZ6RjEwdzhQanBYRWtMdlp0T2toNVZkdlRZaWVtdm9sazFFSTZQLV9FRVJ5Z2o3SU5yamxKTHc1OTRwVUxQamFlU09OTW5yeldFdVZjdGxldGVobHRheFBoZVFOMTZESm1UczZrQXdIYjRkQdIBrwFBVV95cUxObXlHOUpyd2NtZXFIWkRYQVF1VVYxcWJtcGo0clEwRVh5c0U0eUxGa2t0ZzZPam1GRkh2b2sxZ2lKdzRPVmlwMEhNSnlyUlIwQmpSSlQ2SS1mWlZ1YllXTWFhVGY2MGFzdTNGbGVoTmFqU1ViOUtldFlXS0JWSUg5MUpjWXBtVGcxd1JON2tKRVJkNDBRbzhGd085YS0xbzRuelY2VU1ScTFlZF9PekhZ?oc=5",
+        "https://www.cnbc.com/2026/11/24/anthropic-stock-ipo-price.html"
+      ]
+    },
+    {
+      "titulo": "Sale con fianza el exempleado acusado de espiar en OpenAI",
+      "candidata": 10,
+      "resumen": "Abdulrahman Alfozan, acusado de poner un micrófono en una sala de reuniones de OpenAI, sale con una fianza de un millón de dólares. Según la fiscalía, grabó decenas de reuniones.",
+      "motivo": "Solo hay una fuente legible (Tom's Hardware) y es una acusación grave contra una persona con nombre: exige 'presuntamente', atribución y su versión. Mejor esperar a que haya más fuentes legibles o novedades en el juicio.",
+      "enlaces": [
+        "https://www.tomshardware.com/tech-industry/artificial-intelligence/saudi-openai-eavesdropper-who-bugged-company-office-had-hundreds-of-private-recordings-was-in-frequent-communication-with-saudi-government-perp-had-dozens-of-recordings-of-discussions-of-trade-secrets",
+        "https://www.bloomberg.com/news/articles/2026-11-24/openai-staffer-charged-with-planting-bug-released-on-bond",
+        "https://www.nytimes.com/2026/11/23/technology/openai-engineer-secret-recordings.html",
+        "https://www.cnbc.com/2026/11/24/openai-bugging-aflozan-release-saudi.html"
+      ]
+    },
+    {
+      "titulo": "Rusia podría lanzar pronto un satélite con arma nuclear",
+      "resumen": "Según informes de inteligencia, el Sputnik-S podría lanzarse en diciembre y dañar miles de satélites. El Kremlin lo niega.",
+      "motivo": "Sigue siendo relevante, pero hoy no hay novedades y no cabe. Entra si otros gobiernos u organismos lo confirman o si se acerca el lanzamiento. Enlaces de la memoria: elconfidencial.com, tomshardware.com y arstechnica.com."
+    },
+    {
+      "titulo": "OpenAI dice que GPT-6 diseña proteínas sin modelos biológicos especializados",
+      "candidata": 18,
+      "resumen": "Según OpenAI, los modelos GPT-6 diseñan formas y secuencias de proteínas solo con razonamiento y código. Nature recoge que los científicos están impresionados con las nuevas capacidades biológicas de Claude y ChatGPT.",
+      "motivo": "Es un tema muy bueno para profundizar en un día más flojo, pero las fuentes son el propio anuncio de OpenAI y Nature (por Google News). Hay que mirar con calma qué está demostrado de verdad.",
+      "enlaces": [
+        "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities/",
+        "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+        "https://news.google.com/rss/articles/CBMiX0FVX3lxTE56M3ctd1hnemNzRWR2dGpselpLc2hQZ19mdWVuYS1vUkZtR0VPNFRfYjJjaHktZTBzalFkYzR1UHk4akd1NHNPX1lLZEV3Q2JqLTZIRk9xQ1BjOUhpTEI0?oc=5"
+      ]
+    },
+    {
+      "titulo": "Amazon compra la tecnología de Decart por unos 7.500 millones",
+      "resumen": "Amazon se queda con la tecnología de optimización de IA de Decart y ficha a su equipo, mientras se prepara para vender sus chips Trainium.",
+      "motivo": "Sigue sin hueco. Encaja en una noticia sobre la competencia con Nvidia en chips de IA. Enlaces de la memoria: TechCrunch, CNBC y The Register."
+    }
+  ],
+  "revision_humana": {
+    "aprobado": false,
+    "publicacion_automatica": true,
+    "cuando": "2026-11-25T07:42",
+    "nota": "Publicado solo tras las comprobaciones automáticas; lo revisan personas después, al escucharlo."
+  }
+}
