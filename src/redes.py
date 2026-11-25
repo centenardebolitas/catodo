@@ -20,8 +20,8 @@ repite, no se publica dos veces. Si una red falla, las demás siguen; al final, 
 ha fallado, termina con error para que ops lo avise. Si en el aviso del episodio se eligió
 «No difundir en redes», en ese mismo JSON queda `vetado` y aquí no se publica nada.
 
-Las credenciales llegan por el entorno (en el Mac, de .env): BLUESKY_HANDLE y
-BLUESKY_APP_PASSWORD; META_PAGE_ID, META_PAGE_TOKEN e INSTAGRAM_USER_ID; THREADS_USER_ID y
+Las credenciales llegan por el entorno (en el Mac, de .env): BLUESKY_APP_PASSWORD (la
+cuenta, `redes.bluesky` de settings.yaml); META_PAGE_ID, META_PAGE_TOKEN e INSTAGRAM_USER_ID; THREADS_USER_ID y
 THREADS_TOKEN; YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET y YOUTUBE_REFRESH_TOKEN. El token
 de Threads dura 60 días: se renueva solo cada semana y el renovado se guarda en
 CATODO_ESTADO (en ops, el HOME del trabajo, que no se borra entre ejecuciones).
@@ -177,6 +177,7 @@ def falta(env, *nombres):
 
 
 def bluesky(datos, env, medios):
+    env = {"BLUESKY_HANDLE": AJUSTES.get("bluesky"), **{k: v for k, v in env.items() if v}}
     falta(env, "BLUESKY_HANDLE", "BLUESKY_APP_PASSWORD")
     sesion = pedir("POST", f"{BLUESKY}/com.atproto.server.createSession",
                    json={"identifier": env["BLUESKY_HANDLE"], "password": env["BLUESKY_APP_PASSWORD"]})
