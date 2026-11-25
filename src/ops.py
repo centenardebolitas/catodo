@@ -135,6 +135,17 @@ PASOS = [("src/fetch.py", False), ("src/rank.py", True), ("src/script.py", True)
          ("src/tts.py", False), ("src/mix.py", False)]
 
 
+def pasos_pendientes(fecha):
+    """Los pasos que faltan. Si el guion ya está terminado (script.py escribe memoria.json lo
+    último), se retoma desde la voz: así un fallo en la mezcla no obliga a repetir noticias y
+    guion. tts.py ya se salta los bloques sintetizados."""
+    if (EPISODIOS / fecha / "memoria.json").exists():
+        hechos = {"src/fetch.py", "src/rank.py", "src/script.py"}
+        print(f"El guion del {fecha} ya está hecho: retomo desde la voz.", flush=True)
+        return [(s, c) for s, c in PASOS if s not in hechos]
+    return PASOS
+
+
 def paso(script, fecha, token):
     """Un paso de la preparación, en su proceso. Con token, por un descriptor suyo."""
     env = {k: v for k, v in os.environ.items() if k != "OPS_CLAUDE_TOKEN_FD"}
@@ -167,7 +178,7 @@ def preparar(fecha):
 def publicar(fecha):
     """Prepara el episodio del día y lo publica solo (commit sin push: lo empuja ops)."""
     token = claude_cli.token_ops()  # lo primero: luego ya no se puede leer
-    for script, con_claude in PASOS:
+    for script, con_claude in pasos_pendientes(fecha):
         print(f"== {script}", flush=True)
         paso(script, fecha, token if con_claude else None)
     portada(fecha)

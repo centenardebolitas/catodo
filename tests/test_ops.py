@@ -82,6 +82,15 @@ class PublicacionSola(unittest.TestCase):
         self.assertIn("make corregir", cuerpo)
         self.assertNotIn("make aprobar", cuerpo)
 
+    def test_retoma_desde_la_voz_si_el_guion_esta_hecho(self):
+        with tempfile.TemporaryDirectory() as dir:
+            with unittest.mock.patch.object(ops, "EPISODIOS", Path(dir)):
+                self.assertEqual([s for s, _ in ops.pasos_pendientes("2026-11-25")],
+                                 ["src/fetch.py", "src/rank.py", "src/script.py", "src/tts.py", "src/mix.py"])
+                (Path(dir) / "2026-11-25").mkdir()
+                (Path(dir) / "2026-11-25" / "memoria.json").write_text("{}")
+                self.assertEqual(ops.pasos_pendientes("2026-11-25"), [("src/tts.py", False), ("src/mix.py", False)])
+
     def test_aviso_en_el_fichero_de_ops_con_una_sola_opcion(self):
         with tempfile.TemporaryDirectory() as dir:
             carpeta = Path(dir) / "2026-11-26"
