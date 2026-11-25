@@ -64,6 +64,7 @@ ESQUEMA_ESCALETA = {
                     "titulo": {"type": "string"},
                     "resumen": {"type": "string"},
                     "motivo": {"type": "string"},
+                    "anunciar": {"type": "boolean"},
                 },
                 "required": ["titulo", "motivo"],
             },
@@ -141,8 +142,9 @@ ESQUEMA_FINAL = {
                     "titulo": {"type": "string"},
                     "resumen": {"type": "string"},
                     "asuntos_abiertos": {"type": "array", "items": {"type": "string"}},
+                    "temas": {"type": "array", "items": {"type": "string"}},
                 },
-                "required": ["titulo", "resumen", "asuntos_abiertos"],
+                "required": ["titulo", "resumen", "asuntos_abiertos", "temas"],
             },
         },
         "emojis": {"type": "array", "items": {"type": "string"}},
@@ -162,6 +164,8 @@ Unos {minutos} minutos en total: entre {palabras_min} y {palabras_max} palabras 
 # Memoria de episodios anteriores
 {memoria}
 
+{antecedentes}
+
 # Candidatas de hoy
 Cada candidata ya cumple la regla de al menos dos grupos editoriales independientes. Están ordenadas por relevancia estimada (más grupos y fuentes, más arriba), pero la decisión es tuya.
 
@@ -170,13 +174,14 @@ Cada candidata ya cumple la regla de al menos dos grupos editoriales independien
 # Tu tarea
 1. Elige y ordena las noticias del episodio. La más importante primero.
 2. Para cada una, define el ángulo: qué contar, por qué le importa al oyente de España, y la pregunta escéptica (quién paga, quién controla, si de verdad funciona).
-3. Usa la memoria: si una candidata continúa una historia ya contada, márcala como "seguimiento" y explica la conexión. No repitas lo ya contado salvo lo necesario para entender la novedad.
+3. Usa la memoria: si una candidata continúa una historia ya contada, márcala como "seguimiento" y explica la conexión en "conexion_con_anteriores". No repitas lo ya contado salvo lo necesario para entender la novedad. Los antecedentes de hace más de una semana, solo si la noticia de hoy de verdad depende de ellos o los completa; si no, ignóralos.
 4. Las pendientes de días anteriores pueden entrar (tipo "pendiente") si siguen siendo relevantes; sus enlaces están en la memoria.
 5. Si el día es flojo, en vez de rellenar, profundiza en una noticia o cuenta su contexto (tipo "profundizacion").
 6. En "enlaces" pon las URL de la noticia: al menos dos de grupos distintos, preferiblemente artículos originales y no agregadores ni redes sociales. Los enlaces marcados "NO LEER CON IA" son de medios que no permiten que una IA lea sus artículos: cuentan como cobertura y se citan en las notas, pero la redacción no podrá abrirlos. Asegúrate de que cada noticia tenga al menos un enlace legible (mejor dos).
-7. En "pendientes", las candidatas buenas que no caben hoy y podrían contarse mañana, con su motivo.
+7. En "pendientes", las candidatas buenas que no caben hoy y podrían contarse mañana, con su motivo. Como mucho una puede llevar "anunciar": true, y la mayoría de días ninguna: solo si es de verdad importante, seguirá siendo noticia en el próximo episodio y apetece contarla con calma (no algo urgente que habría que contar hoy). Se anuncia en el cierre ("mañana te cuento…") y el próximo episodio queda obligado a contarla, así que no anuncies si dudas. Mira en la memoria cuántas veces se ha anunciado algo últimamente: más de una o dos veces por semana ya suena a coletilla.
 8. En "candidata", el número de la candidata (o null si es un seguimiento o pendiente de otro día).
-9. Si la memoria trae correcciones que hay que mencionar, inclúyelas: una frase breve y clara en la apertura o antes de la noticia relacionada, reconociendo el error y dando el dato correcto. Indícalo en el comentario.
+9. Si la memoria trae algo anunciado para hoy, inclúyelo en la escaleta (es una promesa al oyente). Solo si ha perdido todo el interés se deja fuera, y entonces una frase breve lo explica; indícalo en el comentario.
+10. Si la memoria trae correcciones que hay que mencionar, inclúyelas: una frase breve y clara en la apertura o antes de la noticia relacionada, reconociendo el error y dando el dato correcto. Indícalo en el comentario.
 """
 
 REDACCION = """Eres el redactor de Cátodo. Escribe el guion completo del episodio a partir de la escaleta.
@@ -244,7 +249,8 @@ CRITICA = """Eres el abogado del diablo de Cátodo. Tu trabajo es rebatir el gui
 - Exceso de fechas o cifras; frases difíciles de seguir al oído.
 - Calcos del inglés y expresiones que suenan a traducción o a doblaje ("con una pizca de sal", "al final del día", "hacer sentido"…): señálalos todos con su alternativa natural en español de España.
 - Humor: ¿funciona?, ¿sobra?, ¿falta?, ¿es geek sin ser forzado?
-- Memoria: ¿se aprovechan los episodios anteriores?, ¿se repite algo ya contado?, ¿se finge recordar algo que no está en la memoria?
+- Memoria: ¿se aprovechan los episodios anteriores?, ¿se repite algo ya contado?, ¿se finge recordar algo que no está en la memoria? ¿Alguna referencia suena forzada (preguntas como "¿te acuerdas de…?", coletillas, recordar por recordar)? Deben ir dentro de la frase y solo cuando aportan.
+- Anuncio del próximo episodio: si lo hay, ¿es breve y natural?, ¿está en la escaleta como pendiente anunciada? Si no lo está, quítalo.
 - Ritmo, transiciones, gancho de la apertura, duración de cada bloque y del total.
 - Cumplimiento de la estructura, del cierre (sin nombrar a quienes revisan) y de las reglas de formato.
 Para cada crítica, propone un cambio concreto. Di también qué es lo mejor del guion, para no estropearlo.
@@ -277,7 +283,7 @@ Entre {palabras_min} y {palabras_max} palabras. Es un límite: si el guion se pa
 - "notas": las notas del episodio en Markdown, para publicar. Empiezan con una línea "# " con el título del episodio tal y como se verá en las apps de podcasts: corto (máximo unos 80 caracteres), con las dos o tres noticias principales y sin número de episodio ni fecha (por ejemplo, "# Huang vuelve a Nvidia, Riemann pasa por Lean y un día de bugs"). Después, un título propio por noticia, una frase de resumen con tus palabras y los enlaces a las fuentes (de la escaleta, tanto los leídos como los "solo citar"). El texto de cada enlace es SOLO el nombre del medio, por ejemplo [Bloomberg](url) o [Xataka](url); nunca copies el titular del artículo. No pongas nunca enlaces de news.google.com: usa la URL original del artículo (está en las URL leídas por la redacción) y, si no la tienes, deja ese medio fuera de las notas. Al final, el aviso: "Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es."
 - "cambios": lista breve de lo que has cambiado respecto al guion anterior.
 - "dudas_para_revisor": lo que el humano que revisa debería mirar con atención (datos que no se pudieron confirmar del todo, decisiones discutibles).
-- "contadas": para la memoria de próximos episodios, una entrada por noticia contada con un resumen de lo que se dijo y los asuntos abiertos (lo que puede pasar después y conviene seguir).
+- "contadas": para la memoria de próximos episodios, una entrada por noticia contada con un resumen de lo que se dijo, los asuntos abiertos (lo que puede pasar después y conviene seguir) y "temas": de tres a seis temas concretos para encontrarla dentro de meses (empresas, personas, productos, leyes, casos: "Nvidia", "Jensen Huang", "controles de exportación de chips"), nunca genéricos como "IA", "tecnología" o "Estados Unidos".
 - "emojis": el guion final escrito en emojis, para la portada del episodio. Una cadena por párrafo, siguiendo estas reglas:
 
 {reglas_emojis}
@@ -419,8 +425,10 @@ def main():
                                  tiempo_max=cl["tiempo_max_pasada_s"])
 
     try:
-        escaleta = pasada(1, "editor", EDITOR.format(candidatas=texto_candidatas(news, reservas), **comunes),
-                          ESQUEMA_ESCALETA)
+        candidatas = texto_candidatas(news, reservas)
+        escaleta = pasada(1, "editor", EDITOR.format(
+            candidatas=candidatas, antecedentes=memoria.antecedentes(args.fecha, candidatas, mem["dias"]),
+            **comunes), ESQUEMA_ESCALETA)
         # Las pendientes guardan los enlaces de su candidata para poder contarlas otro día.
         for p in escaleta["pendientes"]:
             c = p.get("candidata")
@@ -430,6 +438,10 @@ def main():
         (carpeta / "escaleta.json").write_text(json_bonito(escaleta), encoding="utf-8")
         texto_escaleta = json_bonito(preparar_escaleta(escaleta, reservas))
         reservas.guardar()
+        # Redacción y crítica ven los antecedentes de lo que ha entrado de verdad en la escaleta.
+        previos = memoria.antecedentes(args.fecha, json_bonito(escaleta["escaleta"]), mem["dias"])
+        if previos:
+            comunes["memoria"] = f"{contexto}\n\n{previos}"
 
         borrador = pasada(2, "redaccion", REDACCION.format(escaleta=texto_escaleta, **comunes),
                           ESQUEMA_GUION, LEER_FUENTES)

@@ -23,7 +23,7 @@ import tempfile
 from pathlib import Path
 
 import mix
-from comun import EPISODIOS, RAIZ
+from comun import EPISODIOS, RAIZ, cargar_yaml
 from feed import marca
 
 FORMATO = "1.2.0"
@@ -46,10 +46,11 @@ def linea_de_tiempo(carpeta):
     intro = RAIZ / "assets" / "sintonia_intro.wav"
     bzz = mix.duracion(separador) if separador.exists() else 0
     t = mix.SOLAPE_INTRO_S if intro.exists() else 0.0
+    tempo = cargar_yaml("settings.yaml")["audio"].get("tempo_voz", 1.0)  # mix.py ralentiza la voz
     inicios = []
     for n, (titulo, bloque) in enumerate(zip(titulos, bloques)):
         inicios.append((titulo, t))
-        t += mix.duracion(bloque)
+        t += mix.duracion(bloque) / tempo
         if n == len(bloques) - 1:
             break
         if separador.exists() and titulo.lower().startswith("noticia"):

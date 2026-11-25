@@ -11,6 +11,11 @@
         "Reacción del Congreso y posibles iniciativas sobre la intervención del gobierno",
         "Si Megaspeed recurre su inclusión en la lista negra o hay nuevas sanciones",
         "Evolución de la acción de Nvidia y críticas al gobierno corporativo"
+      ],
+      "temas": [
+        "Nvidia",
+        "Jensen Huang",
+        "Megaspeed"
       ]
     },
     {
@@ -21,6 +26,11 @@
         "Votación de los accionistas de Zscaler",
         "Cierre previsto en la segunda mitad del año fiscal 2028 de CrowdStrike",
         "Reacción de la competencia y posibles nuevas fusiones en ciberseguridad"
+      ],
+      "temas": [
+        "CrowdStrike",
+        "Zscaler",
+        "ciberseguridad"
       ]
     },
     {
@@ -31,6 +41,12 @@
         "Si se suman otros estados (no mencioné California por no estar verificado)",
         "Resultado de la investigación de Ofcom",
         "Posibles actuaciones en la Unión Europea (no contadas por no estar verificadas)"
+      ],
+      "temas": [
+        "SpaceX",
+        "Grok",
+        "xAI",
+        "deepfakes"
       ]
     },
     {
@@ -40,6 +56,12 @@
         "Llegada efectiva de Drive y Gemini en las próximas semanas",
         "Si la función llega a Europa y a España, y en qué condiciones",
         "Reacciones de reguladores o expertos en privacidad sobre el uso publicitario"
+      ],
+      "temas": [
+        "Google",
+        "Modo IA",
+        "Google Wallet",
+        "Gemini"
       ]
     },
     {
@@ -49,6 +71,11 @@
         "Salida de la beta y disponibilidad general",
         "Primeros casos de uso o problemas con aprobaciones automáticas",
         "Respuesta de la competencia (GitHub, OpenAI, Google) con herramientas parecidas"
+      ],
+      "temas": [
+        "Anthropic",
+        "Claude Ship",
+        "Claude"
       ]
     },
     {
@@ -59,6 +86,11 @@
         "Maniobras de corrección de la órbita y combustible disponible",
         "Impacto en la ciencia y en la separación de los dos orbitadores",
         "Inicio de la fase científica, previsto para la primavera de 2027"
+      ],
+      "temas": [
+        "BepiColombo",
+        "Mercurio",
+        "ESA"
       ]
     }
   ],

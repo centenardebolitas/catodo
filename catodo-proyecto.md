@@ -34,7 +34,7 @@ Documento de arranque del proyecto. Contiene el concepto, las decisiones ya toma
 - Actitud positiva ante la tecnología, con un punto de escepticismo: se ilusiona con los anuncios, pero siempre se pregunta quién paga, quién lo controla y si de verdad funciona.
 - Algo de opinión y humor, sin pasarse. Humor con un punto geek (referencias a informática, ciencia y cultura friki), nunca forzado. Nada de tono de locutor de telediario.
 - Humilde: reconoce que puede equivocarse. De vez en cuando, cuando algo no está del todo claro, lo dice ("si me equivoco, corregidme") y agradece las correcciones.
-- Tiene memoria: recuerda lo que contó en episodios anteriores y lo usa ("¿os acordáis de lo que os contaba ayer de...?").
+- Tiene memoria: recuerda lo que contó en episodios anteriores y lo usa cuando ayuda, con una mención breve dentro de la frase ("lo de Nvidia que te contaba ayer ha dado otro paso"), nunca como coletilla ni pregunta retórica.
 - El nombre viene del electrodo por el que salen los electrones: es el que emite.
 
 ## Estructura del episodio
@@ -65,6 +65,8 @@ Es la clave del proyecto: Cátodo no empieza de cero cada día.
 
 - **Memoria:** al publicar cada episodio se guarda qué noticias se contaron, con un resumen breve y los asuntos abiertos ("Huang declarará ante el Senado la semana que viene"). Al preparar el siguiente, el editor recibe la memoria de los últimos días.
 - **Pendientes:** las buenas noticias que no caben en un episodio quedan pendientes y se pueden contar al día siguiente si siguen siendo relevantes.
+- **Anuncios (decidido el 25 de noviembre de 2026):** de vez en cuando, si una pendiente es de verdad importante, el cierre la deja para el próximo episodio ("mañana lo vemos con calma"). Como mucho una por episodio y la mayoría de días ninguna; la memoria la marca como anunciada y el editor del día siguiente está obligado a contarla (o a explicar por qué no).
+- **Índice de temas (decidido el 25 de noviembre de 2026):** cada noticia contada guarda de tres a seis temas concretos (empresas, personas, productos, casos). Al preparar un episodio, las noticias de hace más de una semana que comparten tema con las de hoy llegan al editor, a la redacción y a la crítica como antecedentes, para enlazarlas solo cuando la de hoy depende de ellas o las completa. Debe ser sutil: lo normal es no usarlas.
 - **Seguimiento:** si una historia de días anteriores avanza, se cuenta como continuación y se enlaza con lo ya dicho.
 - **Días flojos:** si hay pocas noticias, se profundiza en alguna, se cuenta el contexto o la historia detrás de una noticia, o se hace seguimiento de anteriores. No se rellena con noticias menores.
 
@@ -279,6 +281,11 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 - Se eligió en dos pruebas a ciegas (`pruebas/`). En la primera, la voz favorita fue ElevenLabs "David Martin - Confident and Friendly" (Eleven v4), pero Gemini sale unas tres veces más barato. En la segunda se probaron las voces nativas de España del catálogo ampliado de Gemini (`es-es-*`).
 - Producción en la capa de pago: la gratuita solo permite 10 peticiones al día y Google usa esos datos para mejorar sus productos.
 - Configurado: proyecto `catodo` en Google AI Studio (Nivel 1, con facturación), clave `catodo-produccion` en `.env` y límite de gasto de la API de Gemini de 10 €/mes (función experimental de AI Studio; puede pasarse unos minutos antes de cortar). El crédito de bienvenida de Google Cloud no sirve para pagar la API de Gemini.
+
+## Ritmo (25 de noviembre de 2026)
+
+- Los dos primeros episodios se hacen algo acelerados para la cantidad de contenido (unos 10,5 minutos para casi 2000 palabras). Se quiere el mismo contenido en unos 12 minutos.
+- `audio.tempo_voz` en `settings.yaml` ralentiza solo la voz al mezclar, sin cambiar el tono (los capítulos lo tienen en cuenta). Se puede combinar con un estilo de voz más pausado. Pendiente de elegir entre las muestras.
 
 ## Decisiones pendientes
 

@@ -44,5 +44,7 @@ def persona(fecha):
     """config/persona.md con lo que depende del día del episodio (la despedida)."""
     texto = (CONFIG / "persona.md").read_text(encoding="utf-8")
     dia = DIAS[date.fromisoformat(fecha).weekday()]
+    proximo = "el lunes" if date.fromisoformat(fecha).weekday() >= 4 else "mañana"
     return (f"{texto.rstrip()}\n\n## Este episodio\n\n- Se publica un {dia}. "
-            f"La despedida de hoy es exactamente: \"{despedida(fecha)}\"\n")
+            f"La despedida de hoy es exactamente: \"{despedida(fecha)}\"\n"
+            f"- El próximo episodio sale {proximo}.\n")

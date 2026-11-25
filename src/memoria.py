@@ -20,6 +20,7 @@ import argparse
 import json
 import re
 import sys
+import unicodedata
 from datetime import date, datetime, timedelta
 
 from comun import EPISODIOS, cargar_yaml
@@ -83,6 +84,16 @@ def contexto(fecha, dias=7, dias_pendientes=3):
         for dia, c in correcciones:
             partes.append(f"- Sobre el episodio del {dia}: {c['texto']}")
 
+    anunciadas = [p for p in episodios[0][2].get("pendientes", []) if p.get("anunciar")]
+    if anunciadas:
+        partes.append(f"\n## Anunciado en el episodio del {episodios[0][1]} para hoy (hay que contarlo)")
+        for p in anunciadas:
+            partes.append(f"- **{p['titulo']}**: {p.get('resumen', '')}"
+                          + (f" Enlaces: {', '.join(p['enlaces'][:3])}" if p.get("enlaces") else ""))
+    n_anuncios = sum(1 for n, dia, m in episodios[:5] for p in m.get("pendientes", []) if p.get("anunciar"))
+    partes.append(f"\n(En los últimos {min(len(episodios), 5)} episodios se anunció algo para el día "
+                  f"siguiente {n_anuncios} {'vez' if n_anuncios == 1 else 'veces'}.)")
+
     formulas = [(dia, apertura(dia), cierre(dia)) for n, dia, m in episodios[:5]]
     formulas = [(dia, a, c) for dia, a, c in formulas if a or c]
     if formulas:
@@ -97,6 +108,54 @@ def contexto(fecha, dias=7, dias_pendientes=3):
         for n, dia, p in pendientes:
             partes.append(f"- ({dia}) **{p['titulo']}**: {p.get('resumen', '')} Motivo: {p.get('motivo', '')}"
                           + (f" Enlaces: {', '.join(p['enlaces'][:3])}" if p.get("enlaces") else ""))
+    return "\n".join(partes)
+
+
+# Temas demasiado generales para enlazar episodios: casarían con casi todo.
+GENERICOS = {"ia", "inteligencia artificial", "tecnologia", "internet", "empresas", "gobierno",
+             "estados unidos", "eeuu", "europa", "china", "espana", "bolsa", "apps", "moviles"}
+
+
+def _normal(texto):
+    """Minúsculas y sin tildes, para comparar temas."""
+    sin = unicodedata.normalize("NFKD", texto.lower())
+    return "".join(c for c in sin if not unicodedata.combining(c))
+
+
+def temas(contada):
+    """Los temas de una noticia contada. Si es de antes de que se guardaran, los nombres
+    propios de su título (salvo la primera palabra, que va en mayúscula igualmente)."""
+    if contada.get("temas"):
+        return [t for t in contada["temas"] if _normal(t) not in GENERICOS and len(t) >= 3]
+    palabras = re.findall(r"\w[\w.&-]*", contada.get("titulo", ""))
+    return [w for w in palabras[1:] if w[0].isupper() and len(w) >= 3 and _normal(w) not in GENERICOS]
+
+
+def antecedentes(fecha, texto, dias=7, maximo=8):
+    """Índice de temas: lo que se contó hace más de `dias` días sobre algo que aparece en
+    `texto` (las candidatas o la escaleta de hoy). Texto en Markdown, o "" si no hay nada."""
+    hoy = date.fromisoformat(fecha)
+    limite = (hoy - timedelta(days=dias)).isoformat()
+    buscado = _normal(texto)
+    encontradas = []
+    for ruta in sorted(EPISODIOS.glob("*/memoria.json"), reverse=True):
+        dia = ruta.parent.name
+        if dia >= limite:
+            continue
+        m = json.loads(ruta.read_text(encoding="utf-8"))
+        if not m.get("publicado"):
+            continue
+        for c in m.get("contadas", []):
+            coinciden = [t for t in temas(c) if re.search(rf"\b{re.escape(_normal(t))}\b", buscado)]
+            if coinciden:
+                encontradas.append((dia, c, coinciden))
+    if not encontradas:
+        return ""
+    partes = ["## Antecedentes de hace más de una semana (índice de temas)",
+              "Noticias antiguas que comparten tema con las de hoy. Úsalas solo si la de hoy depende de "
+              "ellas o las completa, con una mención breve dentro de la frase. Lo normal es no usarlas."]
+    for dia, c, coinciden in encontradas[:maximo]:
+        partes.append(f"- ({dia}, por {', '.join(coinciden)}) **{c['titulo']}**: {c['resumen']}")
     return "\n".join(partes)
 
 

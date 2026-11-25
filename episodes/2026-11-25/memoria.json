@@ -11,6 +11,12 @@
         "Si el gobierno de EEUU entra en el capital de Nvidia",
         "Evolución en bolsa y debate sobre el plan de sucesión",
         "Posibles cambios en los controles de exportación de chips a China"
+      ],
+      "temas": [
+        "Nvidia",
+        "Jensen Huang",
+        "Congreso de Estados Unidos",
+        "Megaspeed"
       ]
     },
     {
@@ -20,6 +26,11 @@
         "Fecha y cuantía de la pena",
         "Recurso de Huawei",
         "Reacción de China y efectos en el debate europeo sobre proveedores de telecomunicaciones"
+      ],
+      "temas": [
+        "Huawei",
+        "Meng Wanzhou",
+        "sanciones a Irán"
       ]
     },
     {
@@ -28,6 +39,11 @@
       "asuntos_abiertos": [
         "Cómo funciona la detección a partir del 9 de diciembre y cuántas reclamaciones hay",
         "Si Spotify, Apple Music u otras plataformas siguen el mismo camino"
+      ],
+      "temas": [
+        "Tidal",
+        "música generada con IA",
+        "Bandcamp"
       ]
     },
     {
@@ -37,6 +53,12 @@
         "Si Microsoft cumple el objetivo de una hora",
         "Nuevas caídas en grandes servicios",
         "Informe final de la causa"
+      ],
+      "temas": [
+        "Microsoft",
+        "Outlook",
+        "Teams",
+        "caídas de servicios"
       ]
     },
     {
@@ -46,6 +68,11 @@
         "Si Muse llega a la Unión Europea y a España",
         "Respuesta de los reguladores británicos",
         "Más bancos que bloqueen agentes de IA"
+      ],
+      "temas": [
+        "Meta",
+        "Muse",
+        "Instagram"
       ]
     },
     {
@@ -54,6 +81,12 @@
       "asuntos_abiertos": [
         "Anuncio oficial de la versión de PC",
         "Acciones legales de Take-Two contra otros proyectos o contra los responsables de la filtración"
+      ],
+      "temas": [
+        "Take-Two",
+        "GTA VI",
+        "Leonida",
+        "Rockstar"
       ]
     }
   ],

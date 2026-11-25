@@ -90,6 +90,16 @@ def main():
             suaves.append(suave)
         bloques = suaves
 
+    # Ritmo: la voz (solo la voz, no la sintonía) se ralentiza sin cambiar el tono.
+    tempo = audio.get("tempo_voz", 1.0)
+    if tempo != 1.0:
+        lentos = []
+        for b in bloques:
+            lento = Path(temporal.name) / f"lento-{b.name}"
+            ffmpeg("-i", str(b), "-af", f"atempo={tempo}", str(lento))
+            lentos.append(lento)
+        bloques = lentos
+
     intro = RAIZ / "assets" / "sintonia_intro.wav"
     outro = RAIZ / "assets" / "sintonia_outro.wav"
     piezas = []  # (ruta o None para silencio, segundos de silencio)
