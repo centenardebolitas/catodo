@@ -274,7 +274,9 @@ Guíame paso a paso en lo que tenga que hacer yo en los paneles web, y haz tú l
 | Apple Podcasts y Spotify | 0 € |
 | **Total** | **unos 4 a 7 $/mes** |
 
-Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22 episodios de 12 min son unos 400.000 tokens de audio al mes: 9 $ por millón hasta fin de 2026 y 18 $ por millón después, más el texto de entrada, que es despreciable. El modo por lotes cuesta la mitad. Conviene poner una alerta de presupuesto en la cuenta de facturación.
+Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22 episodios de 12 min son unos 400.000 tokens de audio al mes: 9 $ por millón hasta fin de 2026 y 18 $ por millón después, más el texto de entrada, que es despreciable. El modo por lotes cuesta la mitad.
+
+Facturación real (25 de noviembre de 2026): la voz va por Google Cloud, que es pospago (se carga en la tarjeta a principios del mes siguiente). Mientras dure el crédito de bienvenida de Google Cloud (269,43 €, quedan 268,02 €, caduca el 22 de febrero de 2027) el gasto lo cubre el crédito. Presupuesto «Cátodo voz 5 €/mes» en la cuenta de facturación: solo alertas por correo al 50, 90 y 100 % (2,5, 4,5 y 5 €), sobre el gasto bruto, sin descontar créditos, para que avise aunque el crédito lo esté pagando. El prepago de 5 € de AI Studio solo lo usa la vía de respaldo `gemini_api`.
 
 ## Voz (decidido el 23 de noviembre de 2026)
 
