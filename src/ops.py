@@ -24,6 +24,9 @@ que ops abre en el móvil: resumen, puntos a comprobar, orden del episodio y los
 enlaces para escucharlo y leerlo. Opciones: «Aprobar y programar» y «No publicar»,
 que es la de por defecto porque no cambia nada.
 
+difundir: lo de catodo.difundir, a media mañana: el episodio del día en las redes
+activas (src/redes.py). En el aviso de publicar, «No difundir en redes» lo impide.
+
 responder: lo corre ops cuando Ulises contesta. Con un texto (OPS_DECISION_TEXT, sin
 opción) aplica el comentario al guion y deja una versión nueva para revisar
 (corregir; ver src/comentarios.py). Con una opción (OPS_DECISION_OPTION). Con
@@ -50,6 +53,7 @@ from comun import persona as persona_del_dia
 
 CARPETA_REVISION = "revision"
 OPCION_VISTO = "visto"
+OPCION_NO_DIFUNDIR = "no-difundir"
 OPCION_APROBAR = "aprobar"
 OPCION_NO_PUBLICAR = "no-publicar"
 OPCIONES = [
@@ -178,6 +182,16 @@ def publicar(fecha):
     aviso_publicado(fecha)
 
 
+def difundir(fecha):
+    """catodo.difundir: el episodio del día en las redes activas (src/redes.py). Falla si
+    alguna red falla, para que ops lo avise; las demás se publican igual."""
+    import redes
+    resultados = redes.difundir(fecha)
+    fallos = {r: v["error"] for r, v in resultados.items() if "error" in v}
+    if fallos:
+        sys.exit("Han fallado: " + "; ".join(f"{r}: {e}" for r, e in fallos.items()))
+
+
 def cuerpo_aviso(fecha, revision_md, publicacion, rama):
     """El aviso de un episodio que ya ha salido: el enlace y lo que conviene mirar al escucharlo."""
     partes = secciones(revision_md)
@@ -209,6 +223,18 @@ def cuerpo_aviso(fecha, revision_md, publicacion, rama):
     return texto
 
 
+def opciones_aviso():
+    """«Visto» y, si hay redes activas, «No difundir en redes» (catodo.difundir lo respeta)."""
+    opciones = [{"key": OPCION_VISTO, "label": "Visto"}]
+    try:  # el episodio ya está publicado: nada de aquí puede tumbar el aviso
+        import redes
+        if redes.activas():
+            opciones.append({"key": OPCION_NO_DIFUNDIR, "label": "No difundir en redes"})
+    except Exception as e:  # noqa: BLE001
+        print(f"Aviso: no se han podido leer las redes activas ({e}).")
+    return opciones
+
+
 def aviso_publicado(fecha):
     """Deja en OPS_DECISION_FILE el aviso del episodio publicado, con una sola opción."""
     destino = os.environ.get("OPS_DECISION_FILE")
@@ -221,7 +247,7 @@ def aviso_publicado(fecha):
     datos = {
         "message": cuerpo_aviso(fecha, revision.read_text(encoding="utf-8") if revision.exists() else "",
                                 publicacion, os.environ.get("OPS_GIT_PUSH", "main")),
-        "decision": {"title": f"Cátodo {fecha}: publicado", "options": [{"key": OPCION_VISTO, "label": "Visto"}],
+        "decision": {"title": f"Cátodo {fecha}: publicado", "options": opciones_aviso(),
                      "defaultOption": OPCION_VISTO, "allowFreeText": False},
     }
     Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
@@ -442,6 +468,13 @@ def responder():
     if opcion == OPCION_VISTO:
         nota(f"Visto el episodio del {fecha}.")
         return
+    if opcion == OPCION_NO_DIFUNDIR:
+        import redes
+        estado = redes.vetar(fecha, f"«No difundir en redes» en ops (decisión {id_decision}).", env)
+        hechas = ", ".join(estado.get("redes", {})) or "ninguna"
+        nota(f"No se difunde el episodio del {fecha} en redes. Ya publicadas antes de elegirlo: {hechas} "
+             "(esas hay que borrarlas a mano).")
+        return
     if not opcion:
         # Un comentario: el texto no autoriza a publicar, solo a preparar otra versión.
         corregir(fecha, texto, hilo, nota)
@@ -485,6 +518,8 @@ def main():
     abrir = ordenes.add_parser("decision", help="sube el audio de revisión y deja la decisión para ops")
     abrir.add_argument("--fecha", required=True)
     ordenes.add_parser("responder", help="aplica la opción que ha elegido Ulises")
+    redes_ = ordenes.add_parser("difundir", help="publica el episodio del día en las redes activas")
+    redes_.add_argument("--fecha", required=True)
     args = parser.parse_args()
     if args.orden == "publicar":
         publicar(args.fecha)
@@ -492,6 +527,8 @@ def main():
         preparar(args.fecha)
     elif args.orden == "decision":
         decision(args.fecha)
+    elif args.orden == "difundir":
+        difundir(args.fecha)
     else:
         responder()
 

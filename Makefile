@@ -6,7 +6,7 @@ FECHA  ?= $(shell if [ $$(date +%H) -ge 15 ]; then date -v+1d +%Y-%m-%d; else da
 PLIST  := $(HOME)/Library/LaunchAgents/es.catodo.noche.plist
 
 .DEFAULT_GOAL := ayuda
-.PHONY: ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio portada noche programar instalar-noche desinstalar-noche publicar simulacro feed probar-voces
+.PHONY: redes ayuda instalar noticias guion preparar memoria aprobar marcar-publicado corregir reservas voz audio portada noche programar instalar-noche desinstalar-noche publicar simulacro feed probar-voces
 
 ayuda: ## Muestra esta ayuda
 	@echo "Cátodo: comandos disponibles"
@@ -76,6 +76,9 @@ desinstalar-noche: ## Quita la preparación automática de las 22:00
 
 publicar: ## Publica ya el episodio aprobado: R2, feed, web y push (sin esperar a las 6:00)
 	$(PYTHON) src/publish.py --fecha $(FECHA)
+
+redes: ## Vídeos y textos para las redes del episodio de FECHA, sin publicar nada
+	$(PYTHON) src/redes.py --fecha $(FECHA) --simulacro --solo bluesky,instagram,facebook,threads,youtube
 
 simulacro: ## Prueba la publicación sin subir nada (feed y web en una carpeta temporal)
 	$(PYTHON) src/publish.py --fecha $(FECHA) --simulacro

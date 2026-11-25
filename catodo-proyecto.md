@@ -17,7 +17,7 @@ Documento de arranque del proyecto. Contiene el concepto, las decisiones ya toma
 - **Subtítulo propuesto (pendiente de confirmar):** "Cátodo: tecnología cada mañana".
 - **Nombre interno del proyecto y repositorio:** `catodo`.
 - **Dominio:** `catodo.es` (ya comprado, pendiente de configurar en Cloudflare).
-- **Handles en redes:** `catodo` probablemente esté ocupado (lo usa un artista italiano); alternativa `catodofm`. Lo reviso yo.
+- **Handles en redes:** `catodofm` (comprobado el 25 de noviembre de 2026: `catodo` está ocupado en Instagram y en Bluesky; `catodofm` está libre en Instagram y en YouTube). En Bluesky, el propio dominio: `@catodo.es`.
 
 ## Concepto
 
@@ -291,6 +291,26 @@ Facturación real (25 de noviembre de 2026): la voz va por Google Cloud, que es 
 - Se probaron cuatro muestras: la actual, ralentizada un 10 %, con estilo de voz pausado y las dos cosas a la vez. Las ralentizadas no gustaron. Desde el 26 de noviembre, el estilo de voz en `settings.yaml` pide un ritmo pausado, con pausas breves entre frases (la muestra 3: un 7 % más largo, sutil).
 - `audio.tempo_voz` (ralentizar la voz al mezclar, con los capítulos ajustados) queda en 1.0, sin uso.
 
+## Redes (decidido el 25 de noviembre de 2026)
+
+Solo redes en las que se pueda publicar de forma automática. Sin X: su API ya no tiene plan gratuito (unos 0,20 $ por publicación con enlace). TikTok y LinkedIn, aparcados: TikTok solo deja publicar en cuentas privadas hasta pasar una auditoría, y LinkedIn no da a proyectos pequeños el permiso para publicar en una página.
+
+- **Qué se publica cada día** (`src/redes.py`, con los vídeos de `src/difusion.py`):
+  - Bluesky: el titular del episodio, los titulares que quepan y una tarjeta con el enlace a la página del episodio.
+  - Instagram (Reel), Facebook (vídeo de la página) y Threads: un clip vertical de 45-60 s con la primera noticia, con la portada del episodio, el título de la noticia, la forma de onda y subtítulos. Los subtítulos son el texto del guion: cada frase se coloca en proporción a su longitud y se lleva al silencio más cercano del audio.
+  - YouTube: el episodio entero en vídeo, con la portada y el título de cada capítulo (y los capítulos en la descripción), y el clip como Short. Se declara como contenido sintético.
+  - En todos los textos, «Guion y voz generados con IA y revisados por personas».
+- **Cuándo:** un trabajo nuevo de ops, `catodo.difundir`, de lunes a viernes a las 8:30, después de la escucha de las 7:30 (`scripts/ops/difundir.sh`). Comprueba antes que la página del episodio y el audio ya están publicados. En el aviso de las 5:00 aparece la opción «No difundir en redes»: si se elige, ese día no se publica nada en redes.
+- **Seguridad ante fallos:** lo publicado se apunta en R2 (`difusion/FECHA.json`) red a red, así que repetir el trabajo no publica dos veces. Si una red falla, las demás salen igual y el trabajo termina con error para que ops avise.
+- **Activación:** `redes.activas` en `config/settings.yaml` (vacío hasta tener las cuentas). `make redes` hace los vídeos y enseña los textos sin publicar nada.
+- **Estado:** código y pruebas hechos el 25 de noviembre de 2026. Falta crear las cuentas, guardar las credenciales en ops y dar de alta el trabajo en el manifiesto de ops. Se activa al terminar el piloto (hacia el 8 de diciembre).
+
+Alta de cuentas (las crea Ulises, con hola@catodo.es; los secretos se guardan en ops con `pbpaste | ssh ops 'sudo ops-jobs secret set NOMBRE'`):
+
+1. **Bluesky:** cuenta nueva y, en Ajustes › Cuenta › Identificador, el dominio `catodo.es` (registro TXT `_atproto` en Cloudflare). Una contraseña de aplicación: `catodo-bluesky-app-password`.
+2. **Meta:** cuenta de Instagram `catodofm` pasada a profesional (creador o empresa), una página de Facebook «Cátodo» vinculada a ella y Threads con la misma cuenta de Instagram. Una app en developers.facebook.com (tipo empresa) con los casos de uso de Instagram (publicar contenido), páginas y Threads. Con un token de usuario de Graph API Explorer (permisos `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `instagram_basic`, `instagram_content_publish`, `business_management`), `pbpaste | python src/redes.py autorizar-meta` da el token de la página, que no caduca (`catodo-meta-page-token`), y los ID de la página y de Instagram. Para Threads, `python src/redes.py autorizar-threads` da el token largo (`catodo-threads-token`; se renueva solo).
+3. **YouTube:** canal `@catodofm` con la cuenta de Google de Cátodo. En el proyecto de Google Cloud `catodo`: activar la YouTube Data API v3, pantalla de consentimiento en producción (si se queda en «prueba», el permiso caduca a los 7 días) y un cliente OAuth de escritorio. `python src/redes.py autorizar-youtube` da el refresh token (`catodo-youtube-refresh-token`). Si los vídeos se quedan en privado, hay que pedir la auditoría de la API.
+
 ## Decisiones pendientes
 
 - Subtítulo del podcast (propuesta: "tecnología cada mañana").
@@ -301,4 +321,4 @@ Facturación real (25 de noviembre de 2026): la voz va por Google Cloud, que es 
 - Licencia de la sintonía: confirmar que las condiciones de Google Cloud cubren su uso en un podcast.
 - Enlaces de Spotify por episodio: hoy no se automatizan (Apple sí).
 - Sección fija o muletilla del presentador, si la hay.
-- Handles en redes sociales.
+- Crear las cuentas de redes y activarlas (sección «Redes»).

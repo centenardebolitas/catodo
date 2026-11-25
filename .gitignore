@@ -48,3 +48,5 @@ assets/favicon/variante-*
 assets/favicon/comparativa.png
 episodes/*/portada.jpg
 episodes/*/portada-web.jpg
+# Vídeos para las redes (src/difusion.py): se rehacen cuando haga falta
+episodes/*/difusion/

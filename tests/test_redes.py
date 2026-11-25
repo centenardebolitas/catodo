@@ -1,0 +1,180 @@
+"""Pruebas de la difusión en redes (src/difusion.py y src/redes.py): python -m unittest discover -s tests"""
+
+import json
+import os
+import sys
+import tempfile
+import time
+import unittest
+from pathlib import Path
+from unittest import mock
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+import difusion  # noqa: E402
+import ops  # noqa: E402
+import redes  # noqa: E402
+
+CAPITULOS = [{"startTime": 0, "title": "Apertura"},
+             {"startTime": 23.6, "title": "Huang pide perdón y le espera Washington"},
+             {"startTime": 164.7, "title": "Veredicto contra Huawei en Estados Unidos, que recurrirá"},
+             {"startTime": 252.1, "title": "Tidal echa la música hecha solo con IA"},
+             {"startTime": 592.6, "title": "Cierre"}]
+DATOS = {"fecha": "2026-11-25", "titulo": "Huang pide perdón, Tidal veta la música hecha con IA y Microsoft en código rojo",
+         "capitulos": CAPITULOS,
+         "publicacion": {"numero": 2, "url_audio": "https://audio.catodo.es/e.mp3",
+                         "url_portada_web": "https://audio.catodo.es/p.jpg"}}
+
+
+class Subtitulos(unittest.TestCase):
+    def test_frases_y_trozos(self):
+        texto = "¿Te acuerdas de lo de Jensen Huang? Ayer te contaba que volvía.\n\nPues *su vuelta* no es tranquila."
+        self.assertEqual(difusion.frases(texto), ["¿Te acuerdas de lo de Jensen Huang?", "Ayer te contaba que volvía.",
+                                                  "Pues su vuelta no es tranquila."])
+        larga = "Según el New York Times y TechCrunch, en su primera reunión con toda la plantilla desde que volvió, Huang pidió perdón."
+        partes = difusion.trozos(larga)
+        self.assertEqual(" ".join(partes), larga)
+        self.assertTrue(all(len(p.split()) <= difusion.PALABRAS_SUBTITULO + 2 for p in partes))
+
+    def test_los_cortes_van_a_las_pausas_cercanas(self):
+        tiempos = difusion.repartir(["aaaa", "aaaa"], 0, 10, pausas=[5.8, 9.5])
+        self.assertEqual(tiempos, [(0, 5.8), (5.8, 10)])
+        lejos = difusion.repartir(["aaaa", "aaaa"], 0, 10, pausas=[8.0])
+        self.assertEqual(lejos, [(0, 5.0), (5.0, 10)])
+
+    def test_el_clip_acaba_en_una_frase_y_no_se_pasa(self):
+        texto = " ".join(f"Frase número {i} con unas cuantas palabras más." for i in range(40))
+        plan = difusion.plan_clip(texto, 100.0, 400.0, pausas=[])
+        self.assertLessEqual(plan[-1][2], difusion.CLIP_MAX_S + 0.01)
+        self.assertGreaterEqual(plan[-1][2], difusion.CLIP_MIN_S)
+        self.assertTrue(plan[-1][0].endswith("."))
+        self.assertEqual(plan[0][1], 0)
+
+    def test_la_voz_acaba_antes_del_bzz(self):
+        with mock.patch.object(difusion.mix, "duracion", return_value=0.4):
+            fin = difusion.fin_de_voz(CAPITULOS, 1, 635.5, noticia=True)
+        esperado = 164.7 - (difusion.mix.PAUSA_ANTES_SEPARADOR_S + 0.4 + difusion.mix.PAUSA_TRAS_SEPARADOR_S)
+        self.assertAlmostEqual(fin, esperado)
+        self.assertEqual(difusion.fin_de_voz(CAPITULOS, 4, 635.5), 635.5)
+
+
+class Textos(unittest.TestCase):
+    def test_bluesky_cabe_en_300(self):
+        datos = {**DATOS, "capitulos": CAPITULOS + [{"startTime": 600 + i, "title": "x" * 80} for i in range(5)]}
+        texto = redes.texto_bluesky(datos)
+        self.assertLessEqual(redes.graphemes(texto), 300)
+        self.assertTrue(texto.startswith(DATOS["titulo"]))
+        self.assertNotIn("Apertura", texto)
+
+    def test_textos_con_enlace_y_aviso_de_ia(self):
+        self.assertIn("https://catodo.es/episodios/2026-11-25.html", redes.texto_threads(DATOS))
+        self.assertLessEqual(len(redes.texto_threads(DATOS)), 500)
+        self.assertIn("IA", redes.texto_instagram(DATOS))
+        self.assertIn("• Tidal echa la música hecha solo con IA", redes.texto_facebook(DATOS))
+
+    def test_youtube_titulo_corto_y_capitulos(self):
+        datos = {**DATOS, "titulo": "Un titular <muy> largo " * 10}
+        titulo = redes.titulo_youtube(datos)
+        self.assertLessEqual(len(titulo), 100)
+        self.assertNotIn("<", titulo)
+        self.assertTrue(titulo.endswith("| Cátodo 2"))
+        descripcion = redes.descripcion_youtube(DATOS)
+        self.assertIn("0:00 Apertura\n0:23 Huang pide perdón", descripcion)
+
+
+class Difundir(unittest.TestCase):
+    def setUp(self):
+        self.estado = {}
+        self.guardados = []
+        parches = [
+            mock.patch.object(redes, "AJUSTES", {"activas": ["bluesky", "instagram"]}),
+            mock.patch.object(redes, "cargar_env", return_value={}),
+            mock.patch.object(redes, "esta_publicado", return_value=None),
+            mock.patch.object(redes, "cliente_r2", return_value=mock.Mock()),
+            mock.patch.object(redes, "leer_estado", side_effect=lambda *a: self.estado),
+            mock.patch.object(redes, "guardar_estado",
+                              side_effect=lambda c, b, f, e: self.guardados.append(json.loads(json.dumps(e)))),
+            mock.patch.object(redes, "subir_clip", return_value="https://audio.catodo.es/clip.mp4"),
+            mock.patch.object(difusion, "datos_episodio", return_value=DATOS),
+            mock.patch.object(difusion, "generar", return_value=(DATOS, {
+                "clip": Path("clip.mp4"), "clip_info": {"noticia": "Huang"}})),
+            mock.patch.object(Path, "exists", return_value=True),
+        ]
+        for p in parches:
+            p.start()
+            self.addCleanup(p.stop)
+
+    def test_si_una_red_falla_las_demas_salen_y_se_apuntan(self):
+        bien = mock.Mock(return_value={"id": "1", "url": "https://bsky.app/x"})
+        mal = mock.Mock(side_effect=redes.ErrorRed("HTTP 400"))
+        with mock.patch.dict(redes.PUBLICAR, {"bluesky": bien, "instagram": mal}):
+            resultados = redes.difundir("2026-11-25")
+        self.assertEqual(resultados["bluesky"]["url"], "https://bsky.app/x")
+        self.assertIn("HTTP 400", resultados["instagram"]["error"])
+        self.assertEqual(list(self.guardados[-1]["redes"]), ["bluesky"])
+        self.assertEqual(mal.call_args.args[2]["url_clip"], "https://audio.catodo.es/clip.mp4")
+
+    def test_no_publica_dos_veces(self):
+        self.estado = {"redes": {"bluesky": {"url": "https://bsky.app/x"}}}
+        bluesky, instagram = mock.Mock(), mock.Mock(return_value={"id": "2"})
+        with mock.patch.dict(redes.PUBLICAR, {"bluesky": bluesky, "instagram": instagram}):
+            redes.difundir("2026-11-25")
+        bluesky.assert_not_called()
+        instagram.assert_called_once()
+
+    def test_vetado_no_publica_nada(self):
+        self.estado = {"vetado": "No difundir en redes"}
+        bluesky = mock.Mock()
+        with mock.patch.dict(redes.PUBLICAR, {"bluesky": bluesky}):
+            self.assertEqual(redes.difundir("2026-11-25"), {})
+        bluesky.assert_not_called()
+
+    def test_sin_redes_activas_no_hace_nada(self):
+        with mock.patch.object(redes, "AJUSTES", {"activas": []}):
+            self.assertEqual(redes.difundir("2026-11-25"), {})
+        difusion.generar.assert_not_called()
+
+    def test_si_el_episodio_no_esta_en_la_web_no_publica(self):
+        with mock.patch.object(redes, "esta_publicado", return_value="HTTP 404"):
+            with self.assertRaises(SystemExit):
+                redes.difundir("2026-11-25")
+
+
+class TokenThreads(unittest.TestCase):
+    def test_renueva_y_guarda_y_respeta_una_credencial_nueva(self):
+        with tempfile.TemporaryDirectory() as d:
+            env = {"CATODO_ESTADO": d, "THREADS_TOKEN": "viejo"}
+            with mock.patch.object(redes, "pedir", return_value={"access_token": "renovado"}) as pedir:
+                self.assertEqual(redes.token_threads(env), "renovado")
+                self.assertEqual(redes.token_threads(env), "renovado")  # recién renovado: no vuelve a pedir
+                self.assertEqual(pedir.call_count, 1)
+            self.assertEqual(oct(os.stat(Path(d) / "threads-token.json").st_mode & 0o777), "0o600")
+            env["THREADS_TOKEN"] = "nuevo"
+            with mock.patch.object(redes, "pedir", side_effect=redes.ErrorRed("caducado")):
+                self.assertEqual(redes.token_threads(env), "nuevo")
+
+
+class AvisoDeOps(unittest.TestCase):
+    def test_no_difundir_solo_con_redes_activas(self):
+        with mock.patch.object(redes, "AJUSTES", {"activas": []}):
+            self.assertEqual([o["key"] for o in ops.opciones_aviso()], ["visto"])
+        with mock.patch.object(redes, "AJUSTES", {"activas": ["bluesky"]}):
+            self.assertEqual([o["key"] for o in ops.opciones_aviso()], ["visto", "no-difundir"])
+
+    def test_responder_no_difundir_lo_veta(self):
+        with tempfile.TemporaryDirectory() as d:
+            hilo = Path(d) / "hilo.json"
+            hilo.write_text(json.dumps({"title": "Cátodo 2026-11-26: publicado", "messages": []}))
+            nota = Path(d) / "nota.md"
+            entorno = {"OPS_DECISION_OPTION": "no-difundir", "OPS_DECISION_JSON": str(hilo),
+                       "OPS_REPLY_NOTE_FILE": str(nota), "OPS_DECISION_ID": "7"}
+            with mock.patch.dict(os.environ, entorno), \
+                    mock.patch.object(redes, "vetar", return_value={"redes": {"bluesky": {}}}) as vetar:
+                ops.responder()
+            self.assertEqual(vetar.call_args.args[0], "2026-11-26")
+            self.assertIn("decisión 7", vetar.call_args.args[1])
+            self.assertIn("Ya publicadas antes de elegirlo: bluesky", nota.read_text())
+
+
+if __name__ == "__main__":
+    unittest.main()
