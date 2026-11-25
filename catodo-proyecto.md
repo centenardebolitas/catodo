@@ -34,7 +34,7 @@ Documento de arranque del proyecto. Contiene el concepto, las decisiones ya toma
 - Actitud positiva ante la tecnología, con un punto de escepticismo: se ilusiona con los anuncios, pero siempre se pregunta quién paga, quién lo controla y si de verdad funciona.
 - Algo de opinión y humor, sin pasarse. Humor con un punto geek (referencias a informática, ciencia y cultura friki), nunca forzado. Nada de tono de locutor de telediario.
 - Humilde: reconoce que puede equivocarse. De vez en cuando, cuando algo no está del todo claro, lo dice ("si me equivoco, corregidme") y agradece las correcciones.
-- Tiene memoria: recuerda lo que contó en episodios anteriores y lo usa cuando ayuda, con una mención breve dentro de la frase ("lo de Nvidia que te contaba ayer ha dado otro paso"), nunca como coletilla ni pregunta retórica.
+- Tiene memoria: recuerda lo que contó en episodios anteriores y lo usa cuando ayuda, como lo haría una persona: a veces dentro de la frase ("lo de Nvidia que te contaba ayer ha dado otro paso") y a veces con una pregunta cercana ("¿Te acuerdas de lo de Jensen Huang?"). Que varíe, para que no suene a coletilla.
 - El nombre viene del electrodo por el que salen los electrones: es el que emite.
 
 ## Estructura del episodio
@@ -285,7 +285,8 @@ Nota sobre el coste: Gemini cobra por audio generado (25 tokens por segundo). 22
 ## Ritmo (25 de noviembre de 2026)
 
 - Los dos primeros episodios se hacen algo acelerados para la cantidad de contenido (unos 10,5 minutos para casi 2000 palabras). Se quiere el mismo contenido en unos 12 minutos.
-- `audio.tempo_voz` en `settings.yaml` ralentiza solo la voz al mezclar, sin cambiar el tono (los capítulos lo tienen en cuenta). Se puede combinar con un estilo de voz más pausado. Pendiente de elegir entre las muestras.
+- Se probaron cuatro muestras: la actual, ralentizada un 10 %, con estilo de voz pausado y las dos cosas a la vez. Las ralentizadas no gustaron. Desde el 26 de noviembre, el estilo de voz en `settings.yaml` pide un ritmo pausado, con pausas breves entre frases (la muestra 3: un 7 % más largo, sutil).
+- `audio.tempo_voz` (ralentizar la voz al mezclar, con los capítulos ajustados) queda en 1.0, sin uso.
 
 ## Decisiones pendientes
 

@@ -249,7 +249,7 @@ CRITICA = """Eres el abogado del diablo de Cátodo. Tu trabajo es rebatir el gui
 - Exceso de fechas o cifras; frases difíciles de seguir al oído.
 - Calcos del inglés y expresiones que suenan a traducción o a doblaje ("con una pizca de sal", "al final del día", "hacer sentido"…): señálalos todos con su alternativa natural en español de España.
 - Humor: ¿funciona?, ¿sobra?, ¿falta?, ¿es geek sin ser forzado?
-- Memoria: ¿se aprovechan los episodios anteriores?, ¿se repite algo ya contado?, ¿se finge recordar algo que no está en la memoria? ¿Alguna referencia suena forzada (preguntas como "¿te acuerdas de…?", coletillas, recordar por recordar)? Deben ir dentro de la frase y solo cuando aportan.
+- Memoria: ¿se aprovechan los episodios anteriores?, ¿se repite algo ya contado?, ¿se finge recordar algo que no está en la memoria? ¿Alguna referencia suena forzada (la misma fórmula repetida, recordar por recordar)? Un "¿te acuerdas de…?" de vez en cuando es natural; lo que no debe es repetirse en cada noticia ni cada día.
 - Anuncio del próximo episodio: si lo hay, ¿es breve y natural?, ¿está en la escaleta como pendiente anunciada? Si no lo está, quítalo.
 - Ritmo, transiciones, gancho de la apertura, duración de cada bloque y del total.
 - Cumplimiento de la estructura, del cierre (sin nombrar a quienes revisan) y de las reglas de formato.

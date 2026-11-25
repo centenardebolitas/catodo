@@ -56,14 +56,16 @@ tts:
   estilo: >-
     Habla en español de España, con acento castellano peninsular.
     Tono cálido, cercano y simpático, como el presentador de un podcast
-    matinal de tecnología. Ritmo natural, con algo de humor; nada de
-    locutor de telediario.
+    matinal de tecnología. Ritmo pausado y tranquilo, sin prisa: deja
+    respirar las frases y haz una pausa breve después de cada punto, como
+    quien lo cuenta tomando un café. Con algo de humor; nada de locutor
+    de telediario.
 
 audio:
   loudness_lufs: -16
   bitrate_kbps: 96
   canales: 1                       # mono
-  tempo_voz: 1.0                   # ritmo de la voz al mezclar: 0.9 = un 10 % más lenta, sin cambiar el tono
+  tempo_voz: 1.0                   # ralentiza la voz al mezclar (0.9 = un 10 % más lenta); descartado el 25-11-2026: se prefiere el estilo pausado
   respiraciones_db: 12             # cuánto se bajan las inspiraciones de la voz (src/respiraciones.py); 0 = como salen
 
 portada:                           # portada de cada episodio: el guion en emojis (src/portada_episodio.py)
