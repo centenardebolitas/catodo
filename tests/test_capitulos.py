@@ -77,5 +77,27 @@ class Apple(unittest.TestCase):
             self.assertEqual(enlaces.episodios_de_apple("1"), {"catodo-2026-11-24": "https://p/id1?i=9"})
 
 
+class Incrustar(unittest.TestCase):
+    def test_el_temporal_va_junto_al_mp3(self):
+        """En ops /tmp está en otro disco: el MP3 nuevo se prepara junto al original."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            mp3 = Path(tmp) / "catodo.mp3"
+            mp3.write_bytes(b"viejo")
+            salidas = []
+
+            def ffmpeg(*args):
+                salida = Path(args[-1])
+                salidas.append(salida)
+                salida.write_bytes(b"nuevo")
+
+            with mock.patch.object(capitulos.mix, "duracion", return_value=600), \
+                    mock.patch.object(capitulos.mix, "ffmpeg", side_effect=ffmpeg):
+                capitulos.incrustar(mp3, {"chapters": CAPITULOS})
+            self.assertEqual(salidas[0].parent.parent, mp3.parent)
+            self.assertEqual(mp3.read_bytes(), b"nuevo")
+            self.assertEqual(sorted(p.name for p in Path(tmp).iterdir()), ["catodo.mp3"])
+
+
 if __name__ == "__main__":
     unittest.main()

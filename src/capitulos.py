@@ -88,7 +88,8 @@ def incrustar(mp3, datos):
         titulo = re.sub(r"([=;#\\\n])", r"\\\1", c["title"])
         lineas += ["[CHAPTER]", "TIMEBASE=1/1000", f"START={round(c['startTime'] * 1000)}",
                    f"END={round(fin * 1000)}", f"title={titulo}"]
-    with tempfile.TemporaryDirectory() as tmp:
+    # En la misma carpeta que el MP3: en ops /tmp es otro disco y no se puede mover de uno a otro.
+    with tempfile.TemporaryDirectory(dir=mp3.parent) as tmp:
         meta = Path(tmp) / "capitulos.txt"
         meta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
         salida = Path(tmp) / mp3.name
