@@ -3,7 +3,6 @@
 Uso:
     python src/redes.py --fecha AAAA-MM-DD [--simulacro] [--solo red,red]
     python src/redes.py autorizar-youtube     # una vez, en el Mac: saca el refresh token
-    python src/redes.py autorizar-meta        # una vez: token y ID de la página de Facebook
     python src/redes.py autorizar-threads     # una vez: token largo de Threads
 
 Lo lanza ops cuando Ulises elige «Difundir en redes» en el aviso del episodio publicado
@@ -21,15 +20,16 @@ repite, no se publica dos veces. Si una red falla, las demás siguen; al final, 
 ha fallado, termina con error: ops avisa y lo reintenta, y solo se repiten las que faltan.
 
 Las credenciales llegan por el entorno (en el Mac, de .env): BLUESKY_APP_PASSWORD (la
-cuenta, `redes.bluesky` de settings.yaml); INSTAGRAM_TOKEN; META_PAGE_ID y META_PAGE_TOKEN; THREADS_USER_ID y
-THREADS_TOKEN; YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET y YOUTUBE_REFRESH_TOKEN.
+cuenta, `redes.bluesky` de settings.yaml); META_TOKEN; THREADS_USER_ID y THREADS_TOKEN;
+YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET y YOUTUBE_REFRESH_TOKEN.
 
-Instagram va con la API de Instagram con inicio de sesión de Instagram (graph.instagram.com),
-no con la de Facebook: no hace falta que la cuenta esté vinculada a la página de Facebook.
-Su token se saca en el panel de la app de Meta (Instagram › Configuración de la API con
-inicio de sesión de Instagram › Generar token). Los tokens de Instagram y de Threads duran
-60 días: se renuevan solos cada semana y el renovado se guarda en CATODO_ESTADO (en ops, el
-HOME del trabajo, que no se borra entre ejecuciones). El de la página de Facebook no caduca.
+Facebook e Instagram van con un solo token, META_TOKEN: el de un usuario del sistema del
+porfolio empresarial «Cátodo» (business.facebook.com › Usuarios del sistema), que no caduca,
+con la página y la cuenta de Instagram asignadas como activos. Sus ID no son secretos:
+`redes.facebook_pagina` e `redes.instagram_id` de settings.yaml (o META_PAGE_ID e
+INSTAGRAM_USER_ID en el entorno). Para publicar en la página se pide con él el token de la
+página. El de Threads dura 60 días: se renueva solo cada semana y el renovado se guarda en
+CATODO_ESTADO (en ops, el HOME del trabajo, que no se borra entre ejecuciones).
 """
 
 import argparse
@@ -52,7 +52,6 @@ AJUSTES = cargar_yaml("settings.yaml").get("redes", {})
 GRAPH = f"https://graph.facebook.com/{AJUSTES.get('version_graph', 'v24.0')}"
 GRAPH_VIDEO = f"https://graph-video.facebook.com/{AJUSTES.get('version_graph', 'v24.0')}"
 THREADS = "https://graph.threads.net/v1.0"
-INSTAGRAM = f"https://graph.instagram.com/{AJUSTES.get('version_graph', 'v24.0')}"
 BLUESKY = "https://bsky.social/xrpc"
 ESPERA_MAX_S = 600
 
@@ -220,34 +219,42 @@ def esperar(comprobar, nombre, espera=10, limite=ESPERA_MAX_S):
         time.sleep(espera)
 
 
+def id_meta(env, variable, ajuste):
+    valor = env.get(variable) or AJUSTES.get(ajuste)
+    if not valor:
+        raise ErrorRed(f"falta {variable} (o redes.{ajuste} en settings.yaml)")
+    return str(valor)
+
+
 def instagram(datos, env, medios):
-    falta(env, "INSTAGRAM_TOKEN")
-    token = token_renovable(env, "instagram")
-    usuario = env.get("INSTAGRAM_USER_ID") or pedir("GET", f"{INSTAGRAM}/me", params={
-        "fields": "user_id", "access_token": token})["user_id"]
-    contenedor = pedir("POST", f"{INSTAGRAM}/{usuario}/media", data={
+    falta(env, "META_TOKEN")
+    token, usuario = env["META_TOKEN"], id_meta(env, "INSTAGRAM_USER_ID", "instagram_id")
+    contenedor = pedir("POST", f"{GRAPH}/{usuario}/media", data={
         "media_type": "REELS", "video_url": medios["url_clip"], "caption": texto_instagram(datos),
         "share_to_feed": "true", "access_token": token})["id"]
-    esperar(lambda: pedir("GET", f"{INSTAGRAM}/{contenedor}", params={
+    esperar(lambda: pedir("GET", f"{GRAPH}/{contenedor}", params={
         "fields": "status_code", "access_token": token}).get("status_code"), "Instagram")
-    publicado = pedir("POST", f"{INSTAGRAM}/{usuario}/media_publish",
+    publicado = pedir("POST", f"{GRAPH}/{usuario}/media_publish",
                       data={"creation_id": contenedor, "access_token": token})["id"]
-    enlace = pedir("GET", f"{INSTAGRAM}/{publicado}", params={"fields": "permalink", "access_token": token})
+    enlace = pedir("GET", f"{GRAPH}/{publicado}", params={"fields": "permalink", "access_token": token})
     return {"id": publicado, "url": enlace.get("permalink")}
 
 
 def facebook(datos, env, medios):
-    falta(env, "META_PAGE_ID", "META_PAGE_TOKEN")
-    hecho = pedir("POST", f"{GRAPH_VIDEO}/{env['META_PAGE_ID']}/videos", data={
+    falta(env, "META_TOKEN")
+    pagina = id_meta(env, "META_PAGE_ID", "facebook_pagina")
+    # Con el token del usuario del sistema se pide el de la página, que es el que publica en ella.
+    token = pedir("GET", f"{GRAPH}/{pagina}", params={
+        "fields": "access_token", "access_token": env["META_TOKEN"]})["access_token"]
+    hecho = pedir("POST", f"{GRAPH_VIDEO}/{pagina}/videos", data={
         "file_url": medios["url_clip"], "title": datos["titulo"][:250], "description": texto_facebook(datos),
-        "access_token": env["META_PAGE_TOKEN"]})
-    return {"id": hecho["id"], "url": f"https://www.facebook.com/{env['META_PAGE_ID']}/videos/{hecho['id']}"}
+        "access_token": token})
+    return {"id": hecho["id"], "url": f"https://www.facebook.com/{pagina}/videos/{hecho['id']}"}
 
 
 # Tokens de 60 días que se renuevan: (variable con el de las credenciales, URL y grant_type).
 RENOVABLES = {
     "threads": ("THREADS_TOKEN", f"{THREADS.rsplit('/', 1)[0]}/refresh_access_token", "th_refresh_token"),
-    "instagram": ("INSTAGRAM_TOKEN", "https://graph.instagram.com/refresh_access_token", "ig_refresh_token"),
 }
 
 
@@ -256,8 +263,8 @@ def token_threads(env):
 
 
 def token_renovable(env, red):
-    """El token de Threads o de Instagram: el último renovado (CATODO_ESTADO) o el de las
-    credenciales. Si tiene más de una semana, lo renueva (dura 60 días desde la última)."""
+    """Un token de 60 días (hoy, el de Threads): el último renovado (CATODO_ESTADO) o el de
+    las credenciales. Si tiene más de una semana, lo renueva (dura 60 días desde la última)."""
     variable, url, tipo = RENOVABLES[red]
     estado_dir = Path(env.get("CATODO_ESTADO") or RAIZ / "cache")
     ruta = estado_dir / f"{red}-token.json"
@@ -491,28 +498,6 @@ def autorizar_youtube():
     print(tokens["refresh_token"])
 
 
-def autorizar_meta():
-    """Con un token de usuario corto (Graph API Explorer, en el portapapeles por la entrada
-    estándar), saca el token largo de la página de Facebook (no caduca) y su ID.
-    Instagram no va por aquí: su token sale del panel de la app (ver arriba)."""
-    env = cargar_env()
-    falta(env, "META_APP_ID", "META_APP_SECRET")
-    corto = sys.stdin.readline().strip()
-    largo = pedir("GET", f"{GRAPH}/oauth/access_token", params={
-        "grant_type": "fb_exchange_token", "client_id": env["META_APP_ID"],
-        "client_secret": env["META_APP_SECRET"], "fb_exchange_token": corto})["access_token"]
-    paginas = pedir("GET", f"{GRAPH}/me/accounts", params={
-        "fields": "id,name,access_token", "access_token": largo})["data"]
-    if not paginas:
-        sys.exit("Ese usuario no administra ninguna página (o falta el permiso pages_show_list).")
-    for p in paginas:
-        print(f"Página «{p['name']}»: META_PAGE_ID={p['id']}", file=sys.stderr)
-    if len(paginas) > 1:
-        sys.exit("Hay varias páginas: deja solo la de Cátodo en el permiso y repite.")
-    print("El token de la página (no caduca) va a la salida estándar.", file=sys.stderr)
-    print(paginas[0]["access_token"])
-
-
 def autorizar_threads():
     """Abre el permiso de Threads; pega luego la dirección a la que te lleva (catodo.es/?code=...)."""
     import urllib.parse
@@ -540,8 +525,7 @@ def autorizar_threads():
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1].startswith("autorizar-"):
-        {"autorizar-youtube": autorizar_youtube, "autorizar-meta": autorizar_meta,
-         "autorizar-threads": autorizar_threads}.get(sys.argv[1], lambda: sys.exit("¿Qué red?"))()
+        {"autorizar-youtube": autorizar_youtube, "autorizar-threads": autorizar_threads}.get(sys.argv[1], lambda: sys.exit("¿Qué red?"))()
         return
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--fecha", required=True)

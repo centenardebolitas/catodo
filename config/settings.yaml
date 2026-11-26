@@ -78,3 +78,4 @@ redes:                             # difusión en redes del episodio publicado (
   activas: [bluesky]               # bluesky, instagram, facebook, threads, youtube; vacío = no se publica nada
   version_graph: v24.0             # versión de la Graph API de Meta (Instagram y Facebook)
   bluesky: catodo.es               # la cuenta de Bluesky (el dominio como nombre: registro TXT _atproto en Cloudflare)
+  facebook_pagina: "61596923822721"  # ID de la página de Facebook «Cátodo» (no es secreto; el token, META_TOKEN)

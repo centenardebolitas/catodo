@@ -308,10 +308,18 @@ Solo redes en las que se pueda publicar de forma automática. Sin X: su API ya n
 Alta de cuentas (las crea Ulises, con hola@catodo.es; los secretos se guardan en ops con `pbpaste | ssh ops 'sudo ops-jobs secret set NOMBRE'`):
 
 1. **Bluesky:** cuenta nueva y, en Ajustes › Cuenta › Identificador, el dominio `catodo.es` (registro TXT `_atproto` en Cloudflare). Una contraseña de aplicación: `catodo-bluesky-app-password`.
-2. **Meta:** hechas el 26 de noviembre de 2026: Instagram `catodo.es` profesional (empresa), página de Facebook «Cátodo» (web, foto y portada `assets/redes/portada-facebook.jpg`) y Threads `@catodo.es`, público. La página y la cuenta de Instagram no están vinculadas: Meta da error al vincularlas, desde la web y desde el móvil. No hace falta, porque Instagram publica con la API de Instagram con inicio de sesión de Instagram (`graph.instagram.com`), sin página. Falta una app en developers.facebook.com (tipo empresa, en modo publicado: en desarrollo, lo que publica solo lo ven quienes tienen un rol en la app) con estos casos de uso:
-   - **Instagram** (API con inicio de sesión de Instagram): en Configuración de la API, «Generar token» con la cuenta catodo.es (`catodo-instagram-token`; dura 60 días y se renueva solo).
-   - **Página:** con un token de usuario de Graph API Explorer (permisos `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`), `pbpaste | python src/redes.py autorizar-meta` da el token de la página, que no caduca (`catodo-meta-page-token`), y su ID.
-   - **Threads** (en Meta va en una app aparte): `python src/redes.py autorizar-threads` da el token largo (`catodo-threads-token`; se renueva solo) y el ID.
+2. **Meta:** hechas el 26 de noviembre de 2026:
+   - Instagram `catodo.es`, cuenta profesional (empresa).
+   - Página de Facebook «Cátodo» (ID 61596923822721, `redes.facebook_pagina`), con web, foto y la portada `assets/redes/portada-facebook.jpg`.
+   - Threads `@catodo.es`, público.
+   - Porfolio empresarial «Cátodo» (ID 4596718177284366, sin verificar), con la página como activo.
+   - App de Meta «Cátodo» (ID 1495881029366859) del porfolio, con los casos de uso de Instagram, página y Threads.
+
+   Meta ya no deja a las apps nuevas usar el inicio de sesión de Instagram: Facebook e Instagram van con un **usuario del sistema** del porfolio (`catodo-difusion`, rol empleado, con los activos asignados) y su token, que no caduca: `catodo-meta-token` (META_TOKEN), con `pages_manage_posts`, `pages_read_engagement`, `pages_show_list`, `instagram_basic` e `instagram_content_publish`.
+
+   Instagram no se deja enlazar con nada de Facebook (la página, el porfolio ni la cuenta personal): Meta da error en la web y en el móvil, típico de cuentas recién creadas. Hay que reintentar añadirla al porfolio en unos días; después se asigna al usuario del sistema y su ID va a `redes.instagram_id`.
+
+   Threads: `python src/redes.py autorizar-threads` da el token largo (`catodo-threads-token`; se renueva solo) y el ID.
 3. **YouTube:** canal `@catodo.es` con la cuenta de Google de Cátodo. En el proyecto de Google Cloud `catodo`: activar la YouTube Data API v3, pantalla de consentimiento en producción (si se queda en «prueba», el permiso caduca a los 7 días) y un cliente OAuth de escritorio. `python src/redes.py autorizar-youtube` da el refresh token (`catodo-youtube-refresh-token`). Si los vídeos se quedan en privado, hay que pedir la auditoría de la API.
 
 ## Decisiones pendientes

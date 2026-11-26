@@ -157,36 +157,28 @@ class TokenThreads(unittest.TestCase):
                 self.assertEqual(redes.token_threads(env), "nuevo")
 
 
-class Instagram(unittest.TestCase):
-    def test_va_por_graph_instagram_y_renueva_su_token_aparte(self):
+class Meta(unittest.TestCase):
+    def test_facebook_pide_el_token_de_la_pagina_con_el_del_usuario_del_sistema(self):
         llamadas = []
 
         def pedir(metodo, url, **kw):
             llamadas.append((metodo, url, kw))
-            if "refresh_access_token" in url:
-                return {"access_token": "ig-renovado"}
-            if url.endswith("/me"):
-                return {"user_id": "1784"}
-            if url.endswith("/media"):
-                return {"id": "c1"}
-            if url.endswith("/media_publish"):
-                return {"id": "m1"}
-            if url.endswith("/c1"):
-                return {"status_code": "FINISHED"}
-            return {"permalink": "https://www.instagram.com/reel/x/"}
+            if metodo == "GET":
+                return {"access_token": "token-de-pagina"}
+            return {"id": "v1"}
 
-        with tempfile.TemporaryDirectory() as d, mock.patch.object(redes, "pedir", side_effect=pedir):
-            env = {"CATODO_ESTADO": d, "INSTAGRAM_TOKEN": "ig"}
-            hecho = redes.instagram(DATOS, env, {"url_clip": "https://audio.catodo.es/c.mp4"})
-            self.assertTrue((Path(d) / "instagram-token.json").exists())
-            self.assertFalse((Path(d) / "threads-token.json").exists())
-        self.assertEqual(hecho, {"id": "m1", "url": "https://www.instagram.com/reel/x/"})
-        renovar = llamadas[0]
-        self.assertEqual(renovar[2]["params"]["grant_type"], "ig_refresh_token")
-        publicar = [c for c in llamadas if c[1].endswith("/media")][0]
-        self.assertTrue(publicar[1].startswith("https://graph.instagram.com/"))
-        self.assertIn("/1784/media", publicar[1])
-        self.assertEqual(publicar[2]["data"]["access_token"], "ig-renovado")
+        with mock.patch.object(redes, "pedir", side_effect=pedir), \
+                mock.patch.object(redes, "AJUSTES", {"facebook_pagina": "615"}):
+            hecho = redes.facebook(DATOS, {"META_TOKEN": "suat"}, {"url_clip": "https://audio.catodo.es/c.mp4"})
+        self.assertEqual(hecho["url"], "https://www.facebook.com/615/videos/v1")
+        self.assertEqual(llamadas[0][2]["params"]["access_token"], "suat")
+        self.assertIn("/615/videos", llamadas[1][1])
+        self.assertEqual(llamadas[1][2]["data"]["access_token"], "token-de-pagina")
+
+    def test_sin_id_de_instagram_falla_con_un_error_de_red(self):
+        with mock.patch.object(redes, "AJUSTES", {}):
+            with self.assertRaises(redes.ErrorRed):
+                redes.instagram(DATOS, {"META_TOKEN": "suat"}, {"url_clip": "x"})
 
 
 class AvisoDeOps(unittest.TestCase):
