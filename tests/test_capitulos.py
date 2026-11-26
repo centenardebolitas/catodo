@@ -62,7 +62,7 @@ class Feed(unittest.TestCase):
         self.assertLess(nav.index("Apple Podcasts"), nav.index("Spotify"))
         self.assertRegex(nav, r'href="/feed.xml"><img src="/insignias/rss.svg\?v=[0-9a-f]{8}" alt="Suscríbete por RSS"')
         pie = portada[portada.index("<footer>"):]
-        self.assertEqual(pie.count('href="/feed.xml"'), 1)
+        self.assertNotIn('href="/feed.xml"', pie)  # las plataformas ya están en las insignias de arriba
 
 
 class Apple(unittest.TestCase):

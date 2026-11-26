@@ -22,7 +22,7 @@ web: https://catodo.es
 imagen: https://catodo.es/portada.jpg      # 3000x3000 px, pendiente
 copyright: Cátodo
 
-# Dónde escucharlo: insignias bajo la descripción de la web y en cada episodio, y enlaces en el pie.
+# Dónde escucharlo: insignias bajo la descripción de la web y en cada episodio.
 # Apple va primero (lo piden sus normas de marca). Sin insignia, sale un botón de texto.
 escuchar:
   - nombre: Apple Podcasts
@@ -35,3 +35,22 @@ escuchar:
     url: /feed.xml
     insignia: /insignias/rss.svg
     texto: Suscríbete por RSS
+
+# Perfiles en redes: un icono por cada uno en el pie de la web (assets/redes/iconos/<icono>.svg).
+# Solo los que ya se pueden enlazar en público; los demás, comentados hasta que estén listos.
+redes:
+  - nombre: Bluesky
+    url: https://bsky.app/profile/catodo.es
+    icono: bluesky
+  - nombre: Threads
+    url: https://www.threads.com/@catodo.es
+    icono: threads
+  - nombre: Facebook
+    url: https://www.facebook.com/profile.php?id=61596923822721   # la URL pública, no el ID de la Graph API
+    icono: facebook
+  - nombre: Instagram
+    url: https://www.instagram.com/catodo.es/
+    icono: instagram
+  # - nombre: YouTube            # el canal no existe todavía
+  #   url: https://www.youtube.com/@catodo.es
+  #   icono: youtube

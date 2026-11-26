@@ -186,6 +186,17 @@ def generar_feed(episodios, cfg):
 
 # ---------------------------------------------------------------- web
 
+# El pie, también en docs/sobre.html y docs/legal.html (actualizar_pie).
+ESTILO_PIE = """  footer { margin-top:48px; font-size:0.85rem; color:var(--suave); display:flex; flex-wrap:wrap;
+           justify-content:space-between; align-items:center; gap:12px 24px;
+           padding-top:20px; border-top:1px solid var(--borde); }
+  footer a { color:var(--suave); }
+  footer nav { margin:0; }
+  footer .redes { display:flex; gap:16px; }
+  footer .redes a { display:block; line-height:0; }
+  footer .redes a:hover { color:var(--texto); }
+"""
+
 ESTILO = """
   :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
   html { background:var(--fondo); }
@@ -202,15 +213,24 @@ ESTILO = """
   .episodio { padding:20px 0; border-top:1px solid var(--borde); }
   .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
   audio { width:100%; margin:10px 0; }
-  footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
-  footer a { color:var(--suave); }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
   .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
   .con-portada .mini { grid-row:span 2; display:block; }
   .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
-  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
-                box-shadow:0 0 40px rgba(34,211,238,.18); }
+  .cabecera { margin:20px 0 16px; }
+  .cabecera.con-portada { grid-template-columns:168px 1fr; gap:20px; align-items:center; }
+  .cabecera .portada-ep { display:block; line-height:0; }
+  .cabecera .portada-ep img { width:168px; height:168px; border-radius:14px; display:block;
+                              box-shadow:0 0 32px rgba(34,211,238,.18); }
+  .cabecera .dato { font-size:0.85rem; color:var(--suave); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+  .cabecera h1 { font-size:1.6rem; line-height:1.2; letter-spacing:-0.01em; }
+  @media (max-width:520px) {
+    .cabecera.con-portada { grid-template-columns:96px 1fr; gap:14px; }
+    .cabecera .portada-ep img { width:96px; height:96px; border-radius:10px; }
+    .cabecera .dato { font-size:0.75rem; }
+    .cabecera h1 { font-size:1.2rem; }
+  }
 
   .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 20px; }  /* abajo, lo mismo que hay bajo la raya (.episodio) */
   .insignias a { display:block; line-height:0; }
@@ -220,7 +240,7 @@ ESTILO = """
   .episodio-insignias { margin:6px 0 4px; }
   .episodio-insignias img { height:34px; }
   .capitulos { list-style:none; padding:0; margin:18px 0; }
-  .capitulos li { margin:4px 0; }
+  .capitulos li { margin:4px 0; display:grid; grid-template-columns:auto 1fr; align-items:baseline; }
   .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
                       border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
   .capitulos button:hover { border-color:var(--acento); }
@@ -228,7 +248,7 @@ ESTILO = """
   .vecinos a { display:block; text-decoration:none; line-height:1.35; }
   .vecinos a .suave { display:block; font-size:0.85rem; margin-bottom:2px; }
   .vecinos .siguiente { text-align:right; }
-"""
+""" + ESTILO_PIE
 
 
 # Favicon e iconos (assets/favicon/generar.py). Copiados tal cual en docs/sobre.html y docs/legal.html.
@@ -266,10 +286,45 @@ def insignias(cfg, ep=None, clase="insignias"):
     return f'<nav class="{clase}" aria-label="Dónde escucharlo">{"".join(enlaces)}</nav>'
 
 
-def enlaces_escuchar(cfg):
-    """Las plataformas de config/podcast.yaml (escuchar), con el feed RSS siempre."""
-    enlaces = [(p["nombre"], p["url"]) for p in cfg.get("escuchar") or []]
-    return enlaces if any(url == "/feed.xml" for _, url in enlaces) else enlaces + [("Feed RSS", "/feed.xml")]
+ICONOS_REDES = RAIZ / "assets" / "redes" / "iconos"
+
+
+def iconos_redes(cfg):
+    """Los perfiles de config/podcast.yaml (redes), cada uno con su icono en el color del texto."""
+    enlaces = []
+    for r in cfg.get("redes") or []:
+        svg = (ICONOS_REDES / f"{r['icono']}.svg").read_text(encoding="utf-8").strip()
+        svg = re.sub(r"<title>.*?</title>", "", svg)
+        svg = svg.replace('<svg role="img"', '<svg aria-hidden="true" focusable="false" fill="currentColor" width="20" height="20"', 1)
+        enlaces.append(f'<a href="{html.escape(r["url"])}" title="Cátodo en {html.escape(r["nombre"])}" '
+                       f'aria-label="Cátodo en {html.escape(r["nombre"])}">{svg}</a>')
+    return f'<nav class="redes" aria-label="Cátodo en redes">{"".join(enlaces)}</nav>' if enlaces else ""
+
+
+def pie(cfg):
+    """El pie de todas las páginas: enlaces a un lado y redes al otro, en una línea.
+
+    El aviso de IA no va aquí: ya está en la descripción de la portada y en las notas de
+    cada episodio. Tampoco Apple, Spotify ni el RSS: están en las insignias de arriba."""
+    return f"""<footer><nav class="enlaces-pie" aria-label="Más sobre Cátodo"><a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></nav>
+  {iconos_redes(cfg)}</footer>"""
+
+
+def actualizar_pie(fichero, cfg):
+    """docs/sobre.html y docs/legal.html están escritas a mano: se les pone el mismo pie."""
+    if not fichero.exists():
+        return
+    texto = fichero.read_text(encoding="utf-8")
+    nuevo = re.sub(r"<footer>.*?</footer>", lambda _: pie(cfg), texto, count=1, flags=re.S)
+    if "<footer>" not in nuevo:
+        nuevo = nuevo.replace("\n</main>", f"\n\n  {pie(cfg)}\n</main>", 1)
+    # Los estilos del pie, los mismos que en las páginas generadas y siempre al final del <style>.
+    if "  footer {" in nuevo:
+        nuevo = re.sub(r"  footer \{.*?(?=</style>)", lambda _: ESTILO_PIE, nuevo, count=1, flags=re.S)
+    else:
+        nuevo = nuevo.replace("</style>", ESTILO_PIE + "</style>", 1)
+    if nuevo != texto:
+        fichero.write_text(nuevo, encoding="utf-8")
 
 
 def plantilla(titulo, descripcion, cuerpo, cfg, raiz="", imagen=None, url=None):
@@ -295,9 +350,7 @@ def plantilla(titulo, descripcion, cuerpo, cfg, raiz="", imagen=None, url=None):
 <body>
 <main>
 {cuerpo}
-  <footer>{html.escape(cfg['aviso_ia'])}<br>
-  {' · '.join(f'<a href="{html.escape(url)}">{html.escape(nombre)}</a>' for nombre, url in enlaces_escuchar(cfg))}<br>
-  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></footer>
+  {pie(cfg)}
 </main>
 </body>
 </html>
@@ -337,9 +390,8 @@ def navegacion_episodios(anterior, siguiente):
 def generar_pagina_episodio(ep, cfg, anterior=None, siguiente=None):
     transcripcion = md_a_html(ep["guion_md"], nivel_titulos=3)
     cuerpo = f"""  <p><a href="/">← Cátodo</a></p>
-  <h1 style="font-size:1.8rem">{html.escape(ep['titulo'])}</h1>
-  <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
-  {portada_html(ep)}<audio id="audio" controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
+  {cabecera_episodio(ep)}
+  <audio id="audio" controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
   {insignias(cfg, ep, "insignias episodio-insignias")}
   {capitulos_html(ep)}{descripcion_episodio(ep, cfg, capitulos=False)}
   <details><summary>Transcripción</summary>
@@ -367,13 +419,30 @@ def capitulos_html(ep):
   """
 
 
-def portada_html(ep):
-    """La portada del episodio (el guion en emojis), si la tiene."""
+MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"]
+
+
+def fecha_corta(iso):
+    """26 nov 2026."""
+    d = datetime.fromisoformat(iso)
+    return f"{d.day} {MESES[d.month - 1]} {d.year}"
+
+
+def cabecera_episodio(ep):
+    """Ficha del episodio: la portada en pequeño y, a su lado, número, fecha, duración y título.
+
+    La portada (el guion en emojis) abre en grande al pulsarla. Sin explicación a propósito:
+    que sea un huevo de pascua para quien se fije."""
+    dato = " · ".join(x for x in (f"Episodio {ep['numero']}" if ep.get("numero") else "", fecha_corta(ep["fecha"]),
+                                  f"{int(ep['duracion_s'] // 60)} min") if x)
+    texto = f'<div><div class="dato">{dato}</div>\n    <h1>{html.escape(ep["titulo"])}</h1></div>'
     if not ep.get("url_portada"):
-        return ""
-    # Sin explicación a propósito: que sea un huevo de pascua para quien se fije.
-    return (f'<img class="portada-ep" src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" '
-            f'width="440" height="440" alt="Portada del episodio">\n  ')
+        return f'<header class="cabecera">\n    {texto}\n  </header>'
+    mini = ep.get("url_portada_web") or ep["url_portada"]
+    return (f'<header class="cabecera con-portada">\n'
+            f'    <a class="portada-ep" href="{html.escape(ep["url_portada"])}"><img src="{html.escape(mini)}" '
+            f'width="168" height="168" alt="Portada del episodio"></a>\n'
+            f'    {texto}\n  </header>')
 
 
 def generar_todo(destino=DOCS):
@@ -382,6 +451,8 @@ def generar_todo(destino=DOCS):
     (destino / "episodios").mkdir(parents=True, exist_ok=True)
     (destino / "feed.xml").write_text(generar_feed(episodios, cfg), encoding="utf-8")
     (destino / "index.html").write_text(generar_portada(episodios, cfg), encoding="utf-8")
+    for estatica in ("sobre.html", "legal.html"):
+        actualizar_pie(destino / estatica, cfg)
     for i, ep in enumerate(episodios):  # de más reciente a más antiguo
         anterior = episodios[i + 1] if i + 1 < len(episodios) else None
         siguiente = episodios[i - 1] if i > 0 else None

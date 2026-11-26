@@ -47,3 +47,48 @@ class Vecinos(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Pie(unittest.TestCase):
+    CFG = {"email": "hola@catodo.es", "redes": [{"nombre": "Bluesky", "url": "https://bsky.app/profile/catodo.es",
+                                                "icono": "bluesky"}]}
+
+    def test_sin_aviso_ni_plataformas(self):
+        pie = feed.pie(self.CFG)
+        self.assertIn('href="/sobre.html"', pie)
+        self.assertIn('aria-label="Cátodo en Bluesky"', pie)
+        self.assertIn('fill="currentColor"', pie)
+        self.assertNotIn("inteligencia artificial", pie)
+        self.assertNotIn("Spotify", pie)
+
+    def test_pagina_estatica(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            ruta = Path(d) / "sobre.html"
+            ruta.write_text("<style>\n  a { x }\n  footer { viejo }\n  footer a { viejo }\n</style>\n<main>\n"
+                            "  <footer>Aviso viejo<br>enlaces</footer>\n</main>\n", encoding="utf-8")
+            feed.actualizar_pie(ruta, self.CFG)
+            texto = ruta.read_text(encoding="utf-8")
+            self.assertNotIn("viejo", texto)
+            self.assertIn("  a { x }", texto)
+            self.assertIn("footer .redes", texto)
+            self.assertEqual(texto.count("<footer>"), 1)
+            antes = texto
+            feed.actualizar_pie(ruta, self.CFG)
+            self.assertEqual(ruta.read_text(encoding="utf-8"), antes)
+
+
+class Cabecera(unittest.TestCase):
+    EP = {"fecha": "2026-11-26", "numero": 3, "titulo": "S&P y 1Password", "duracion_s": 696.3,
+          "url_portada": "https://a/grande.jpg", "url_portada_web": "https://a/web.jpg"}
+
+    def test_ficha_con_portada(self):
+        c = feed.cabecera_episodio(self.EP)
+        self.assertIn("Episodio 3 · 26 nov 2026 · 11 min", c)
+        self.assertIn('href="https://a/grande.jpg"><img src="https://a/web.jpg"', c)
+        self.assertIn("<h1>S&amp;P y 1Password</h1>", c)
+
+    def test_sin_portada(self):
+        c = feed.cabecera_episodio({k: v for k, v in self.EP.items() if not k.startswith("url_portada")})
+        self.assertNotIn("<img", c)
+        self.assertNotIn("con-portada", c)

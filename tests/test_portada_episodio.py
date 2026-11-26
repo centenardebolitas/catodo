@@ -30,7 +30,8 @@ class Feed(unittest.TestCase):
 
     def test_la_web_usa_la_version_ligera(self):
         pagina = feed.generar_pagina_episodio(CON_PORTADA, self.cfg)
-        self.assertIn('class="portada-ep" src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-def.jpg"', pagina)
+        self.assertIn('class="portada-ep" href="https://audio.catodo.es/episodios/catodo-2026-11-24-abc.jpg">'
+                      '<img src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-def.jpg"', pagina)
         self.assertIn('og:image" content="https://audio.catodo.es/episodios/catodo-2026-11-24-abc.jpg"', pagina)
         portada = feed.generar_portada([CON_PORTADA], self.cfg)
         self.assertIn('class="mini" href="/episodios/2026-11-24.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-def.jpg"', portada)
