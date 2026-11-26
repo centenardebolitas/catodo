@@ -1,6 +1,7 @@
 """Utilidades compartidas: rutas del proyecto, configuración y variables de entorno."""
 
 import os
+import re
 from datetime import date
 from pathlib import Path
 
@@ -48,3 +49,27 @@ def persona(fecha):
     return (f"{texto.rstrip()}\n\n## Este episodio\n\n- Se publica un {dia}. "
             f"La despedida de hoy es exactamente: \"{despedida(fecha)}\"\n"
             f"- El próximo episodio sale {proximo}.\n")
+
+
+_LINEA_ENLACE = re.compile(r"^\s*[-*]\s+(\[[^\]]+\]\([^)\s]+\))\s*$")
+
+
+def enlaces_en_linea(notas):
+    """Las fuentes de cada noticia van en una sola línea separadas por « · », nunca en lista.
+
+    El formato de notas.md (lo que acaba en la web, el feed y las apps): tras el título y el
+    resumen de cada noticia, «[Medio](url) · [Medio](url) · …». Si llegan como lista de
+    Markdown (una línea «- [Medio](url)» por enlace), se juntan en una línea."""
+    lineas, grupo = [], []
+    for linea in notas.splitlines():
+        m = _LINEA_ENLACE.match(linea)
+        if m:
+            grupo.append(m.group(1))
+            continue
+        if grupo:
+            lineas.append(" · ".join(grupo))
+            grupo = []
+        lineas.append(linea)
+    if grupo:
+        lineas.append(" · ".join(grupo))
+    return "\n".join(lineas) + ("\n" if notas.endswith("\n") else "")

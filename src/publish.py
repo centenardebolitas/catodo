@@ -5,7 +5,8 @@ Uso:
 
 Pasos:
   1. Comprueba que el episodio está aprobado (make aprobar) y que existe su MP3 (make audio).
-  2. Limpia las notas: las redirecciones de Google News se quedan solo con el nombre del medio.
+  2. Limpia las notas: las redirecciones de Google News se quedan solo con el nombre del medio,
+     y las fuentes de cada noticia van en una línea separadas por « · » (nunca en lista).
   3. Sube el MP3 a Cloudflare R2 y comprueba que se descarga desde la URL pública. Si hay
      portada del episodio (portada.jpg, de portada_episodio.py), la sube también.
   4. Escribe publicacion.json y regenera docs/feed.xml, docs/index.html y docs/episodios/.
@@ -38,7 +39,7 @@ from zoneinfo import ZoneInfo
 import enlaces
 import feed
 import memoria
-from comun import EPISODIOS, RAIZ, cargar_env
+from comun import EPISODIOS, RAIZ, cargar_env, enlaces_en_linea
 
 CARPETA_R2 = "episodios"
 ZONA = ZoneInfo("Europe/Madrid")
@@ -56,12 +57,17 @@ def duracion(ruta):
 
 
 def limpiar_notas(ruta):
-    """Los enlaces de Google News son redirecciones: se deja el nombre del medio sin enlace."""
+    """Los enlaces de Google News son redirecciones: se deja el nombre del medio sin enlace.
+    Y las fuentes de cada noticia, en una línea separadas por « · » (comun.enlaces_en_linea)."""
     texto = ruta.read_text(encoding="utf-8")
     limpio = re.sub(r"\[([^\]]+)\]\(https?://news\.google\.com/[^)]*\)", r"\1", texto)
     if limpio != texto:
-        ruta.write_text(limpio, encoding="utf-8")
         print("  Notas: quitados los enlaces de redirección de Google News.")
+    en_linea = enlaces_en_linea(limpio)
+    if en_linea != limpio:
+        print("  Notas: las fuentes venían en lista; puestas en una línea separadas por « · ».")
+    if en_linea != texto:
+        ruta.write_text(en_linea, encoding="utf-8")
 
 
 def subir_a_r2(fichero, clave_r2, env, tipo="audio/mpeg"):

@@ -25,7 +25,7 @@ from datetime import date
 import claude_cli
 import memoria
 from reservas import Reservas
-from comun import CONFIG, EPISODIOS, cargar_yaml
+from comun import CONFIG, EPISODIOS, cargar_yaml, enlaces_en_linea
 from comun import persona as persona_del_dia
 
 LEER_FUENTES = ["WebFetch", "WebSearch"]
@@ -280,7 +280,7 @@ Entre {palabras_min} y {palabras_max} palabras. Es un límite: si el guion se pa
 
 # Qué devolver
 - "guion": el guion final, en el mismo formato de bloques.
-- "notas": las notas del episodio en Markdown, para publicar. Empiezan con una línea "# " con el título del episodio tal y como se verá en las apps de podcasts: corto (máximo unos 80 caracteres), con las dos o tres noticias principales y sin número de episodio ni fecha (por ejemplo, "# Huang vuelve a Nvidia, Riemann pasa por Lean y un día de bugs"). Después, un título propio por noticia, una frase de resumen con tus palabras y los enlaces a las fuentes (de la escaleta, tanto los leídos como los "solo citar"). El texto de cada enlace es SOLO el nombre del medio, por ejemplo [Bloomberg](url) o [Xataka](url); nunca copies el titular del artículo. No pongas nunca enlaces de news.google.com: usa la URL original del artículo (está en las URL leídas por la redacción) y, si no la tienes, deja ese medio fuera de las notas. Al final, el aviso: "Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es."
+- "notas": las notas del episodio en Markdown, para publicar. Empiezan con una línea "# " con el título del episodio tal y como se verá en las apps de podcasts: corto (máximo unos 80 caracteres), con las dos o tres noticias principales y sin número de episodio ni fecha (por ejemplo, "# Huang vuelve a Nvidia, Riemann pasa por Lean y un día de bugs"). Después, por cada noticia: una línea "## " con un título propio, una frase de resumen con tus palabras y, en una línea aparte, los enlaces a las fuentes (de la escaleta, tanto los leídos como los "solo citar") todos en esa misma línea separados por " · ", así: [Bloomberg](url) · [Xataka](url) · [The Verge](url). Nunca en lista (nada de una línea "- " por enlace). El texto de cada enlace es SOLO el nombre del medio; nunca copies el titular del artículo. No pongas nunca enlaces de news.google.com: usa la URL original del artículo (está en las URL leídas por la redacción) y, si no la tienes, deja ese medio fuera de las notas. Al final, el aviso: "Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es."
 - "cambios": lista breve de lo que has cambiado respecto al guion anterior.
 - "dudas_para_revisor": lo que el humano que revisa debería mirar con atención (datos que no se pudieron confirmar del todo, decisiones discutibles).
 - "contadas": para la memoria de próximos episodios, una entrada por noticia contada con un resumen de lo que se dijo, los asuntos abiertos (lo que puede pasar después y conviene seguir) y "temas": de tres a seis temas concretos para encontrarla dentro de meses (empresas, personas, productos, leyes, casos: "Nvidia", "Jensen Huang", "controles de exportación de chips"), nunca genéricos como "IA", "tecnología" o "Estados Unidos".
@@ -459,7 +459,7 @@ def main():
 
     palabras = contar_palabras(final["guion"])
     (carpeta / "guion.md").write_text(final["guion"].strip() + "\n", encoding="utf-8")
-    (carpeta / "notas.md").write_text(final["notas"].strip() + "\n", encoding="utf-8")
+    (carpeta / "notas.md").write_text(enlaces_en_linea(final["notas"].strip()) + "\n", encoding="utf-8")
     escribir_emojis(carpeta, final.get("emojis", []))
     revision, detalle = informe_revision(escaleta, verificacion, critica, final, palabras, ep, args.fecha)
     (carpeta / "revision.md").write_text(revision, encoding="utf-8")

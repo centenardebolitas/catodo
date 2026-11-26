@@ -55,6 +55,10 @@
   .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
                       border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
   .capitulos button:hover { border-color:var(--acento); }
+  .vecinos { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; padding-top:20px; border-top:1px solid var(--borde); }
+  .vecinos a { display:block; text-decoration:none; line-height:1.35; }
+  .vecinos a .suave { display:block; font-size:0.85rem; margin-bottom:2px; }
+  .vecinos .siguiente { text-align:right; }
 </style>
 </head>
 <body>
@@ -144,6 +148,7 @@
 <p>Y con esto termino. El guion y la voz los hace una inteligencia artificial, y los revisan personas. Si me equivoco, envíame tus comentarios y lo corrijo en el próximo episodio: tienes el contacto en las notas.</p>
 <p>Hasta mañana.</p>
   </details>
+  <nav class="vecinos" aria-label="Otros episodios"><span></span><a class="siguiente" rel="next" href="/episodios/2026-11-25.html"><span class="suave">Siguiente →</span>Huang pide perdón, Tidal veta la música hecha con IA y Microsoft en código rojo</a></nav>
   <footer>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es.<br>
   <a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796">Apple Podcasts</a> · <a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Spotify</a> · <a href="/feed.xml">Feed RSS</a><br>
   <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>

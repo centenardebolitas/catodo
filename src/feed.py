@@ -224,6 +224,10 @@ ESTILO = """
   .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
                       border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
   .capitulos button:hover { border-color:var(--acento); }
+  .vecinos { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; padding-top:20px; border-top:1px solid var(--borde); }
+  .vecinos a { display:block; text-decoration:none; line-height:1.35; }
+  .vecinos a .suave { display:block; font-size:0.85rem; margin-bottom:2px; }
+  .vecinos .siguiente { text-align:right; }
 """
 
 
@@ -318,7 +322,19 @@ def generar_portada(episodios, cfg):
     return plantilla(cfg["titulo"], cfg["descripcion"], cuerpo, cfg)
 
 
-def generar_pagina_episodio(ep, cfg):
+def navegacion_episodios(anterior, siguiente):
+    """Enlaces al episodio anterior (más antiguo) y al siguiente (más reciente), si los hay."""
+    if not anterior and not siguiente:
+        return ""
+    def enlace(ep, rel, flecha_antes, flecha_despues, texto):
+        return (f'<a class="{rel}" rel="{"prev" if rel == "anterior" else "next"}" href="/episodios/{ep["fecha"]}.html">'
+                f'<span class="suave">{flecha_antes}{texto}{flecha_despues}</span>{html.escape(ep["titulo"])}</a>')
+    partes = [enlace(anterior, "anterior", "← ", "", "Anterior") if anterior else "<span></span>",
+              enlace(siguiente, "siguiente", "", " →", "Siguiente") if siguiente else "<span></span>"]
+    return f'<nav class="vecinos" aria-label="Otros episodios">{"".join(partes)}</nav>'
+
+
+def generar_pagina_episodio(ep, cfg, anterior=None, siguiente=None):
     transcripcion = md_a_html(ep["guion_md"], nivel_titulos=3)
     cuerpo = f"""  <p><a href="/">← Cátodo</a></p>
   <h1 style="font-size:1.8rem">{html.escape(ep['titulo'])}</h1>
@@ -328,7 +344,8 @@ def generar_pagina_episodio(ep, cfg):
   {capitulos_html(ep)}{descripcion_episodio(ep, cfg, capitulos=False)}
   <details><summary>Transcripción</summary>
   {transcripcion}
-  </details>"""
+  </details>
+  {navegacion_episodios(anterior, siguiente)}"""
     return plantilla(f"{ep['titulo']} · Cátodo", ep["titulo"], cuerpo, cfg, imagen=ep.get("url_portada"),
                      url=f"{cfg['web'].rstrip('/')}/episodios/{ep['fecha']}.html")
 
@@ -365,8 +382,11 @@ def generar_todo(destino=DOCS):
     (destino / "episodios").mkdir(parents=True, exist_ok=True)
     (destino / "feed.xml").write_text(generar_feed(episodios, cfg), encoding="utf-8")
     (destino / "index.html").write_text(generar_portada(episodios, cfg), encoding="utf-8")
-    for ep in episodios:
-        (destino / "episodios" / f"{ep['fecha']}.html").write_text(generar_pagina_episodio(ep, cfg), encoding="utf-8")
+    for i, ep in enumerate(episodios):  # de más reciente a más antiguo
+        anterior = episodios[i + 1] if i + 1 < len(episodios) else None
+        siguiente = episodios[i - 1] if i > 0 else None
+        (destino / "episodios" / f"{ep['fecha']}.html").write_text(
+            generar_pagina_episodio(ep, cfg, anterior, siguiente), encoding="utf-8")
         if ep.get("capitulos"):  # lo que enlaza <podcast:chapters>
             (destino / "episodios" / f"{ep['fecha']}-capitulos.json").write_text(
                 json.dumps({"version": "1.2.0", "chapters": ep["capitulos"]}, ensure_ascii=False, indent=2) + "\n",

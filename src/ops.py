@@ -459,7 +459,7 @@ def corregir(fecha, comentario, hilo, nota):
     """
     import publish
     import script
-    from comun import CONFIG, cargar_yaml
+    from comun import CONFIG, cargar_yaml, enlaces_en_linea
     from reservas import Reservas
 
     carpeta = EPISODIOS / fecha
@@ -496,7 +496,7 @@ def corregir(fecha, comentario, hilo, nota):
             herramientas=script.LEER_FUENTES, registro=carpeta / "pasadas" / f"comentario-{version}.json",
             tiempo_max=cl["tiempo_max_pasada_s"])
         nuevo = correccion["guion"].strip() + "\n"
-        notas_nuevas = (correccion["notas"].strip() + "\n") if correccion["notas"].strip() else notas
+        notas_nuevas = (enlaces_en_linea(correccion["notas"].strip()) + "\n") if correccion["notas"].strip() else notas
         cambios_texto = comentarios.diferencias(guion, nuevo) + "\n" + comentarios.diferencias(notas, notas_nuevas)
         problemas = []
         # Siempre que cambie algo: lo que diga el modelo de sí mismo no basta.
