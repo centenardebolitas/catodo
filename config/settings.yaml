@@ -75,7 +75,7 @@ portada:                           # portada de cada episodio: el guion en emoji
   lado_web_px: 600                 # versión ligera para la web
 
 redes:                             # difusión en redes del episodio publicado (src/redes.py, «Difundir en redes» en el aviso de catodo.preparar)
-  activas: [bluesky, facebook, threads]             # bluesky, instagram, facebook, threads, youtube; vacío = no se publica nada
+  activas: [bluesky, facebook, threads, youtube]             # bluesky, instagram, facebook, threads, youtube; vacío = no se publica nada
   version_graph: v24.0             # versión de la Graph API de Meta (Instagram y Facebook)
   bluesky: catodo.es               # la cuenta de Bluesky (el dominio como nombre: registro TXT _atproto en Cloudflare)
   facebook_pagina: "1473516159180136"  # ID (Graph) de la página de Facebook «Cátodo» (no es secreto; el token, META_TOKEN)
