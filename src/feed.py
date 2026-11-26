@@ -195,6 +195,40 @@ ESTILO_PIE = """  footer { margin-top:48px; font-size:0.85rem; color:var(--suave
   footer .redes { display:flex; gap:16px; }
   footer .redes a { display:block; line-height:0; }
   footer .redes a:hover { color:var(--texto); }
+  .contacto { width:min(480px, calc(100vw - 32px)); max-height:calc(100dvh - 32px); padding:0; font-size:1rem;
+              border:1px solid var(--borde); border-radius:14px; background:var(--caja); color:var(--texto); }
+  .contacto::backdrop { background:rgba(5,5,10,.75); }
+  .contacto form { position:relative; display:grid; gap:14px; padding:22px 22px 20px; }
+  .contacto h2 { margin:0; font-size:1.25rem; }
+  .contacto p { margin:0; }
+  .contacto .cerrar { position:absolute; top:10px; right:10px; width:36px; height:36px; font:inherit; font-size:1.5rem;
+                      line-height:1; color:var(--suave); background:none; border:0; border-radius:8px; cursor:pointer; }
+  .contacto .cerrar:hover { color:var(--texto); }
+  .contacto fieldset { border:0; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
+  .contacto legend { padding:0; margin-bottom:8px; font-size:0.9rem; color:var(--suave); }
+  .contacto .asunto { position:relative; }
+  .contacto .asunto input { position:absolute; opacity:0; inset:0; margin:0; }
+  .contacto .asunto span { display:block; padding:5px 12px; font-size:0.9rem; border:1px solid var(--borde);
+                           border-radius:999px; cursor:pointer; }
+  .contacto .asunto input:checked + span { color:var(--acento); border-color:var(--acento); }
+  .contacto .asunto input:focus-visible + span { outline:2px solid var(--acento); outline-offset:2px; }
+  .contacto .campo { display:grid; gap:4px; font-size:0.9rem; color:var(--suave); }
+  .contacto .fila { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .contacto input[type=text], .contacto input[type=email], .contacto textarea {
+    font:inherit; font-size:1rem; color:var(--texto); background:var(--fondo); border:1px solid var(--borde);
+    border-radius:8px; padding:8px 10px; }
+  .contacto input:focus, .contacto textarea:focus { outline:none; border-color:var(--acento); }
+  .contacto textarea { min-height:120px; resize:vertical; }
+  .contacto .aviso { font-size:0.8rem; color:var(--suave); }
+  .contacto .aviso a { color:var(--suave); }
+  .contacto .acciones { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
+  .contacto .enviar { font:inherit; font-weight:600; color:var(--fondo); background:var(--acento); border:0;
+                      border-radius:8px; padding:8px 20px; cursor:pointer; }
+  .contacto .enviar:disabled { opacity:.6; cursor:wait; }
+  .contacto .estado { font-size:0.9rem; }
+  .contacto .estado.error { color:#fca5a5; }
+  .contacto .trampa { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+  @media (max-width:520px) { .contacto .fila { grid-template-columns:1fr; } }
 """
 
 ESTILO = """
@@ -307,9 +341,85 @@ def pie(cfg):
     """El pie de todas las páginas: enlaces a un lado y redes al otro, en una línea.
 
     El aviso de IA no va aquí: ya está en la descripción de la portada y en las notas de
-    cada episodio. Tampoco Apple, Spotify ni el RSS: están en las insignias de arriba."""
-    return f"""<footer><nav class="enlaces-pie" aria-label="Más sobre Cátodo"><a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:{cfg['email']}">{cfg['email']}</a></nav>
-  {iconos_redes(cfg)}</footer>"""
+    cada episodio. Tampoco Apple, Spotify ni el RSS: están en las insignias de arriba.
+
+    Con clave de Web3Forms, «Contacto» abre un formulario y el correo no sale en la web."""
+    clave = (cfg.get("contacto") or {}).get("web3forms")
+    if clave:
+        contacto, dialogo = '<a href="#contacto">Contacto</a>', formulario_contacto(cfg, clave)
+    else:
+        contacto, dialogo = f'<a href="mailto:{cfg["email"]}">{cfg["email"]}</a>', ""
+    return f"""<footer><nav class="enlaces-pie" aria-label="Más sobre Cátodo"><a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · {contacto}</nav>
+  {iconos_redes(cfg)}{dialogo}</footer>"""
+
+
+# Abre el formulario desde cualquier enlace a #contacto (también al entrar en catodo.es/#contacto)
+# y lo envía a Web3Forms sin salir de la página.
+SCRIPT_CONTACTO = """<script>
+  (() => {
+    const d = document.getElementById('contacto'), f = d.querySelector('form'), estado = d.querySelector('.estado');
+    const boton = f.querySelector('.enviar'), mensaje = f.elements.message;
+    const abrir = e => { if (e) e.preventDefault(); estado.textContent = ''; d.showModal(); };
+    document.querySelectorAll('a[href="#contacto"]').forEach(a => a.addEventListener('click', abrir));
+    if (location.hash === '#contacto') abrir();
+    d.addEventListener('close', () => { if (location.hash === '#contacto') history.replaceState(null, '', location.pathname + location.search); });
+    d.addEventListener('click', e => { if (e.target === d) d.close(); });  // fuera del cuadro
+    d.querySelector('.cerrar').addEventListener('click', () => d.close());
+    const pista = () => { mensaje.placeholder = f.querySelector('[name=asunto]:checked').dataset.pista; };
+    f.querySelectorAll('[name=asunto]').forEach(r => r.addEventListener('change', pista));
+    pista();
+    f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const datos = Object.fromEntries(new FormData(f));
+      datos.subject = 'Cátodo · ' + datos.asunto;
+      datos.pagina = location.origin + location.pathname;
+      boton.disabled = true; estado.className = 'estado'; estado.textContent = 'Enviando…';
+      try {
+        const r = await fetch(f.action, { method: 'POST', body: JSON.stringify(datos),
+                                          headers: { 'Content-Type': 'application/json', Accept: 'application/json' } });
+        if (!(await r.json()).success) throw new Error();
+        f.reset(); pista();
+        estado.textContent = 'Enviado. Gracias: te contestaremos a tu correo.';
+      } catch {
+        estado.className = 'estado error';
+        estado.textContent = 'No se ha podido enviar. Inténtalo de nuevo en un rato.';
+      } finally { boton.disabled = false; }
+    });
+  })();
+  </script>"""
+
+
+def formulario_contacto(cfg, clave):
+    """El diálogo de contacto: asunto, mensaje, nombre y correo para responder.
+
+    Contra el spam: Web3Forms filtra en su lado y descarta lo que marque la casilla trampa
+    (botcheck), que una persona no ve."""
+    asuntos = "\n      ".join(
+        f'<label class="asunto"><input type="radio" name="asunto" value="{html.escape(a["texto"])}" '
+        f'data-pista="{html.escape(a.get("pista", ""))}"{" checked" if i == 0 else ""}><span>{html.escape(a["texto"])}</span></label>'
+        for i, a in enumerate(cfg["contacto"]["asuntos"]))
+    return f"""
+  <dialog id="contacto" class="contacto" aria-labelledby="contacto-titulo">
+    <form action="https://api.web3forms.com/submit" method="post">
+    <input type="hidden" name="access_key" value="{html.escape(clave)}">
+    <input type="hidden" name="from_name" value="Web de {html.escape(cfg['titulo'])}">
+    <h2 id="contacto-titulo">Escribe a {html.escape(cfg['titulo'])}</h2>
+    <button type="button" class="cerrar" aria-label="Cerrar">×</button>
+    <fieldset>
+      <legend>¿Sobre qué?</legend>
+      {asuntos}
+    </fieldset>
+    <label class="campo">Mensaje<textarea name="message" required maxlength="4000" rows="5"></textarea></label>
+    <div class="fila">
+      <label class="campo">Nombre (opcional)<input type="text" name="name" maxlength="100" autocomplete="name"></label>
+      <label class="campo">Tu correo, para responderte<input type="email" name="email" required maxlength="200" autocomplete="email"></label>
+    </div>
+    <label class="trampa" aria-hidden="true">No marques esta casilla<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
+    <p class="aviso">Usaremos tu correo solo para responderte. Más en <a href="/legal.html#privacidad">privacidad</a>.</p>
+    <div class="acciones"><button type="submit" class="enviar">Enviar</button><p class="estado" role="status"></p></div>
+    </form>
+  </dialog>
+  {SCRIPT_CONTACTO}"""
 
 
 def actualizar_pie(fichero, cfg):

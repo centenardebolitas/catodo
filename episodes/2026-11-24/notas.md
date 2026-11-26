@@ -32,4 +32,4 @@ Después de unos ocho años de viaje, la sonda de la ESA y JAXA ya orbita Mercur
 
 ---
 
-Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos a hola@catodo.es.
+Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por una persona antes de publicarse. Si ves un error, escríbenos desde [catodo.es/#contacto](https://catodo.es/#contacto).

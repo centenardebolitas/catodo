@@ -11,7 +11,8 @@ descripcion: >-
   y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta.
 aviso_ia: >-
   Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados
-  por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es.
+  por personas, que escuchan cada episodio y corrigen lo que haga falta.
+  Si ves un error, escríbenos desde https://catodo.es/#contacto.
 autor: Cátodo
 email: hola@catodo.es
 idioma: es-ES
@@ -54,3 +55,19 @@ redes:
   - nombre: YouTube
     url: https://www.youtube.com/@catodo_es   # @catodo y @catodo.es estaban cogidos
     icono: youtube
+
+# Formulario de contacto del pie: los mensajes llegan a `email` sin publicar la dirección en la web.
+# Los envía Web3Forms (gratis hasta 250 al mes). La clave se saca en web3forms.com poniendo
+# hola@catodo.es; es pública por diseño: solo sirve para mandar mensajes a ese correo.
+# Sin clave, el pie vuelve a enseñar el correo con un mailto.
+contacto:
+  web3forms: e50ea0a5-ab8f-4b61-95c8-f5dfff5bb73b   # formulario «Cátodo · contacto web» (cuenta hola@catodo.es)
+  asuntos:             # el primero va marcado; la pista es el texto de ejemplo del mensaje
+    - texto: Un error en un episodio
+      pista: Qué episodio y qué está mal. Si sabes el minuto, mejor.
+    - texto: Una noticia o una sugerencia
+      pista: Qué noticia, qué echas en falta o qué cambiarías.
+    - texto: Prensa o colaboraciones
+      pista: Quién eres y qué propones.
+    - texto: Otro tema
+      pista: Cuéntanos.

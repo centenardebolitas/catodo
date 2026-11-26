@@ -32,4 +32,4 @@ La sonda europea, guiada por un sistema de la española GMV, muestra un cráter 
 
 ---
 
-Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es.
+Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos desde [catodo.es/#contacto](https://catodo.es/#contacto).
