@@ -249,7 +249,32 @@ def facebook(datos, env, medios):
     hecho = pedir("POST", f"{GRAPH_VIDEO}/{pagina}/videos", data={
         "file_url": medios["url_clip"], "title": datos["titulo"][:250], "description": texto_facebook(datos),
         "access_token": token})
-    return {"id": hecho["id"], "url": f"https://www.facebook.com/{pagina}/videos/{hecho['id']}"}
+    resultado = {"id": hecho["id"], "url": f"https://www.facebook.com/{pagina}/videos/{hecho['id']}"}
+    # El vertical sale como Reel, donde el enlace del texto no se puede pulsar: va en un comentario de la
+    # página. Si falla, el vídeo ya está publicado y no se repite; queda apuntado y se avisa.
+    try:
+        resultado["comentario"] = comentar_facebook(token, hecho["id"], datos["fecha"])
+    except (ErrorRed, requests.RequestException, KeyError) as e:
+        resultado["comentario_error"] = str(e)
+        print(f"  Facebook: el vídeo está publicado, pero no el comentario con el enlace ({e}).", file=sys.stderr)
+    return resultado
+
+
+def texto_comentario_facebook(fecha):
+    return f"🎧 El episodio completo, con las fuentes de cada noticia: {url_pagina(fecha)}"
+
+
+def comentar_facebook(token_pagina, video, fecha, intentos=6, espera=20):
+    """Comenta como la página el vídeo recién publicado con el enlace al episodio. Mientras Facebook
+    procesa el vídeo, el comentario puede fallar: se reintenta unas cuantas veces."""
+    for intento in range(intentos):
+        try:
+            return pedir("POST", f"{GRAPH}/{video}/comments", data={
+                "message": texto_comentario_facebook(fecha), "access_token": token_pagina})["id"]
+        except ErrorRed:
+            if intento == intentos - 1:
+                raise
+            time.sleep(espera)
 
 
 # Tokens de 60 días que se renuevan: (variable con el de las credenciales, URL y grant_type).

@@ -577,7 +577,8 @@ def responder():
     if opcion == OPCION_DIFUNDIR:
         # Si alguna red falla, sale con error: ops lo reintenta y solo se repiten las que faltan.
         resultados = difundir(fecha)
-        lineas = [f"- {nombre_red(r)}: {v['url']}" if v.get("url") else f"- {nombre_red(r)}: publicado"
+        lineas = [(f"- {nombre_red(r)}: {v['url']}" if v.get("url") else f"- {nombre_red(r)}: publicado")
+                  + (f" (sin el comentario con el enlace: {v['comentario_error']})" if v.get("comentario_error") else "")
                   for r, v in resultados.items()]
         nota(f"Episodio del {fecha} difundido en redes.\n\n" + "\n".join(lineas) if lineas
              else f"El episodio del {fecha} ya estaba en todas las redes activas: no he publicado nada.")

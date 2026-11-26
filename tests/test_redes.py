@@ -174,6 +174,22 @@ class Meta(unittest.TestCase):
         self.assertEqual(llamadas[0][2]["params"]["access_token"], "suat")
         self.assertIn("/615/videos", llamadas[1][1])
         self.assertEqual(llamadas[1][2]["data"]["access_token"], "token-de-pagina")
+        comentario = llamadas[2]
+        self.assertTrue(comentario[1].endswith("/v1/comments"))
+        self.assertIn("https://catodo.es/episodios/2026-11-25.html", comentario[2]["data"]["message"])
+        self.assertEqual(comentario[2]["data"]["access_token"], "token-de-pagina")
+
+    def test_si_falla_el_comentario_el_video_cuenta_como_publicado(self):
+        def pedir(metodo, url, **kw):
+            if url.endswith("/comments"):
+                raise redes.ErrorRed("HTTP 403: falta pages_manage_engagement")
+            return {"access_token": "tp"} if metodo == "GET" else {"id": "v1"}
+
+        with mock.patch.object(redes, "pedir", side_effect=pedir), mock.patch.object(redes.time, "sleep"), \
+                mock.patch.object(redes, "AJUSTES", {"facebook_pagina": "615"}):
+            hecho = redes.facebook(DATOS, {"META_TOKEN": "suat"}, {"url_clip": "x"})
+        self.assertEqual(hecho["id"], "v1")
+        self.assertIn("403", hecho["comentario_error"])
 
     def test_sin_id_de_instagram_falla_con_un_error_de_red(self):
         with mock.patch.object(redes, "AJUSTES", {}):
