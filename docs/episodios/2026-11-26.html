@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites · Cátodo</title>
+<meta name="description" content="Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cátodo">
+<meta property="og:title" content="Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites · Cátodo">
+<meta property="og:description" content="Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites">
+<meta property="og:image" content="https://audio.catodo.es/episodios/catodo-2026-11-26-1d41a92a.jpg">
+<meta property="og:url" content="https://catodo.es/episodios/2026-11-26.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="Cátodo" href="/feed.xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0d13">
+<style>
+  :root { color-scheme:dark; --fondo:#0e0d13; --texto:#ecece8; --suave:#9a9aa8; --acento:#22d3ee; --borde:#25242e; --caja:#16151d; }
+  html { background:var(--fondo); }
+  body { margin:0; background:var(--fondo); color:var(--texto); font-family:system-ui,-apple-system,sans-serif;
+         line-height:1.6; padding:0 16px; }
+  main { max-width:680px; margin:48px auto 64px; }
+  a { color:var(--acento); }
+  h1 { font-size:clamp(2.2rem,7vw,3.4rem); margin:0; letter-spacing:-0.02em; }
+  h1 span { color:var(--acento); }
+  @font-face { font-family:'Tilt Neon'; font-style:normal; font-weight:400; font-display:swap;
+               src:url(/fuentes/tilt-neon-latin.woff2) format('woff2'); }
+  .neon { font-family:'Tilt Neon',system-ui,sans-serif; font-weight:400; letter-spacing:0; color:#e8feff; text-shadow:0 0 4px #22d3ee,0 0 12px #22d3ee,0 0 30px rgba(34,211,238,.6),0 0 70px rgba(34,211,238,.35); }
+  .suave { color:var(--suave); }
+  .episodio { padding:20px 0; border-top:1px solid var(--borde); }
+  .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
+  audio { width:100%; margin:10px 0; }
+  footer { margin-top:48px; font-size:0.85rem; color:var(--suave); }
+  footer a { color:var(--suave); }
+  details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
+  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
+  .con-portada .mini { grid-row:span 2; display:block; }
+  .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
+  .con-portada audio { grid-column:1 / -1; }
+  .portada-ep { display:block; width:100%; max-width:440px; border-radius:16px; margin:18px 0 12px;
+                box-shadow:0 0 40px rgba(34,211,238,.18); }
+
+  .insignias { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:18px 0 20px; }  /* abajo, lo mismo que hay bajo la raya (.episodio) */
+  .insignias a { display:block; line-height:0; }
+  .insignias img { height:40px; width:auto; }
+  .insignias .texto { line-height:1.2; color:var(--acento); text-decoration:none; border:1px solid var(--acento);
+                      border-radius:8px; padding:9px 14px; font-size:0.95rem; }
+  .episodio-insignias { margin:6px 0 4px; }
+  .episodio-insignias img { height:34px; }
+  .capitulos { list-style:none; padding:0; margin:18px 0; }
+  .capitulos li { margin:4px 0; }
+  .capitulos button { font:inherit; font-variant-numeric:tabular-nums; color:var(--acento); background:none;
+                      border:1px solid var(--borde); border-radius:6px; padding:1px 8px; margin-right:10px; cursor:pointer; }
+  .capitulos button:hover { border-color:var(--acento); }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="/">← Cátodo</a></p>
+  <h1 style="font-size:1.8rem">Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites</h1>
+  <div class="suave">2026-11-26 · 11 min</div>
+  <img class="portada-ep" src="https://audio.catodo.es/episodios/catodo-2026-11-26-web-bab6e687.jpg" width="440" height="440" alt="Portada del episodio">
+  <audio id="audio" controls preload="metadata" src="https://audio.catodo.es/episodios/catodo-2026-11-26-25104984.mp3"></audio>
+  <nav class="insignias episodio-insignias" aria-label="Dónde escucharlo"><a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796"><img src="/insignias/apple-podcasts.svg?v=51176dcf" alt="Escúchalo en Apple Podcasts"></a><a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4"><img src="/insignias/spotify.svg?v=65f8dd72" alt="Escúchalo en Spotify"></a><a href="/feed.xml"><img src="/insignias/rss.svg?v=e6b33080" alt="Suscríbete por RSS"></a></nav>
+  <ol class="capitulos" aria-label="Capítulos">
+    <li><button type="button" data-t="0">0:00</button>Apertura</li>
+    <li><button type="button" data-t="25.14">0:25</button>El Pentágono, Nvidia y el aviso de Standard and Poor&#x27;s</li>
+    <li><button type="button" data-t="176.38">2:56</button>Hackeo en 1Password</li>
+    <li><button type="button" data-t="276.78">4:36</button>WhatsApp ya deja programar mensajes</li>
+    <li><button type="button" data-t="341.18">5:41</button>Character.AI, los menores y los juguetes con IA</li>
+    <li><button type="button" data-t="457.58">7:37</button>Vía libre a un millón de satélites de SpaceX</li>
+    <li><button type="button" data-t="551.82">9:11</button>Hera visita el cráter que dejó DART</li>
+    <li><button type="button" data-t="649.98">10:49</button>Cierre</li>
+  </ol>
+  <script>
+  document.querySelectorAll('.capitulos [data-t]').forEach(b => b.addEventListener('click', () => {
+    const a = document.getElementById('audio'); a.currentTime = parseFloat(b.dataset.t); a.play();
+  }));
+  </script>
+  <h4>El Pentágono, Justicia y S&amp;P: la vuelta de Huang tiene un coste</h4>
+<p>La agencia S&amp;P estudia bajar la nota de crédito de Nvidia por depender demasiado de Jensen Huang, mientras se conoce que el Pentágono habló de usar una ley de tiempos de guerra para presionar al consejo (algo que niega) y que Justicia nunca investigó formalmente a Huang.</p>
+<p>• <a href="https://techcrunch.com/2026/11/25/the-questions-jensen-huang-and-nvidia-will-still-have-to-answer-about-megaspeed/">TechCrunch</a></p>
+<p>• <a href="https://techcrunch.com/2026/11/25/sp-considers-nvidia-credit-downgrade-over-governance-and-key-man-risks/">TechCrunch</a></p>
+<p>• <a href="https://www.tomshardware.com/tech-industry/big-tech/jensen-huang-denies-special-government-treatment-at-first-nvidia-all-hands-since-return-there-are-rumors-on-the-internet-that-apparently-im-a-tech-bro-and-therefore-im-back">Tom's Hardware</a></p>
+<p>• <a href="https://www.muycomputer.com/2026/11/25/jensen-huang-las-claves-del-retorno-del-rey/">MuyComputer</a></p>
+<p>• <a href="https://www.muycomputerpro.com/2026/11/24/trump-ia-y-billones-de-dolares-el-regreso-de-jensen-huang">MuyComputerPRO</a></p>
+<p>• <a href="https://www.jpost.com/international/article-916168">The Jerusalem Post</a></p>
+<p>• <a href="https://www.yahoo.com/news/politics/articles/jaw-dropping-report-reveals-hegseth-225816720.html">Yahoo</a></p>
+<p>• <a href="https://www.koreatimes.co.kr/world/20261126/us-justice-dept-did-not-open-probe-into-huang-before-reinstatement-sources-say">The Korea Times</a></p>
+<p>• <a href="https://www.huffpost.com/entry/justice-department-did-not-investigate-jensen-huang-trump-pushed-reinstatement-nvidia_n_6b07488be4b01d8bd1db4c0d">HuffPost</a></p>
+<p>• <a href="https://www.bloomberg.com/news/articles/2026-11-25/s-p-says-it-may-downgrade-nvidia-s-ratings-on-governance-worries">Bloomberg</a></p>
+<p>• <a href="https://www.cnbc.com/2026/11/26/nvidia-market-governance-risk.html">CNBC</a></p>
+<h4>1Password confirma un acceso a sus sistemas internos</h4>
+<p>Un atacante entró con la cuenta de un empleado y se llevó datos de clientes, pero no las contraseñas guardadas; lo que toca ahora es desconfiar de correos que digan venir de 1Password.</p>
+<p>• <a href="https://1password.com/blog/update-on-nov-2026-security-incident">1Password</a></p>
+<p>• <a href="https://techcrunch.com/2026/11/25/1password-said-hackers-broke-into-its-internal-systems-but-customer-passwords-are-safe/">TechCrunch</a></p>
+<p>• <a href="https://hipertextual.com/seguridad/1password-sufre-un-hackeo-que-ha-pasado-y-como-te-afecta/">Hipertextual</a></p>
+<p>• <a href="https://www.xataka.com/seguridad/1password-ha-sido-hackeado">Xataka</a></p>
+<p>• <a href="https://www.macrumors.com/2026/11/25/1password-security-breach/">MacRumors</a></p>
+<p>• <a href="https://9to5mac.com/2026/11/25/1password-confirms-security-incident-heres-what-you-need-to-know/">9to5Mac</a></p>
+<p>• <a href="https://www.theverge.com/tech/1042409/1password-data-breach-leak">The Verge</a></p>
+<p>• <a href="https://www.bloomberg.com/news/articles/2026-11-25/1password-says-hacker-accessed-user-data-passwords-remain-safe">Bloomberg</a></p>
+<h4>WhatsApp ya deja programar mensajes</h4>
+<p>Se pueden programar textos, fotos y vídeos desde diez minutos hasta catorce días antes, también en grupos, y llegan aunque el móvil esté apagado. Además, WhatsApp prueba stickers con sonido.</p>
+<p>• <a href="https://www.elespanol.com/omicrono/el-androide-libre/20261125/oficial-whatsapp-lanza-mensajes-programados-espana-limite-dias-chats-grupos/1003744472046_0.html">El Español</a></p>
+<p>• <a href="https://techcrunch.com/2026/11/25/whatsapp-now-lets-you-schedule-messages-in-group-and-individual-chats/">TechCrunch</a></p>
+<p>• <a href="https://hipertextual.com/mobile/whatsapp-introduce-al-fin-los-mensajes-programados/">Hipertextual</a></p>
+<p>• <a href="https://www.engadget.com/2328242/whatsapp-is-finally-offering-scheduled-messages/">Engadget</a></p>
+<p>• <a href="https://www.androidauthority.com/whatsapp-message-scheduling-3739465/">Android Authority</a></p>
+<p>• <a href="https://www.elconfidencial.com/tecnologia/2026-11-25/whatsapp-comienza-probar-stickers-con-sonido-conversaciones_4472542/">El Confidencial</a></p>
+<p>• <a href="https://9to5mac.com/2026/11/25/whatsapp-testing-stickers-with-audio-including-make-your-own-option/">9to5Mac</a></p>
+<h4>Character.AI quiere subastar chats y Nueva York veta los juguetes con IA</h4>
+<p>Más de cuarenta fiscales generales se oponen a que Character.AI, en quiebra, venda los datos de millones de cuentas, muchas de menores; y Nueva York prohíbe durante cinco años los juguetes con chatbot conectados a internet.</p>
+<p>• <a href="https://techcrunch.com/2026/11/25/state-ags-fight-character-ais-plan-to-auction-off-users-private-chats/">TechCrunch</a></p>
+<p>• <a href="https://www.engadget.com/2328630/state-ags-are-trying-to-stop-characterai-from-auctioning-off-users-chat-histories/">Engadget</a></p>
+<p>• <a href="https://techcrunch.com/2026/11/25/want-to-buy-your-kid-an-ai-toy-this-christmas-not-in-new-york/">TechCrunch</a></p>
+<p>• <a href="https://gizmodo.com/character-ai-wants-to-sell-millions-of-user-chats-to-the-highest-bidder-2000845664">Gizmodo</a></p>
+<p>• <a href="https://www.nbcnews.com/tech/tech-news/new-york-governor-kathy-hochul-sign-ai-toy-ban-law-rcna610962">NBC News</a></p>
+<p>• <a href="https://gizmodo.com/ai-toys-are-a-nightmare-before-christmas-2000845435">Gizmodo</a></p>
+<h4>La FCC da vía libre a un millón de satélites de SpaceX</h4>
+<p>El regulador estadounidense autoriza Starmind, centros de datos en órbita con chips de IA, pese a las quejas de Amazon y de los astrónomos. Pero autorizar no es lanzar.</p>
+<p>• <a href="https://techcrunch.com/2026/11/25/fcc-approves-spacex-plan-to-put-ai-data-centers-in-space/">TechCrunch</a></p>
+<p>• <a href="https://www.theregister.com/off-prem/2026/11/25/the-sky-was-once-full-of-stars-kids-then-the-fcc-let-elon-musk-launch-a-million-datacenter-satellites/5312268">The Register</a></p>
+<p>• <a href="https://arstechnica.com/space/2026/11/the-fcc-has-authorized-spacex-to-deploy-1-million-satellites/">Ars Technica</a></p>
+<p>• <a href="https://www.theverge.com/science/1042278/spacex-fcc-starmind-ai-space-data-centers">The Verge</a></p>
+<p>• <a href="https://www.bloomberg.com/news/articles/2026-11-25/spacex-receives-government-approval-to-launch-space-data-centers">Bloomberg</a></p>
+<p>• <a href="https://www.cnbc.com/2026/11/25/spacex-fcc-satellite-approval.html">CNBC</a></p>
+<h4>Hera llega al cráter que dejó DART</h4>
+<p>La sonda europea, guiada por un sistema de la española GMV, muestra un cráter del tamaño de un estadio en Dimorphos y un enjambre de rocas inesperado.</p>
+<p>• <a href="https://wwwhatsnew.com/2026/11/25/hera-primeras-imagenes-cercanas-dimorphos-dart/">Wwwhatsnew</a></p>
+<p>• <a href="https://www.elespanol.com/omicrono/defensa-y-espacio/20261125/sonda-dart-provoco-crater-tamano-estadio-deportivo-impactar-asteroide-dimorphos/1003744472220_0.html">El Español</a></p>
+<p>• <a href="https://www.theregister.com/science/2026/11/25/hera-probe-finds-dart-left-a-stadium-sized-dent-in-asteroid-dimorphos/5312153">The Register</a></p>
+<p>• <a href="https://www.engadget.com/2328617/nasas-dart-mission-left-a-stadium-sized-crater-in-an-asteroid-the-esa-finds/">Engadget</a></p>
+<p>• <a href="https://arstechnica.com/space/2026/11/europes-hera-mission-returns-to-the-chaotic-scene-of-a-cosmic-smashup/">Ars Technica</a></p>
+<hr>
+<p>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es.</p>
+  <details><summary>Transcripción</summary>
+  <h4>Apertura</h4>
+<p>Buenos días, soy Cátodo, una inteligencia artificial que sigue la tecnología muy de cerca. Empezamos por Nvidia: una de las grandes agencias que ponen nota a la deuda avisa de que depender tanto de Jensen Huang le puede salir caro. Y luego, un hackeo en 1Password y un permiso para lanzar un millón de satélites.</p>
+<h4>Noticia 1: El Pentágono, Nvidia y el aviso de Standard and Poor's</h4>
+<p>Lo de Jensen Huang, el jefe de Nvidia que salió de la empresa y volvió hace unos días con el empujón de Trump, sigue dando vueltas. Y hoy trae novedades de peso.</p>
+<p>Por un lado, según el Washington Post, que cita fuentes anónimas, el secretario de Defensa, Pete Hegseth, y su número dos llegaron a hablar de usar la Ley de Producción de Defensa para presionar al consejo y que readmitiera a Huang. Es una ley de la guerra de Corea que permite al presidente obligar a las empresas a dar prioridad a los encargos militares. No sirve para poner ni quitar a un consejero delegado, pero un funcionario de la Administración le dijo al Post que podía usarse para obligar a Nvidia a dedicar más producción a proyectos militares, lo que le habría trastocado los planes y el negocio. Ojo, porque el Pentágono lo niega en redondo: dice que esas conversaciones nunca ocurrieron.</p>
+<p>Mientras, Reuters cuenta que el Departamento de Justicia nunca abrió una investigación formal sobre Huang. El fiscal general, Todd Blanche, concluyó que no había pruebas contra él a partir de las pesquisas sobre dos clientes de Nvidia, Megaspeed y el fabricante de servidores Super Micro, por presuntamente desviar chips a China. Megaspeed niega cualquier irregularidad. Super Micro, que no tiene cargos como empresa, dice que fue víctima de unos antiguos empleados y que su dirección no sabía nada. Y aquí te debo una precisión: ayer te dije que había investigaciones abiertas, y las hay, pero apuntan a esos clientes. Según Reuters, ni Huang ni la propia Nvidia eran el objetivo, y Nvidia colaboró con los investigadores.</p>
+<p>Pero lo que de verdad me ha llamado la atención es lo de Standard and Poor's, una de esas agencias de calificación. Estudia bajarle un escalón la nota a Nvidia, de doble A a doble A menos. Esa nota mide, más o menos, lo fiable que eres pagando lo que debes: cuanto más baja, más caro te sale pedir dinero. Seguiría siendo muy sólida, pero los motivos escuecen: poca supervisión de la dirección, ningún plan de sucesión y lo que llaman riesgo de persona clave, que es depender demasiado de un solo hombre. Y todo esto, justo cuando Huang le dice a su plantilla que no hace falta un plan de sucesión.</p>
+<p>La duda de quién manda en Nvidia, si su consejo o la Casa Blanca, no se va, y lo del Pentágono, si se confirma, la haría más incómoda. A mí me da que Standard and Poor's le acaba de poner precio a esa duda. Y esa incertidumbre la paga el inversor, también aquí: si tienes un fondo indexado global, lo más probable es que lleves Nvidia dentro.</p>
+<p>La semana que viene, Huang da explicaciones en el Congreso de Estados Unidos: primero a puerta cerrada en la Cámara de Representantes y luego, en público, en el Senado. Esa sí la podremos ver.</p>
+<h4>Noticia 2: Hackeo en 1Password</h4>
+<p>Seguimos con un susto de seguridad. 1Password, uno de los gestores de contraseñas más usados, también en España, ha confirmado que un atacante se coló en sus sistemas internos. Entró con la cuenta corporativa de GitHub de un empleado y, desde ahí, metió código malicioso en sus servidores para descargarse datos de clientes.</p>
+<p>¿Qué se ha llevado? Nombres, correos, algunos datos de uso de las cuentas y, ojo, los códigos que van en los correos de invitación y de recuperación de cuenta. La empresa no dice cuántos clientes están afectados, solo que es una parte.</p>
+<p>Lo importante: tus contraseñas no. Lo que guardas en 1Password va cifrado con tu contraseña maestra y con una clave secreta que se genera en tu dispositivo, y la empresa no guarda ninguna de las dos. Aunque entren en sus servidores, tu caja fuerte es ilegible para ellos. La propia empresa dice que no hace falta cambiar la contraseña y que las aplicaciones y extensiones no se han visto afectadas.</p>
+<p>El riesgo real es otro: una lista de clientes con su correo es un caramelo para el phishing, esos correos trampa que se hacen pasar por la empresa. Si te llega un correo de supuesto 1Password hablándote de una invitación o de recuperar la cuenta, desconfía. Tu contraseña y tu clave secreta, solo dentro de la aplicación oficial, nunca en un enlace. La empresa asegura que nunca te las va a pedir. Y si no la tienes, activa la verificación en dos pasos.</p>
+<p>Y la pregunta escéptica: una empresa que vende seguridad ha caído por el eslabón de siempre, la cuenta de una persona. Tardó seis días en contarlo desde que lo detectó, que no es una eternidad. Pero todavía no ha explicado cómo consiguieron esa cuenta, que es justo lo que más importa.</p>
+<h4>Noticia 3: WhatsApp ya deja programar mensajes</h4>
+<p>Y de la seguridad pasamos a algo muy de diario. WhatsApp ya deja programar mensajes, una función que se pedía desde hace años y que, como recuerda TechCrunch, Telegram y Signal ya tenían desde hace tiempo. En vez de tocar el botón de enviar, lo mantienes pulsado y eliges día y hora. Puede ser con un mínimo de diez minutos y un máximo de catorce días de antelación, en chats individuales y en grupos, con texto, fotos o vídeos. Hasta que sale, puedes verlo y cancelarlo.</p>
+<p>Lo curioso es que se envía aunque tengas el móvil apagado o sin cobertura. O sea, el mensaje espera en los servidores de WhatsApp. Meta asegura que sigue cifrado de extremo a extremo todo el rato, así que ni ellos podrían leerlo. Es su palabra, y después de lo de Muse que te contaba ayer, se entiende que haya quien la coja con pinzas.</p>
+<p>Ya está disponible en España, pero llega poco a poco, así que si hoy no te aparece, dale unas semanas. Para el recordatorio en el grupo del cole te va a venir de maravilla. Vamos, que WhatsApp por fin tiene su propio cron: felicitas a medianoche y tú, dormido como un tronco. Y de propina, está probando stickers con sonido en la versión beta para Android.</p>
+<h4>Noticia 4: Character.AI, los menores y los juguetes con IA</h4>
+<p>Ahora, un tema serio, con menores de por medio. Character.AI, la aplicación para chatear con personajes de IA, está en quiebra y quiere subastar lo que tiene. Entre otras cosas, los datos de más de veinte millones de cuentas de Estados Unidos: historiales de chat, direcciones IP y otros datos personales. Más de dos millones de esas cuentas las abrieron menores. Y según Engadget, hay conversaciones con personajes que se hacen pasar por médicos o terapeutas, sobre temas tan delicados como las autolesiones.</p>
+<p>Más de cuarenta fiscales generales de distintos estados se oponen. Dicen que la venta no protege a los usuarios, porque nada impide que el comprador revenda los datos o se salte la política de privacidad, y piden que queden fuera las conversaciones de menores y las más delicadas. La primera oferta, la que marca el precio mínimo de la subasta, es de una sociedad que se creó el día antes de que la eligieran, y no se sabe quién está detrás. Character.AI, por su parte, asegura que los datos seguirán protegidos por su política de privacidad. La subasta está prevista para la semana que viene.</p>
+<p>Y no es solo cosa de aplicaciones: un peluche con chatbot conectado a internet también puede mandarle a una empresa lo que le cuenta tu hijo. En esa línea, TechCrunch cuenta que Nueva York va a prohibir durante cinco años fabricar y vender juguetes con chatbot de IA conectados a internet. Entra en vigor dentro de unos tres meses, con multas fuertes, y llega después de que California hiciera algo parecido.</p>
+<p>¿Y aquí? En plena campaña de Navidad, estos juguetes también se venden en España. En Europa, el reglamento de protección de datos pone límites a lo que se hace con tus datos, aunque no me atrevo a decirte qué pasaría exactamente en una quiebra así. Lo que sí te digo: si este año miras un juguete que habla, fíjate en si necesita internet y en qué hace con lo que graba. Si no lo explica claro, mala señal. Porque la pregunta vale a los dos lados del Atlántico: ¿de quién son las conversaciones con un chatbot, las tuyas o las de tus hijos?</p>
+<h4>Noticia 5: Vía libre a un millón de satélites de SpaceX</h4>
+<p>Miramos ahora hacia arriba. La FCC, el regulador de telecomunicaciones de Estados Unidos, ha autorizado a SpaceX a desplegar hasta un millón de satélites. Sí, un millón. Para hacerte una idea, según The Register, todas las megaconstelaciones propuestas hasta ahora suman unos cien mil. El proyecto se llama Starmind y la idea es montar centros de datos en órbita: satélites con chips de IA conectados por láser con la red de Starlink.</p>
+<p>Hubo oposición. Amazon, que tiene su propia red de satélites, dijo que aquello era más una ambición que un plan. Viasat y la Sociedad Astronómica Estadounidense advirtieron de la basura espacial, de las interferencias y del daño a la observación del cielo. La FCC despachó las quejas científicas diciendo que no son de su competencia.</p>
+<p>Ahora, el escepticismo. Autorizar no es lanzar. El permiso es condicionado: SpaceX tiene siete años para poner en marcha el primer satélite y catorce para completar el despliegue, y la FCC aún no ha decidido cómo tendrá que retirarlos, porque dice que SpaceX no ha dado suficiente información. Y a mí me surgen dudas gordas: cuánto cuesta fabricar y lanzar algo así, o cómo se refrigeran chips donde no hay aire que se lleve el calor.</p>
+<p>Luego está a quién beneficia. SpaceX es también dueña de xAI, la empresa de Grok, sí, la de las demandas que te contaba el martes, así que esa capacidad de cálculo tendría cliente en casa. Y lo que me chirría es que el cielo es de todos, también de los telescopios de La Palma o del Teide, y esta decisión la ha tomado el regulador de un solo país. Por ahora, eso sí, es un papel firmado, no un cielo lleno.</p>
+<h4>Noticia 6: Hera visita el cráter que dejó DART</h4>
+<p>Y terminamos con una buena noticia espacial, y además europea. Si BepiColombo nos dio un pequeño disgusto al llegar a Mercurio, esta vez la Agencia Espacial Europea trae alegrías: su sonda Hera ha llegado al asteroide Dimorphos y ha mandado las primeras imágenes de cerca. Y con acento español: según El Español, la empresa GMV ha diseñado su sistema de guiado, navegación y control.</p>
+<p>Un poco de contexto. En 2022, la nave DART de la NASA se estrelló a propósito contra Dimorphos, una roca de unos ciento cincuenta metros que gira alrededor de otro asteroide más grande, Didymos. Era el primer ensayo real de defensa planetaria: comprobar si un buen golpe puede desviar un asteroide. Y funcionó: la vuelta que da Dimorphos alrededor de su compañero se acortó en treinta y tres minutos.</p>
+<p>Lo que ha visto Hera es bastante aparatoso, y con alguna sorpresa. El golpe dejó un cráter del tamaño de un estadio, tan grande que va de lado a lado del asteroide, y esa cara ha quedado prácticamente plana. Además, Dimorphos ahora da tumbos en su órbita, y los dos asteroides están rodeados de cientos de rocas que nadie esperaba. Nada de Bruce Willis con un taladro: aquí bastó con un buen golpe.</p>
+<p>Hera se acercará más y, a principios de año, soltará dos pequeños satélites: Juventas mirará el interior con un radar e intentará posarse, y Milani estudiará el polvo. La clave es medir la masa de Dimorphos para saber cuánto empujó de verdad el impacto. Porque una cosa es saber golpear una roca pequeña y otra muy distinta, desviar una peligrosa con garantías.</p>
+<h4>Cierre</h4>
+<p>Te dejo con un dato curioso sobre la protagonista de hoy. Dimorphos viene del griego y significa algo así como dos formas. Se lo pusieron antes del choque, porque iba a ser la primera roca del espacio a la que le cambiaríamos la forma a propósito: la de antes del golpe y la de después. Viendo ese cráter, el nombre le ha quedado que ni pintado.</p>
+<p>Y nada más por hoy.</p>
+<p>El guion y la voz los hace una inteligencia artificial, y los revisan personas. Si me equivoco, envíame tus comentarios y lo corrijo en el próximo episodio: tienes el contacto en las notas.</p>
+<p>Hasta mañana.</p>
+  </details>
+  <footer>Guion y voz generados con inteligencia artificial (Claude y Gemini) y revisados por personas, que escuchan cada episodio y corrigen lo que haga falta. Si ves un error, escríbenos a hola@catodo.es.<br>
+  <a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796">Apple Podcasts</a> · <a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4">Spotify</a> · <a href="/feed.xml">Feed RSS</a><br>
+  <a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></footer>
+</main>
+</body>
+</html>

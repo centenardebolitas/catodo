@@ -1,0 +1,37 @@
+{
+  "version": "1.2.0",
+  "chapters": [
+    {
+      "startTime": 0,
+      "title": "Apertura"
+    },
+    {
+      "startTime": 25.14,
+      "title": "El Pentágono, Nvidia y el aviso de Standard and Poor's"
+    },
+    {
+      "startTime": 176.38,
+      "title": "Hackeo en 1Password"
+    },
+    {
+      "startTime": 276.78,
+      "title": "WhatsApp ya deja programar mensajes"
+    },
+    {
+      "startTime": 341.18,
+      "title": "Character.AI, los menores y los juguetes con IA"
+    },
+    {
+      "startTime": 457.58,
+      "title": "Vía libre a un millón de satélites de SpaceX"
+    },
+    {
+      "startTime": 551.82,
+      "title": "Hera visita el cráter que dejó DART"
+    },
+    {
+      "startTime": 649.98,
+      "title": "Cierre"
+    }
+  ]
+}

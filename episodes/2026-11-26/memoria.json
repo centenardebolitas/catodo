@@ -1,0 +1,195 @@
+{
+  "fecha": "2026-11-26",
+  "publicado": true,
+  "contadas": [
+    {
+      "titulo": "El Pentágono, Nvidia y el aviso de S&P",
+      "resumen": "Contamos que, según el Washington Post (fuentes anónimas), Hegseth y su número dos hablaron de usar la Ley de Producción de Defensa para presionar al consejo de Nvidia y que readmitiera a Huang; el Pentágono lo niega. Según Reuters, Justicia nunca investigó formalmente a Huang: Todd Blanche concluyó que no había pruebas contra él a partir de las pesquisas sobre Megaspeed y Super Micro, a las que se investiga por presuntamente desviar chips a China. Megaspeed lo niega, y Super Micro, que no tiene cargos como empresa, dice que fue víctima de antiguos empleados. Corregimos lo de ayer: las investigaciones apuntan a esos clientes, y según Reuters ni Huang ni Nvidia eran el objetivo. S&P estudia bajar la nota de Nvidia de AA a AA− por gobernanza, por la falta de plan de sucesión y por el riesgo de persona clave, mientras Huang dice a la plantilla que no hace falta ese plan.",
+      "asuntos_abiertos": [
+        "La decisión final de S&P sobre la nota de Nvidia",
+        "Las comparecencias de Huang la semana que viene: a puerta cerrada en la Cámara de Representantes y en público en el Senado (3 de diciembre)",
+        "Si se confirma o se desmiente con más datos lo del Pentágono y la Ley de Producción de Defensa",
+        "Las investigaciones sobre Megaspeed y Super Micro"
+      ],
+      "temas": [
+        "Nvidia",
+        "Jensen Huang",
+        "S&P",
+        "Ley de Producción de Defensa",
+        "Megaspeed",
+        "Super Micro"
+      ]
+    },
+    {
+      "titulo": "Hackeo en 1Password",
+      "resumen": "1Password confirmó que un atacante entró con la cuenta corporativa de GitHub de un empleado, metió código malicioso en sus servidores y se llevó nombres, correos, datos de uso y códigos de los correos de invitación y recuperación de una parte de los clientes. Las contraseñas guardadas están a salvo gracias al cifrado con la contraseña maestra y la clave secreta. Aconsejamos desconfiar de correos que digan venir de 1Password. La empresa tardó seis días en contarlo y no ha explicado cómo consiguieron la cuenta.",
+      "asuntos_abiertos": [
+        "Cómo se consiguió la cuenta del empleado",
+        "Número de clientes afectados",
+        "Campañas de phishing que aprovechen la filtración"
+      ],
+      "temas": [
+        "1Password",
+        "gestores de contraseñas",
+        "GitHub",
+        "phishing"
+      ]
+    },
+    {
+      "titulo": "WhatsApp ya deja programar mensajes",
+      "resumen": "WhatsApp permite programar textos, fotos y vídeos entre diez minutos y catorce días antes, en chats individuales y en grupos, y se envían aunque el móvil esté apagado. Meta dice que siguen cifrados de extremo a extremo. El despliegue en España es gradual. TechCrunch recuerda que Telegram y Signal ya lo tenían. WhatsApp también prueba stickers con sonido en la beta para Android.",
+      "asuntos_abiertos": [
+        "Si llega a todos los usuarios de España en las próximas semanas",
+        "Si los stickers con sonido llegan a la versión estable"
+      ],
+      "temas": [
+        "WhatsApp",
+        "Meta",
+        "mensajes programados",
+        "cifrado de extremo a extremo"
+      ]
+    },
+    {
+      "titulo": "Character.AI, los menores y los juguetes con IA",
+      "resumen": "Character.AI, en quiebra, quiere subastar los datos de más de veinte millones de cuentas de Estados Unidos, más de dos millones de ellas de menores. Más de cuarenta fiscales generales se oponen, y Character.AI dice que los datos seguirán protegidos. La primera oferta es de una sociedad creada el día antes de que la eligieran, y no se sabe quién está detrás. La subasta está prevista para la semana que viene. Según TechCrunch, Nueva York prohíbe durante cinco años los juguetes con chatbot de IA conectados a internet, después de que California hiciera algo parecido. Consejo para la Navidad en España.",
+      "asuntos_abiertos": [
+        "Resultado de la subasta de Character.AI y si el juez excluye las conversaciones de menores",
+        "Quién está detrás de la sociedad compradora",
+        "Entrada en vigor del veto de Nueva York y si otros estados lo copian"
+      ],
+      "temas": [
+        "Character.AI",
+        "fiscales generales estatales",
+        "juguetes con IA",
+        "ley de Nueva York sobre juguetes con IA",
+        "privacidad de menores"
+      ]
+    },
+    {
+      "titulo": "Vía libre a un millón de satélites de SpaceX",
+      "resumen": "La FCC autorizó a SpaceX a desplegar hasta un millón de satélites con chips de IA (proyecto Starmind) para hacer centros de datos en órbita, pese a las objeciones de Amazon, Viasat y la Sociedad Astronómica Estadounidense. El permiso es condicionado: siete años para el primer satélite y catorce para completar el despliegue, y queda pendiente cómo se retirarán. Planteamos dudas sobre el coste y la refrigeración, la relación con xAI y que lo decida un regulador de un solo país.",
+      "asuntos_abiertos": [
+        "Primeros lanzamientos de Starmind",
+        "Normas de la FCC sobre la retirada de satélites",
+        "Reacción de astrónomos y reguladores europeos"
+      ],
+      "temas": [
+        "SpaceX",
+        "FCC",
+        "Starmind",
+        "centros de datos en órbita",
+        "xAI",
+        "basura espacial"
+      ]
+    },
+    {
+      "titulo": "Hera visita el cráter que dejó DART",
+      "resumen": "La sonda Hera de la ESA, con guiado diseñado por la española GMV según El Español, mandó las primeras imágenes cercanas de Dimorphos: un cráter del tamaño de un estadio que va de lado a lado del asteroide, la roca dando tumbos y un enjambre de rocas inesperado. DART acortó la órbita en treinta y tres minutos en 2022. Hera soltará a principios de año los satélites Juventas y Milani para medir la masa. En el cierre contamos el origen del nombre de Dimorphos.",
+      "asuntos_abiertos": [
+        "Lanzamiento de Juventas y Milani a principios de 2027",
+        "Medición de la masa de Dimorphos y de la eficacia real del impacto"
+      ],
+      "temas": [
+        "Hera",
+        "DART",
+        "Dimorphos",
+        "ESA",
+        "GMV",
+        "defensa planetaria"
+      ]
+    }
+  ],
+  "pendientes": [
+    {
+      "titulo": "Claude permite instalar artefactos como apps de escritorio",
+      "candidata": 4,
+      "resumen": "Anthropic lanza en beta «Install as app», que convierte los artefactos de Claude en aplicaciones para Mac y Windows (HTML dentro de Electron, gestionadas desde la app de Claude).",
+      "motivo": "Hace dos días ya contamos Claude Ship, de Anthropic, y conviene no encadenar noticias de la empresa que hace el guion. Puede entrar otro día, avisando de que Claude es de Anthropic.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.macrumors.com/2026/11/25/claude-install-artifacts-desktop-apps/",
+        "https://www.muycomputer.com/2026/11/25/claude-install-as-app-artefactos-aplicaciones-mac-windows/",
+        "https://hipertextual.com/inteligencia-artificial/claude-ahora-puede-convertir-tus-artefactos-en-apps-de-escritorio/",
+        "https://thenextweb.com/news/claude-install-as-app-artifacts-mac-windows-desktop",
+        "https://www.zdnet.com/innovation/claude-artifacts-desktop-apps-mac-windows/"
+      ]
+    },
+    {
+      "titulo": "Las acciones de Anthropic dividen a los analistas y siguen cerca de su precio de salida",
+      "candidata": 19,
+      "resumen": "El valor de Anthropic no consigue mantenerse por encima de su precio de salida a bolsa, divide a los analistas y podría frenar la inversión en startups. Wall Street vivió una sesión muy volátil por las dudas sobre la IA (candidata 15).",
+      "motivo": "Todas las fuentes de hoy son ilegibles (NYT, Bloomberg, CNBC); las de la pendiente del 25 sí se pueden leer (TechCrunch). Encaja en una noticia sobre la burbuja de la IA y exige avisar de que Claude es de Anthropic.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.nytimes.com/2026/11/25/technology/anthropic-stock-tech-start-ups.html",
+        "https://www.bloomberg.com/news/articles/2026-11-25/anthropic-s-stock-sparks-rare-divide-inside-one-wall-street-firm",
+        "https://www.bloomberg.com/news/videos/2026-11-25/still-in-early-innings-of-ai-adoption-psp-s-momei-qu-video"
+      ]
+    },
+    {
+      "titulo": "El responsable de sistemas del Tesoro programa un clon de Civilization en plena crisis de ciberseguridad",
+      "candidata": 13,
+      "resumen": "Según 404 Media, el CIO del Tesoro de EEUU sigue actualizando «Legatum», un juego hecho con vibe coding, mientras el departamento afronta un ciberataque.",
+      "motivo": "Es un hecho negativo sobre una persona con nombre y apellidos, y necesita contexto sobre el ataque al Tesoro. Puede entrar si hay más cobertura o novedades del ataque, sin humor a su costa.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.404media.co/sam-corcos-legatum-treasury-cio-is-vibe-coding-a-civilization-clone-during-treasury-department-hack/",
+        "https://www.tomshardware.com/tech-industry/artificial-intelligence/us-treasury-information-chief-spent-three-days-vibecoding-civilization-game-clone-amidst-treasury-database-hack-ai-agent-studiously-attends-to-personal-project-github-users-raise-tickets-asking-him-to-attend-to-cybersecurity-incident",
+        "https://gizmodo.com/treasurys-cio-is-vibe-coding-a-civilization-clone-during-a-cybersecurity-crisis-2000845495"
+      ]
+    },
+    {
+      "titulo": "Apple retira de la App Store el chatbot Talkie, de MiniMax",
+      "candidata": 18,
+      "resumen": "Apple ha retirado en todo el mundo la app de compañía Talkie por contenido sexual, después de que varios medios le mostraran personajes que sexualizaban a menores.",
+      "motivo": "Encajaría con la noticia de menores e IA, pero es un tema muy delicado con solo dos fuentes y una investigación periodística como origen. Si hay más cobertura o reacción de MiniMax, puede entrar con «presuntamente» y su versión.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.thebureauinvestigates.com/stories/2026-11-24/talkie-china-chatbot-children",
+        "https://9to5mac.com/2026/11/25/apple-pulls-popular-chinese-ai-chatbot-from-the-app-store-amid-child-safety-concerns/"
+      ]
+    },
+    {
+      "titulo": "Aves marinas con grabadoras detectan barcos ocultos",
+      "candidata": 16,
+      "resumen": "Unos científicos pusieron grabadoras de audio a aves marinas y descubrieron que muchos barcos navegaban con el localizador apagado.",
+      "motivo": "Es curiosa y simpática, pero hoy no cabe. Sirve para un día flojo o como dato curioso de un cierre.",
+      "anunciar": false,
+      "enlaces": [
+        "https://gizmodo.com/seabirds-with-audio-recorders-are-hunting-down-unseen-ships-and-finding-more-than-expected-2000845306",
+        "https://www.404media.co/the-birds-are-listening-scientists-used-seabirds-to-track-hidden-ships/",
+        "https://news.google.com/rss/articles/CBMixAFBVV95cUxQT0pQVTdwRHQwVVBZQlNoamZLbkdLcXJ4MW5uVThVU0ZXRTZjOGlqMUVRcm5jUnk3a1hkMjFZWmdfQkQ0aE5qZXNvRlE0VGRBcW9EbDktbE1yb2Y1LVRoZGhxMy1mRGdfRTY3aTM4RTVPdTVvMHE5RUpYUWRodFFRMURhSjZvTDZnRDF3VzFFdUZUNVNYeTY5a1pRQ3BKbFY0SGN6VmRmckZpOWFfd0g1cW15MEIzc2hVekVyNlJUUjc4aFVo0gHYAUFVX3lxTFAzRTltaWcyOTZrbzZBT296NXUteXQ4V0ozMUFNM3Z5VU5kQzdZOU1nVEZNQnBIdnZxa2JFdFk0anlvVE82VDJJUDJjekc0VXNpaUpVOVdOem5EVjNqU25vTndod0RoT2ZyclVzTkxoRkMzQ0d5UVZaMUxwa0VfWVVDUVFJRnc3aXlXRkVKQXJqb0V4R3pDU3lGRF93cEZDVjBkTGJWREJzVUdOSXVSaFZvQmtRX19jUll5dzJmRVpOUFAwc0ZMVm9jS09ETVNqYzdkODFIMk45NA?oc=5"
+      ]
+    },
+    {
+      "titulo": "Win4Wine lleva el escritorio original de Windows XP a Linux",
+      "candidata": 14,
+      "resumen": "Un proyecto de código abierto permite usar el shell auténtico de Windows XP sobre Debian 13.",
+      "motivo": "Es una noticia menor con mucho atractivo friki. Puede servir como remate ligero en un día con hueco.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.theregister.com/os-platforms/2026/11/25/debian-wakes-up-wearing-windows-xps-actual-skin/5312111",
+        "https://computerhoy.20minutos.es/software/un-desarrollador-consigue-que-escritorio-original-windows-xp-funcione-linux_7065605_0.html",
+        "https://hipertextual.com/tecnologia/windows-xp-linux-win4wine-proyecto/"
+      ]
+    },
+    {
+      "titulo": "OpenAI dice que GPT-6 diseña proteínas sin modelos biológicos especializados",
+      "resumen": "Según OpenAI, los modelos GPT-6 diseñan proteínas solo con razonamiento y código; Nature recoge el interés de los científicos.",
+      "motivo": "Sigue siendo un buen tema para profundizar en un día flojo, mirando con calma qué está demostrado. Enlaces en la memoria (pendiente del 25).",
+      "anunciar": false
+    },
+    {
+      "titulo": "Rusia podría lanzar pronto un satélite con arma nuclear",
+      "resumen": "Según informes de inteligencia, el Sputnik-S podría lanzarse en diciembre; el Kremlin lo niega.",
+      "motivo": "Hoy no hay novedades. Entra si otros gobiernos u organismos lo confirman o si se acerca la fecha. Enlaces en la memoria.",
+      "anunciar": false
+    }
+  ],
+  "revision_humana": {
+    "aprobado": false,
+    "publicacion_automatica": true,
+    "cuando": "2026-11-26T09:28",
+    "nota": "Publicado solo tras las comprobaciones automáticas; lo revisan personas después, al escucharlo."
+  }
+}
