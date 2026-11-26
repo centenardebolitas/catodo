@@ -157,6 +157,38 @@ class TokenThreads(unittest.TestCase):
                 self.assertEqual(redes.token_threads(env), "nuevo")
 
 
+class Instagram(unittest.TestCase):
+    def test_va_por_graph_instagram_y_renueva_su_token_aparte(self):
+        llamadas = []
+
+        def pedir(metodo, url, **kw):
+            llamadas.append((metodo, url, kw))
+            if "refresh_access_token" in url:
+                return {"access_token": "ig-renovado"}
+            if url.endswith("/me"):
+                return {"user_id": "1784"}
+            if url.endswith("/media"):
+                return {"id": "c1"}
+            if url.endswith("/media_publish"):
+                return {"id": "m1"}
+            if url.endswith("/c1"):
+                return {"status_code": "FINISHED"}
+            return {"permalink": "https://www.instagram.com/reel/x/"}
+
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(redes, "pedir", side_effect=pedir):
+            env = {"CATODO_ESTADO": d, "INSTAGRAM_TOKEN": "ig"}
+            hecho = redes.instagram(DATOS, env, {"url_clip": "https://audio.catodo.es/c.mp4"})
+            self.assertTrue((Path(d) / "instagram-token.json").exists())
+            self.assertFalse((Path(d) / "threads-token.json").exists())
+        self.assertEqual(hecho, {"id": "m1", "url": "https://www.instagram.com/reel/x/"})
+        renovar = llamadas[0]
+        self.assertEqual(renovar[2]["params"]["grant_type"], "ig_refresh_token")
+        publicar = [c for c in llamadas if c[1].endswith("/media")][0]
+        self.assertTrue(publicar[1].startswith("https://graph.instagram.com/"))
+        self.assertIn("/1784/media", publicar[1])
+        self.assertEqual(publicar[2]["data"]["access_token"], "ig-renovado")
+
+
 class AvisoDeOps(unittest.TestCase):
     def test_difundir_solo_con_redes_activas_y_por_defecto_no(self):
         with mock.patch.object(redes, "AJUSTES", {"activas": []}):
