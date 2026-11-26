@@ -296,7 +296,7 @@ def iconos_redes(cfg):
         svg = (ICONOS_REDES / f"{r['icono']}.svg").read_text(encoding="utf-8").strip()
         svg = re.sub(r"<title>.*?</title>", "", svg)
         svg = svg.replace('<svg role="img"', '<svg aria-hidden="true" focusable="false" fill="currentColor" width="20" height="20"', 1)
-        enlaces.append(f'<a href="{html.escape(r["url"])}" title="Cátodo en {html.escape(r["nombre"])}" '
+        enlaces.append(f'<a href="{html.escape(r["url"])}" target="_blank" rel="noopener" title="Cátodo en {html.escape(r["nombre"])}" '
                        f'aria-label="Cátodo en {html.escape(r["nombre"])}">{svg}</a>')
     return f'<nav class="redes" aria-label="Cátodo en redes">{"".join(enlaces)}</nav>' if enlaces else ""
 

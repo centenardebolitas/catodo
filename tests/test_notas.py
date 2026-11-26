@@ -57,6 +57,7 @@ class Pie(unittest.TestCase):
         pie = feed.pie(self.CFG)
         self.assertIn('href="/sobre.html"', pie)
         self.assertIn('aria-label="Cátodo en Bluesky"', pie)
+        self.assertIn('target="_blank" rel="noopener"', pie)
         self.assertIn('fill="currentColor"', pie)
         self.assertNotIn("inteligencia artificial", pie)
         self.assertNotIn("Spotify", pie)
