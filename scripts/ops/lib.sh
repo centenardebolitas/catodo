@@ -19,6 +19,9 @@ export R2_PUBLIC_BASE_URL="${R2_PUBLIC_BASE_URL:-https://audio.catodo.es}"
 export SITE_URL="${SITE_URL:-https://catodo.es}"
 # Los dibujos de los emojis de la portada (src/portada_episodio.py), fuera del clon: ops lo limpia.
 export CATODO_CACHE_EMOJI="${CATODO_CACHE_EMOJI:-$HOME/cache-emoji}"
+# Lo ya hecho del episodio, fuera del clon: si una ejecución falla, la siguiente retoma
+# desde el paso que falló en vez de empezar de cero (src/ops.py, pasos).
+export CATODO_ESTADO="${CATODO_ESTADO:-$HOME/estado}"
 # El commit del episodio programado (lo empuja ops, no este script).
 export GIT_AUTHOR_NAME="Cátodo (ops)" GIT_AUTHOR_EMAIL="catodo-bot@users.noreply.github.com"
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME" GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"

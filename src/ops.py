@@ -12,6 +12,8 @@ publicación automática en su memoria, sube el MP3 a R2, regenera feed y web y 
 commit, que ops empuja a main (commandGitPush). Las personas lo revisan después, al
 escucharlo, y se corrige con `make corregir`. Abre un aviso con el enlace y los puntos
 a comprobar, con una sola opción: «Visto».
+Si una ejecución falla, la siguiente de la misma fecha retoma desde el paso que
+falló: lo hecho se guarda fuera del clon, que ops limpia (CATODO_ESTADO; ver pasos).
 
 preparar: lo de `make noche`, paso a paso. El token de Claude que da ops por el
 descriptor de OPS_CLAUDE_TOKEN_FD solo se puede leer una vez: se lee aquí, lo
@@ -41,8 +43,10 @@ import json
 import os
 import re
 import secrets
+import shutil
 import subprocess
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import claude_cli
@@ -138,6 +142,84 @@ def base_publica(env):
 PASOS = [("src/fetch.py", False), ("src/rank.py", True), ("src/script.py", True),
          ("src/tts.py", False), ("src/mix.py", False)]
 
+# Lo ya hecho de cada episodio, fuera del clon: ops lo deja limpio (git reset --hard y
+# git clean -ffdx) antes de cada ejecución, y episodes/<fecha>/ desaparecería con todo lo
+# que no está en git (noticias, pasadas, bloques de voz). Va en el HOME del trabajo
+# (CATODO_ESTADO, ver scripts/ops/lib.sh), que ops conserva. Fuera de ops no se usa.
+ESTADO = os.environ.get("CATODO_ESTADO")
+HECHOS = ".pasos-hechos.json"
+DIAS_ESTADO = 7
+
+
+def carpeta_estado(fecha):
+    return Path(ESTADO) / fecha if ESTADO else None
+
+
+def podar_estado():
+    """Borra lo guardado de episodios de hace más de DIAS_ESTADO días."""
+    if not ESTADO or not Path(ESTADO).is_dir():
+        return
+    limite = (date.today() - timedelta(days=DIAS_ESTADO)).isoformat()
+    for vieja in Path(ESTADO).iterdir():
+        if vieja.is_dir() and FECHA.fullmatch(vieja.name) and vieja.name < limite:
+            shutil.rmtree(vieja, ignore_errors=True)
+
+
+def restaurar(fecha):
+    """Si una ejecución anterior de esta fecha falló, devuelve su carpeta del episodio a
+    episodes/<fecha>/ y la lista de pasos que terminó. Si no, []."""
+    guardada = carpeta_estado(fecha)
+    if not guardada or not guardada.is_dir():
+        return []
+    hechos = json.loads((guardada / HECHOS).read_text(encoding="utf-8")) if (guardada / HECHOS).exists() else []
+    shutil.copytree(guardada, EPISODIOS / fecha, dirs_exist_ok=True, ignore=shutil.ignore_patterns(HECHOS))
+    print(f"Retomo el {fecha} de una ejecución anterior: hechos {', '.join(hechos) or 'ninguno'}.", flush=True)
+    return hechos
+
+
+def guardar(fecha, hechos):
+    """Copia episodes/<fecha>/ fuera del clon con los pasos terminados. Se copia entero en
+    una carpeta nueva y luego se cambia por la anterior: si se corta a medias, la de antes
+    sigue entera."""
+    guardada = carpeta_estado(fecha)
+    origen = EPISODIOS / fecha
+    if not guardada or not origen.is_dir():
+        return
+    nueva = guardada.with_name(f"{fecha}.nueva")
+    shutil.rmtree(nueva, ignore_errors=True)
+    shutil.copytree(origen, nueva)
+    (nueva / HECHOS).write_text(json.dumps(hechos), encoding="utf-8")
+    shutil.rmtree(guardada, ignore_errors=True)
+    nueva.rename(guardada)
+
+
+def olvidar(fecha):
+    """El episodio salió bien: relanzar el trabajo vuelve a empezar de cero."""
+    guardada = carpeta_estado(fecha)
+    if guardada:
+        shutil.rmtree(guardada, ignore_errors=True)
+
+
+def pasos(fecha, token):
+    """Los pasos de la preparación, retomando donde se quedó una ejecución anterior que falló:
+    los pasos que terminó no se repiten (si falla el montaje, no se rehacen noticias, guion
+    ni voz). Lo hecho se guarda aunque el paso falle: tts.py se salta los bloques ya hechos."""
+    podar_estado()
+    hechos = restaurar(fecha)
+    rehacer = False  # rehecho un paso, se rehacen también los siguientes
+    try:
+        for script, con_claude in PASOS:
+            if script in hechos and not rehacer:
+                print(f"== {script}: hecho en una ejecución anterior", flush=True)
+                continue
+            rehacer = True
+            hechos = [h for h in hechos if h != script]
+            print(f"== {script}", flush=True)
+            paso(script, fecha, token if con_claude else None)
+            hechos.append(script)
+    finally:
+        guardar(fecha, hechos)
+
 
 def paso(script, fecha, token):
     """Un paso de la preparación, en su proceso. Con token, por un descriptor suyo."""
@@ -161,25 +243,23 @@ def paso(script, fecha, token):
 
 def preparar(fecha):
     token = claude_cli.token_ops()  # lo primero: luego ya no se puede leer
-    for script, con_claude in PASOS:
-        print(f"== {script}", flush=True)
-        paso(script, fecha, token if con_claude else None)
+    pasos(fecha, token)
     portada(fecha)
     decision(fecha)
+    olvidar(fecha)
 
 
 def publicar(fecha):
     """Prepara el episodio del día y lo publica solo (commit sin push: lo empuja ops)."""
     token = claude_cli.token_ops()  # lo primero: luego ya no se puede leer
-    for script, con_claude in PASOS:
-        print(f"== {script}", flush=True)
-        paso(script, fecha, token if con_claude else None)
+    pasos(fecha, token)
     portada(fecha)
     memoria.publicacion_automatica(fecha, "Publicado solo tras las comprobaciones automáticas; "
                                           "lo revisan personas después, al escucharlo.")
     print("== src/publish.py", flush=True)
     python("src/publish.py", "--fecha", fecha, "--sin-push")
     aviso_publicado(fecha)
+    olvidar(fecha)
 
 
 def difundir(fecha):

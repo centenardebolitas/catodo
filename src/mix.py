@@ -143,7 +143,10 @@ def main():
         retraso = int(SOLAPE_INTRO_S * 1000)
         filtros.append(f"[{len(entradas) // 2 - 1}:a]aresample={FRECUENCIA},aformat=channel_layouts=mono[intro]")
         filtros.append(f"[0:a]adelay={retraso}[vozr]")
-        filtros.append("[intro][vozr]amix=inputs=2:duration=longest:normalize=0[conintro]")
+        # asetpts rehace las marcas de tiempo por muestras: el amix de ffmpeg 8.0 las pierde a veces
+        # al acabar la sintonía (su primera entrada) y concat falla luego al pasar a la outro
+        # («Invalid data found when processing input»; FFmpeg #25721, arreglado en 90c61d9ba9).
+        filtros.append("[intro][vozr]amix=inputs=2:duration=longest:normalize=0,asetpts=N/SR/TB[conintro]")
         cadena = "[conintro]"
     else:
         print("Aviso: no hay assets/sintonia_intro.wav; el episodio empieza sin sintonía.")
