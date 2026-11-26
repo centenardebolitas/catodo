@@ -310,12 +310,12 @@ Alta de cuentas (las crea Ulises, con hola@catodo.es; los secretos se guardan en
 1. **Bluesky:** cuenta nueva y, en Ajustes › Cuenta › Identificador, el dominio `catodo.es` (registro TXT `_atproto` en Cloudflare). Una contraseña de aplicación: `catodo-bluesky-app-password`.
 2. **Meta:** hechas el 26 de noviembre de 2026:
    - Instagram `catodo.es`, cuenta profesional (empresa).
-   - Página de Facebook «Cátodo» (ID 61596923822721, `redes.facebook_pagina`), con web, foto y la portada `assets/redes/portada-facebook.jpg`.
+   - Página de Facebook «Cátodo» (ID de Graph 1473516159180136, `redes.facebook_pagina`), con web, foto y la portada `assets/redes/portada-facebook.jpg`.
    - Threads `@catodo.es`, público.
    - Porfolio empresarial «Cátodo» (ID 4596718177284366, sin verificar), con la página como activo.
    - App de Meta «Cátodo» (ID 1495881029366859) del porfolio, con los casos de uso de Instagram, página y Threads.
 
-   Meta ya no deja a las apps nuevas usar el inicio de sesión de Instagram: Facebook e Instagram van con un **usuario del sistema** del porfolio (`catodo-difusion`, rol empleado, con los activos asignados) y su token, que no caduca: `catodo-meta-token` (META_TOKEN), con `pages_manage_posts`, `pages_read_engagement`, `pages_show_list`, `instagram_basic` e `instagram_content_publish`.
+   Meta ya no deja a las apps nuevas usar el inicio de sesión de Instagram: Facebook e Instagram van con un **usuario del sistema** del porfolio («Publicador», rol empleado, con la app y la página asignadas; Meta no admite guiones ni el nombre del porfolio en el nombre) y su token, que no caduca: `catodo-meta-token` (META_TOKEN), con `pages_manage_posts`, `pages_read_engagement`, `pages_show_list`, `instagram_basic` e `instagram_content_publish`.
 
    Instagram no se deja enlazar con nada de Facebook (la página, el porfolio ni la cuenta personal): Meta da error en la web y en el móvil, típico de cuentas recién creadas. Hay que reintentar añadirla al porfolio en unos días; después se asigna al usuario del sistema y su ID va a `redes.instagram_id`.
 
