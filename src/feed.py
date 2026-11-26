@@ -214,8 +214,8 @@ ESTILO = """
   .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
   audio { width:100%; margin:10px 0; }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
-  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
-  .con-portada .mini { grid-row:span 2; display:block; }
+  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:center; }
+  .con-portada .mini { display:block; }
   .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
   .cabecera { margin:20px 0 16px; }
@@ -223,12 +223,14 @@ ESTILO = """
   .cabecera .portada-ep { display:block; line-height:0; }
   .cabecera .portada-ep img { width:168px; height:168px; border-radius:14px; display:block;
                               box-shadow:0 0 32px rgba(34,211,238,.18); }
-  .cabecera .dato { font-size:0.85rem; color:var(--suave); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+  .dato { font-size:0.85rem; color:var(--suave); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
   .cabecera h1 { font-size:1.6rem; line-height:1.2; letter-spacing:-0.01em; }
   @media (max-width:520px) {
     .cabecera.con-portada { grid-template-columns:96px 1fr; gap:14px; }
     .cabecera .portada-ep img { width:96px; height:96px; border-radius:10px; }
-    .cabecera .dato { font-size:0.75rem; }
+    .dato { font-size:0.75rem; letter-spacing:0.04em; }
+    .con-portada { grid-template-columns:96px 1fr; gap:0 14px; }
+    .con-portada .mini img { width:96px; height:96px; border-radius:10px; }
     .cabecera h1 { font-size:1.2rem; }
   }
 
@@ -364,8 +366,8 @@ def generar_portada(episodios, cfg):
         mini = (f'<a class="mini" href="{pagina}"><img src="{html.escape(ep.get("url_portada_web") or ep["url_portada"])}" '
                 f'alt="" width="112" height="112"></a>\n    ' if ep.get("url_portada") else "")
         lista.append(f"""  <article class="episodio{' con-portada' if mini else ''}">
-    {mini}<h2><a href="{pagina}">{html.escape(ep['titulo'])}</a></h2>
-    <div class="suave">{ep['fecha']} · {int(ep['duracion_s'] // 60)} min</div>
+    {mini}<div><div class="dato">{dato_episodio(ep)}</div>
+    <h2><a href="{pagina}">{html.escape(ep['titulo'])}</a></h2></div>
     <audio controls preload="none" src="{html.escape(ep['url_audio'])}"></audio>
   </article>""")
     cuerpo = f"""  <h1 class="neon">Cátodo.</h1>
@@ -428,14 +430,19 @@ def fecha_corta(iso):
     return f"{d.day} {MESES[d.month - 1]} {d.year}"
 
 
+def dato_episodio(ep):
+    """Episodio 3 · 26 nov 2026 · 11 min (en mayúsculas por CSS), encima del título."""
+    partes = (f"Episodio {ep['numero']}" if ep.get("numero") else "", fecha_corta(ep["fecha"]),
+              f"{int(ep['duracion_s'] // 60)} min")
+    return " · ".join(x.replace(" ", "\u00a0") for x in partes if x)  # solo se corta entre los puntos
+
+
 def cabecera_episodio(ep):
     """Ficha del episodio: la portada en pequeño y, a su lado, número, fecha, duración y título.
 
     La portada (el guion en emojis) abre en grande al pulsarla. Sin explicación a propósito:
     que sea un huevo de pascua para quien se fije."""
-    dato = " · ".join(x for x in (f"Episodio {ep['numero']}" if ep.get("numero") else "", fecha_corta(ep["fecha"]),
-                                  f"{int(ep['duracion_s'] // 60)} min") if x)
-    texto = f'<div><div class="dato">{dato}</div>\n    <h1>{html.escape(ep["titulo"])}</h1></div>'
+    texto = f'<div><div class="dato">{dato_episodio(ep)}</div>\n    <h1>{html.escape(ep["titulo"])}</h1></div>'
     if not ep.get("url_portada"):
         return f'<header class="cabecera">\n    {texto}\n  </header>'
     mini = ep.get("url_portada_web") or ep["url_portada"]

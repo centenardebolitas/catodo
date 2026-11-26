@@ -85,7 +85,7 @@ class Cabecera(unittest.TestCase):
 
     def test_ficha_con_portada(self):
         c = feed.cabecera_episodio(self.EP)
-        self.assertIn("Episodio 3 · 26 nov 2026 · 11 min", c)
+        self.assertIn("Episodio\u00a03 · 26\u00a0nov\u00a02026 · 11\u00a0min", c)
         self.assertIn('href="https://a/grande.jpg"><img src="https://a/web.jpg"', c)
         self.assertIn("<h1>S&amp;P y 1Password</h1>", c)
 

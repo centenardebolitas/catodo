@@ -34,8 +34,8 @@
   .episodio h2 { font-size:1.15rem; margin:0 0 4px; }
   audio { width:100%; margin:10px 0; }
   details summary { cursor:pointer; color:var(--suave); margin-top:24px; }
-  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:start; }
-  .con-portada .mini { grid-row:span 2; display:block; }
+  .con-portada { display:grid; grid-template-columns:112px 1fr; gap:0 18px; align-items:center; }
+  .con-portada .mini { display:block; }
   .con-portada .mini img { width:112px; height:112px; border-radius:12px; display:block; }
   .con-portada audio { grid-column:1 / -1; }
   .cabecera { margin:20px 0 16px; }
@@ -43,12 +43,14 @@
   .cabecera .portada-ep { display:block; line-height:0; }
   .cabecera .portada-ep img { width:168px; height:168px; border-radius:14px; display:block;
                               box-shadow:0 0 32px rgba(34,211,238,.18); }
-  .cabecera .dato { font-size:0.85rem; color:var(--suave); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+  .dato { font-size:0.85rem; color:var(--suave); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
   .cabecera h1 { font-size:1.6rem; line-height:1.2; letter-spacing:-0.01em; }
   @media (max-width:520px) {
     .cabecera.con-portada { grid-template-columns:96px 1fr; gap:14px; }
     .cabecera .portada-ep img { width:96px; height:96px; border-radius:10px; }
-    .cabecera .dato { font-size:0.75rem; }
+    .dato { font-size:0.75rem; letter-spacing:0.04em; }
+    .con-portada { grid-template-columns:96px 1fr; gap:0 14px; }
+    .con-portada .mini img { width:96px; height:96px; border-radius:10px; }
     .cabecera h1 { font-size:1.2rem; }
   }
 
@@ -85,20 +87,20 @@
   <nav class="insignias" aria-label="Dónde escucharlo"><a href="https://podcasts.apple.com/es/podcast/c%C3%A1todo/id6838674796"><img src="/insignias/apple-podcasts.svg?v=51176dcf" alt="Escúchalo en Apple Podcasts"></a><a href="https://open.spotify.com/show/0yoPeeD7SrWdvm9FAcuWf4"><img src="/insignias/spotify.svg?v=65f8dd72" alt="Escúchalo en Spotify"></a><a href="/feed.xml"><img src="/insignias/rss.svg?v=e6b33080" alt="Suscríbete por RSS"></a></nav>
   <article class="episodio con-portada">
     <a class="mini" href="/episodios/2026-11-26.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-26-web-bab6e687.jpg" alt="" width="112" height="112"></a>
-    <h2><a href="/episodios/2026-11-26.html">Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites</a></h2>
-    <div class="suave">2026-11-26 · 11 min</div>
+    <div><div class="dato">Episodio 3 · 26 nov 2026 · 11 min</div>
+    <h2><a href="/episodios/2026-11-26.html">Nvidia y el aviso de S&amp;P, hackeo en 1Password y un millón de satélites</a></h2></div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-26-25104984.mp3"></audio>
   </article>
   <article class="episodio con-portada">
     <a class="mini" href="/episodios/2026-11-25.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-25-web-0805e1d4.jpg" alt="" width="112" height="112"></a>
-    <h2><a href="/episodios/2026-11-25.html">Huang pide perdón, Tidal veta la música hecha con IA y Microsoft en código rojo</a></h2>
-    <div class="suave">2026-11-25 · 10 min</div>
+    <div><div class="dato">Episodio 2 · 25 nov 2026 · 10 min</div>
+    <h2><a href="/episodios/2026-11-25.html">Huang pide perdón, Tidal veta la música hecha con IA y Microsoft en código rojo</a></h2></div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-25-e3103f66.mp3"></audio>
   </article>
   <article class="episodio con-portada">
     <a class="mini" href="/episodios/2026-11-24.html"><img src="https://audio.catodo.es/episodios/catodo-2026-11-24-web-b7de7af0.jpg" alt="" width="112" height="112"></a>
-    <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2>
-    <div class="suave">2026-11-24 · 10 min</div>
+    <div><div class="dato">Episodio 1 · 24 nov 2026 · 10 min</div>
+    <h2><a href="/episodios/2026-11-24.html">Huang vuelve a Nvidia, CrowdStrike compra Zscaler y un bug en Mercurio</a></h2></div>
     <audio controls preload="none" src="https://audio.catodo.es/episodios/catodo-2026-11-24-cbc9d6ed.mp3"></audio>
   </article>
   <footer><nav class="enlaces-pie" aria-label="Más sobre Cátodo"><a href="/sobre.html">De dónde sale Cátodo</a> · <a href="/legal.html">Aviso legal y privacidad</a> · <a href="mailto:hola@catodo.es">hola@catodo.es</a></nav>
