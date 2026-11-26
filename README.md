@@ -20,11 +20,10 @@ make                   # lista los comandos
 Cátodo se prepara y se publica solo cada mañana en [ops](https://ops.wmail.es), el centro de mando, sin revisión previa: lo revisan personas después, al escucharlo (decidido el 25 de noviembre de 2026; `centenardebolitas/ops#122`). El Mac no hace falta:
 
 1. **5:00 (lunes a viernes), automático:** ops ejecuta el trabajo `catodo.preparar` (`scripts/ops/preparar.sh`): noticias, guion en cinco pasadas con sus revisores automáticos, voz, montaje y portada del episodio del día (el guion escrito en emojis, `src/portada_episodio.py`; si falla, sale sin ella). Lo deja como publicación automática en su memoria, sube el MP3 a R2, regenera el feed y la web, y ops empuja el commit a `main` (`commandGitPush`). Hacia las 5:30 está en catodo.es, y Apple y Spotify lo recogen en su siguiente pasada.
-2. **En el móvil:** un aviso con el enlace, los puntos a comprobar al escucharlo y el orden del episodio. Solo tiene la opción «Visto».
-3. **6:00, automático:** GitHub (`.github/workflows/publicar.yml`) comprueba que el episodio del día está en `main`, y ops (`catodo.publicar`) avisa si no.
-4. **Si algo no cuadra al escucharlo:** `make corregir FECHA=… TEXTO="…"` lo añade a las notas del episodio y el siguiente lo menciona.
+2. **En el móvil:** un aviso con el enlace, los puntos a comprobar al escucharlo y el orden del episodio. Con redes activas, sus opciones son «Difundir en redes», que lo publica en ellas (`src/redes.py`), y «No difundir»; sin redes, solo «Visto». Es el único trabajo de Cátodo en ops: si el episodio falla, no hay nada más que falle detrás.
+3. **Si algo no cuadra al escucharlo:** `make corregir FECHA=… TEXTO="…"` lo añade a las notas del episodio y el siguiente lo menciona.
 
-El flujo anterior (preparar a las 22:00, «Aprobar y programar» desde el móvil y publicar a las 6:00 desde la rama `programado`) sigue en el código (`src/ops.py preparar` y `responder`), pero ops ya no lo lanza.
+El flujo anterior (preparar a las 22:00, «Aprobar y programar» desde el móvil y publicar desde la rama `programado`) sigue en el código (`src/ops.py preparar` y `responder`), pero ops ya no lo lanza, y `publicar.yml` ya no corre solo a las 6:00: la rama `programado` se pasa a `main` a mano (Actions › Publicar episodio programado › Run workflow).
 
 Si hay que corregir el guion antes de aprobar, se hace en el Mac, como antes:
 

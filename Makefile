@@ -57,7 +57,7 @@ portada: ## Portada del episodio: el guion en emojis (emojis.txt) en duotono
 noche: ## Lo que se lanza solo a las 22:00: guion y audio del episodio de mañana
 	scripts/noche.sh
 
-programar: ## Tras aprobar: audio al día, subida a R2 y publicación automática a las 6:00
+programar: ## Tras aprobar: audio al día, subida a R2 y rama programado (se publica a mano, con publicar.yml)
 	$(MAKE) audio FECHA=$(FECHA)
 	-$(MAKE) portada FECHA=$(FECHA)
 	$(PYTHON) src/publish.py --fecha $(FECHA) --programar
@@ -74,7 +74,7 @@ desinstalar-noche: ## Quita la preparación automática de las 22:00
 	@$(PYTHON) -c "import pathlib; pathlib.Path('$(PLIST)').unlink(missing_ok=True)"
 	@echo "Desinstalado."
 
-publicar: ## Publica ya el episodio aprobado: R2, feed, web y push (sin esperar a las 6:00)
+publicar: ## Publica ya el episodio aprobado: R2, feed, web y push (en el momento)
 	$(PYTHON) src/publish.py --fecha $(FECHA)
 
 redes: ## Vídeos y textos para las redes del episodio de FECHA, sin publicar nada

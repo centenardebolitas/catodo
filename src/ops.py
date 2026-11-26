@@ -5,13 +5,15 @@ Uso (lo lanzan scripts/ops/preparar.sh y scripts/ops/responder.sh):
     python src/ops.py preparar --fecha AAAA-MM-DD
     python src/ops.py decision --fecha AAAA-MM-DD
     python src/ops.py responder
+    python src/ops.py difundir --fecha AAAA-MM-DD
 
 publicar: lo de cada mañana desde el 26 de noviembre de 2026. Prepara el episodio
 del día como preparar y lo publica solo, sin revisión previa: lo deja como
 publicación automática en su memoria, sube el MP3 a R2, regenera feed y web y deja el
 commit, que ops empuja a main (commandGitPush). Las personas lo revisan después, al
 escucharlo, y se corrige con `make corregir`. Abre un aviso con el enlace y los puntos
-a comprobar, con una sola opción: «Visto».
+a comprobar. Con redes activas, sus opciones son «Difundir en redes» y «No difundir»
+(la de por defecto); sin ellas, solo «Visto».
 Si una ejecución falla, la siguiente de la misma fecha retoma desde el paso que
 falló: lo hecho se guarda fuera del clon, que ops limpia (CATODO_ESTADO; ver pasos).
 
@@ -26,8 +28,8 @@ que ops abre en el móvil: resumen, puntos a comprobar, orden del episodio y los
 enlaces para escucharlo y leerlo. Opciones: «Aprobar y programar» y «No publicar»,
 que es la de por defecto porque no cambia nada.
 
-difundir: lo de catodo.difundir, a media mañana: el episodio del día en las redes
-activas (src/redes.py). En el aviso de publicar, «No difundir en redes» lo impide.
+difundir: el episodio en las redes activas (src/redes.py). Lo hace responder al elegir
+«Difundir en redes»; a mano, para repetirlo (solo publica en las redes que falten).
 
 responder: lo corre ops cuando Ulises contesta. Con un texto (OPS_DECISION_TEXT, sin
 opción) aplica el comentario al guion y deja una versión nueva para revisar
@@ -35,7 +37,9 @@ opción) aplica el comentario al guion y deja una versión nueva para revisar
 «aprobar» deja la aprobación humana en la memoria del episodio y lo programa como
 `make programar`, pero sin push: deja el commit y lo empuja ops a la rama
 programado. En los dos casos borra el audio y el guion de revisión de R2. Lo que
-cuenta va a OPS_REPLY_NOTE_FILE, que ops pone como nota en el hilo.
+cuenta va a OPS_REPLY_NOTE_FILE, que ops pone como nota en el hilo. Con «difundir»
+publica el episodio en las redes activas; si alguna falla, sale con error y ops lo
+reintenta (las ya publicadas no se repiten).
 """
 
 import argparse
@@ -57,6 +61,7 @@ from comun import persona as persona_del_dia
 
 CARPETA_REVISION = "revision"
 OPCION_VISTO = "visto"
+OPCION_DIFUNDIR = "difundir"
 OPCION_NO_DIFUNDIR = "no-difundir"
 OPCION_APROBAR = "aprobar"
 OPCION_NO_PUBLICAR = "no-publicar"
@@ -67,6 +72,9 @@ OPCIONES = [
 # Lo que admite ops en el cuerpo de una decisión.
 MAX_CUERPO = 10_000
 FECHA = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
+# Lo que espera «Difundir en redes» a que el episodio esté en catodo.es (GitHub Pages tarda
+# unos minutos tras el push): si se elige nada más llegar el aviso, no falla por eso.
+ESPERA_WEB_S = 900
 
 
 def titulo(fecha):
@@ -112,7 +120,7 @@ def cuerpo_decision(fecha, revision_md, url_audio, url_guion, minutos, url_porta
     ]
     if partes.get("Se queda para otro día"):
         lineas += ["", "## Se queda para otro día", "", partes["Se queda para otro día"]]
-    lineas += ["", "«Aprobar y programar» deja constancia de tu revisión y lo publica a las 6:00. "
+    lineas += ["", "«Aprobar y programar» deja constancia de tu revisión y lo deja en la rama `programado`. "
                    "«No publicar» no cambia nada. También puedes responder con comentarios "
                    "(«en la noticia 1 añade “presuntamente”»): los aplico y te paso la versión nueva."]
     texto = "\n".join(lineas).strip()
@@ -262,17 +270,18 @@ def publicar(fecha):
     olvidar(fecha)
 
 
-def difundir(fecha):
-    """catodo.difundir: el episodio del día en las redes activas (src/redes.py). Falla si
-    alguna red falla, para que ops lo avise; las demás se publican igual."""
+def difundir(fecha, esperar=ESPERA_WEB_S):
+    """El episodio en las redes activas (src/redes.py). Falla si alguna red falla, para que
+    ops lo avise y lo reintente; las demás se publican igual. Devuelve los resultados."""
     import redes
-    resultados = redes.difundir(fecha)
+    resultados = redes.difundir(fecha, esperar=esperar)
     fallos = {r: v["error"] for r, v in resultados.items() if "error" in v}
     if fallos:
         sys.exit("Han fallado: " + "; ".join(f"{r}: {e}" for r, e in fallos.items()))
+    return resultados
 
 
-def cuerpo_aviso(fecha, revision_md, publicacion, rama):
+def cuerpo_aviso(fecha, revision_md, publicacion, rama, redes_activas=()):
     """El aviso de un episodio que ya ha salido: el enlace y lo que conviene mirar al escucharlo."""
     partes = secciones(revision_md)
     cabecera = re.sub(r"(?m)^# .*\n?", "", partes.get("", "")).strip()
@@ -286,6 +295,8 @@ def cuerpo_aviso(fecha, revision_md, publicacion, rama):
         "",
         cabecera,
         "",
+        *([f"«Difundir en redes» lo publica en {', '.join(nombre_red(r) for r in redes_activas)}; "
+           "«No difundir» no hace nada.", ""] if redes_activas else []),
         "## Puntos a comprobar al escucharlo",
         "",
         partes.get("Puntos a comprobar", "Nada destacado."),
@@ -303,20 +314,31 @@ def cuerpo_aviso(fecha, revision_md, publicacion, rama):
     return texto
 
 
-def opciones_aviso():
-    """«Visto» y, si hay redes activas, «No difundir en redes» (catodo.difundir lo respeta)."""
-    opciones = [{"key": OPCION_VISTO, "label": "Visto"}]
+def nombre_red(red):
+    return {"youtube": "YouTube"}.get(red, red.capitalize())
+
+
+def redes_activas():
     try:  # el episodio ya está publicado: nada de aquí puede tumbar el aviso
         import redes
-        if redes.activas():
-            opciones.append({"key": OPCION_NO_DIFUNDIR, "label": "No difundir en redes"})
+        return redes.activas()
     except Exception as e:  # noqa: BLE001
         print(f"Aviso: no se han podido leer las redes activas ({e}).")
-    return opciones
+        return []
+
+
+def opciones_aviso(activas=None):
+    """Con redes activas, «Difundir en redes» y «No difundir» (la de por defecto, que no
+    cambia nada); sin ellas, solo «Visto»."""
+    activas = redes_activas() if activas is None else activas
+    if not activas:
+        return [{"key": OPCION_VISTO, "label": "Visto"}]
+    return [{"key": OPCION_DIFUNDIR, "label": "Difundir en redes"},
+            {"key": OPCION_VISTO, "label": "No difundir"}]
 
 
 def aviso_publicado(fecha):
-    """Deja en OPS_DECISION_FILE el aviso del episodio publicado, con una sola opción."""
+    """Deja en OPS_DECISION_FILE el aviso del episodio publicado (ver opciones_aviso)."""
     destino = os.environ.get("OPS_DECISION_FILE")
     if not destino:
         print("Sin OPS_DECISION_FILE: no dejo aviso (fuera de ops).")
@@ -324,10 +346,11 @@ def aviso_publicado(fecha):
     carpeta = EPISODIOS / fecha
     revision = carpeta / "revision.md"
     publicacion = json.loads((carpeta / "publicacion.json").read_text(encoding="utf-8"))
+    activas = redes_activas()
     datos = {
         "message": cuerpo_aviso(fecha, revision.read_text(encoding="utf-8") if revision.exists() else "",
-                                publicacion, os.environ.get("OPS_GIT_PUSH", "main")),
-        "decision": {"title": f"Cátodo {fecha}: publicado", "options": opciones_aviso(),
+                                publicacion, os.environ.get("OPS_GIT_PUSH", "main"), activas),
+        "decision": {"title": f"Cátodo {fecha}: publicado", "options": opciones_aviso(activas),
                      "defaultOption": OPCION_VISTO, "allowFreeText": False},
     }
     Path(destino).write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
@@ -548,12 +571,16 @@ def responder():
     if opcion == OPCION_VISTO:
         nota(f"Visto el episodio del {fecha}.")
         return
-    if opcion == OPCION_NO_DIFUNDIR:
-        import redes
-        estado = redes.vetar(fecha, f"«No difundir en redes» en ops (decisión {id_decision}).", env)
-        hechas = ", ".join(estado.get("redes", {})) or "ninguna"
-        nota(f"No se difunde el episodio del {fecha} en redes. Ya publicadas antes de elegirlo: {hechas} "
-             "(esas hay que borrarlas a mano).")
+    if opcion == OPCION_NO_DIFUNDIR:  # avisos abiertos antes de que la difusión dependiera de la decisión
+        nota(f"No se difunde el episodio del {fecha} en redes.")
+        return
+    if opcion == OPCION_DIFUNDIR:
+        # Si alguna red falla, sale con error: ops lo reintenta y solo se repiten las que faltan.
+        resultados = difundir(fecha)
+        lineas = [f"- {nombre_red(r)}: {v['url']}" if v.get("url") else f"- {nombre_red(r)}: publicado"
+                  for r, v in resultados.items()]
+        nota(f"Episodio del {fecha} difundido en redes.\n\n" + "\n".join(lineas) if lineas
+             else f"El episodio del {fecha} ya estaba en todas las redes activas: no he publicado nada.")
         return
     if not opcion:
         # Un comentario: el texto no autoriza a publicar, solo a preparar otra versión.
@@ -582,10 +609,8 @@ def responder():
     publicacion = json.loads((carpeta / "publicacion.json").read_text(encoding="utf-8"))
     rama = os.environ.get("OPS_GIT_PUSH", "programado")
     nota(f"Aprobado y listo. Episodio {publicacion['numero']} ({fecha}), "
-         f"[audio definitivo]({publicacion['url_audio']}). ops lo empuja a `{rama}` y "
-         f"`publicar.yml` lo pasa a main el {publicacion['publicado_en'][:16].replace('T', ' a las ')} "
-         "(hora de Madrid). Si esa hora ya ha pasado, lánzalo a mano: Actions > "
-         "Publicar episodio programado > Run workflow, con «forzar».")
+         f"[audio definitivo]({publicacion['url_audio']}). ops lo empuja a `{rama}`; para publicarlo, "
+         "pásalo a main a mano: Actions › Publicar episodio programado › Run workflow.")
 
 
 def main():

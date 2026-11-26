@@ -155,7 +155,7 @@ def mensaje_ronda(fecha, version, correccion, problemas, bloques, url_audio, url
         lineas += [f"Voz rehecha en: {', '.join(bloques)}.", ""]
     if notas_cambiadas:
         lineas += ["## Cambios en las notas", "", "```", notas_cambiadas[:1500], "```", ""]
-    lineas += ["«Aprobar y programar» lo publica a las 6:00; «No publicar» no cambia nada. "
+    lineas += ["«Aprobar y programar» lo deja en la rama `programado`; «No publicar» no cambia nada. "
                "Puedes volver a responder con más comentarios."]
     return "\n".join(lineas).strip()
 

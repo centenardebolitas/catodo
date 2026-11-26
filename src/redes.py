@@ -6,8 +6,9 @@ Uso:
     python src/redes.py autorizar-meta        # una vez: token de página e IDs de Facebook e Instagram
     python src/redes.py autorizar-threads     # una vez: token largo de Threads
 
-Lo lanza ops (catodo.difundir, src/ops.py difundir) a media mañana, cuando el episodio ya
-está en catodo.es. Solo publica en las redes de `redes.activas` (config/settings.yaml)
+Lo lanza ops cuando Ulises elige «Difundir en redes» en el aviso del episodio publicado
+(catodo.preparar, src/ops.py responder): espera, si hace falta, a que el episodio esté en
+catodo.es. Solo publica en las redes de `redes.activas` (config/settings.yaml)
 que tengan sus credenciales. Para cada episodio:
 
   - Bluesky: un mensaje con el titular y una tarjeta con el enlace a la página del episodio.
@@ -17,8 +18,7 @@ que tengan sus credenciales. Para cada episodio:
 
 Lo ya publicado se apunta en R2 (difusion/FECHA.json) red a red, en cuanto sale: si se
 repite, no se publica dos veces. Si una red falla, las demás siguen; al final, si alguna
-ha fallado, termina con error para que ops lo avise. Si en el aviso del episodio se eligió
-«No difundir en redes», en ese mismo JSON queda `vetado` y aquí no se publica nada.
+ha fallado, termina con error: ops avisa y lo reintenta, y solo se repiten las que faltan.
 
 Las credenciales llegan por el entorno (en el Mac, de .env): BLUESKY_APP_PASSWORD (la
 cuenta, `redes.bluesky` de settings.yaml); META_PAGE_ID, META_PAGE_TOKEN e INSTAGRAM_USER_ID; THREADS_USER_ID y
@@ -344,8 +344,24 @@ def activas(solo=None):
     return [r for r in lista if r in solo] if solo else lista
 
 
-def difundir(fecha, simulacro=False, solo=None, salida=None):
-    """Publica el episodio en las redes activas. Devuelve {red: resultado o error}."""
+def esperar_publicado(datos, segundos, cada=30):
+    """Espera hasta `segundos` a que el episodio esté en la web (GitHub Pages tarda unos
+    minutos tras el push). Devuelve el problema si sigue sin estar, o None."""
+    limite = time.monotonic() + segundos
+    while True:
+        try:
+            problema = esta_publicado(datos)
+        except requests.RequestException as e:
+            problema = str(e)
+        if not problema or time.monotonic() + cada > limite:
+            return problema
+        print(f"Aún no está en la web ({problema}): espero {cada} s.", flush=True)
+        time.sleep(cada)
+
+
+def difundir(fecha, simulacro=False, solo=None, salida=None, esperar=0):
+    """Publica el episodio en las redes activas. Devuelve {red: resultado o error}.
+    `esperar`: segundos que aguarda a que el episodio esté en la web antes de rendirse."""
     import difusion
 
     # En simulacro, --solo vale aunque la red no esté activa: para ver los textos antes de activarla.
@@ -359,14 +375,11 @@ def difundir(fecha, simulacro=False, solo=None, salida=None):
     datos = difusion.datos_episodio(fecha)
     estado, cliente, bucket = {}, None, env.get("R2_BUCKET", "catodo-audio")
     if not simulacro:
-        problema = esta_publicado(datos)
+        problema = esperar_publicado(datos, esperar)
         if problema:
             raise SystemExit(f"El episodio del {fecha} aún no está en la web: {problema}.")
         cliente = cliente_r2(env)
         estado = leer_estado(cliente, bucket, fecha)
-        if estado.get("vetado"):
-            print(f"No se difunde el episodio del {fecha}: {estado['vetado']}")
-            return {}
     pendientes = [r for r in redes if r not in estado.get("redes", {})]
     for r in redes:
         if r not in pendientes:
@@ -410,16 +423,6 @@ def textos_de(red, datos, medios):
     if red == "threads":
         return texto_threads(datos)
     return f"{titulo_youtube(datos)}\n\n{descripcion_youtube(datos)}\n\n-- Short --\n{descripcion_short(datos, None)}"
-
-
-def vetar(fecha, motivo, env=None):
-    """Deja constancia en R2 de que el episodio no se difunde (opción del aviso de ops)."""
-    env = env or cargar_env()
-    cliente, bucket = cliente_r2(env), env.get("R2_BUCKET", "catodo-audio")
-    estado = leer_estado(cliente, bucket, fecha)
-    estado["vetado"] = motivo
-    guardar_estado(cliente, bucket, fecha, estado)
-    return estado
 
 
 # ---------------------------------------------------------------- autorizaciones (una vez, a mano)

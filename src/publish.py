@@ -17,9 +17,10 @@ una carpeta temporal para revisarlos.
 
 Con --programar el episodio queda listo pero no se publica: el audio se sube a R2, el
 commit se hace en local y se envía a la rama `programado`, con fecha de publicación a la
-HORA_PUBLICACION de Madrid. A esa hora, la tarea de GitHub (.github/workflows/publicar.yml)
-pasa la rama a main y GitHub Pages actualiza la web y el feed. Si esa hora ya ha pasado,
-se publica en el momento.
+HORA_PUBLICACION de Madrid. La pasa a main, a mano, la tarea de GitHub
+(.github/workflows/publicar.yml: Actions › Publicar episodio programado › Run workflow), y
+GitHub Pages actualiza la web y el feed. Hasta el 26 de noviembre de 2026 lo hacía sola a
+las 6:00; desde entonces el episodio lo publica ops al terminar (src/ops.py publicar).
 """
 
 import argparse
@@ -123,7 +124,7 @@ def main():
     parser.add_argument("--simulacro", action="store_true", help="prueba sin subir nada ni tocar git")
     parser.add_argument("--sin-push", action="store_true", help="hace commit pero no push")
     parser.add_argument("--programar", action="store_true",
-                        help="deja el episodio listo para que GitHub lo publique a las 6:00 de Madrid")
+                        help="deja el episodio en la rama programado (se pasa a main a mano, con publicar.yml)")
     args = parser.parse_args()
 
     carpeta = EPISODIOS / args.fecha
@@ -211,7 +212,7 @@ def main():
     if programado:
         # main se queda en local; la tarea de GitHub lo publicará desde la rama programada.
         git("push", "-q", "-f", "origin", f"HEAD:refs/heads/{RAMA_PROGRAMADA}")
-        print(f"  Programado: se publicará el {args.fecha} a las {HORA_PUBLICACION:%H:%M} (hora de Madrid).")
+        print(f"  Programado en la rama {RAMA_PROGRAMADA}: publícalo con Actions › Publicar episodio programado › Run workflow.")
     else:
         git("push", "-q")
         print("  Publicado: GitHub Pages actualizará catodo.es/feed.xml en uno o dos minutos.")

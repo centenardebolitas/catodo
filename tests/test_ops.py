@@ -93,7 +93,7 @@ class PublicacionSola(unittest.TestCase):
             self.addCleanup(lambda: (os.environ.clear(), os.environ.update(entorno)))
             os.environ["OPS_DECISION_FILE"] = str(destino)
             with unittest.mock.patch.object(ops, "EPISODIOS", Path(dir)), \
-                    unittest.mock.patch.object(ops, "opciones_aviso", return_value=[{"key": "visto", "label": "Visto"}]):
+                    unittest.mock.patch.object(ops, "redes_activas", return_value=[]):
                 ops.aviso_publicado("2026-11-26")
             datos = json.loads(destino.read_text())
             self.assertEqual(datos["decision"]["options"], [{"key": "visto", "label": "Visto"}])

@@ -122,13 +122,6 @@ class Difundir(unittest.TestCase):
         bluesky.assert_not_called()
         instagram.assert_called_once()
 
-    def test_vetado_no_publica_nada(self):
-        self.estado = {"vetado": "No difundir en redes"}
-        bluesky = mock.Mock()
-        with mock.patch.dict(redes.PUBLICAR, {"bluesky": bluesky}):
-            self.assertEqual(redes.difundir("2026-11-25"), {})
-        bluesky.assert_not_called()
-
     def test_sin_redes_activas_no_hace_nada(self):
         with mock.patch.object(redes, "AJUSTES", {"activas": []}):
             self.assertEqual(redes.difundir("2026-11-25"), {})
@@ -138,6 +131,16 @@ class Difundir(unittest.TestCase):
         with mock.patch.object(redes, "esta_publicado", return_value="HTTP 404"):
             with self.assertRaises(SystemExit):
                 redes.difundir("2026-11-25")
+
+    def test_espera_a_que_salga_en_la_web(self):
+        respuestas = iter(["HTTP 404", "HTTP 404", None])
+        with mock.patch.object(redes, "esta_publicado", side_effect=lambda d: next(respuestas)), \
+                mock.patch.object(redes.time, "sleep") as dormir:
+            self.assertIsNone(redes.esperar_publicado(DATOS, 900, cada=30))
+        self.assertEqual(dormir.call_count, 2)
+        with mock.patch.object(redes, "esta_publicado", return_value="HTTP 404"), \
+                mock.patch.object(redes.time, "sleep"):
+            self.assertEqual(redes.esperar_publicado(DATOS, 0), "HTTP 404")
 
 
 class TokenThreads(unittest.TestCase):
@@ -155,25 +158,43 @@ class TokenThreads(unittest.TestCase):
 
 
 class AvisoDeOps(unittest.TestCase):
-    def test_no_difundir_solo_con_redes_activas(self):
+    def test_difundir_solo_con_redes_activas_y_por_defecto_no(self):
         with mock.patch.object(redes, "AJUSTES", {"activas": []}):
             self.assertEqual([o["key"] for o in ops.opciones_aviso()], ["visto"])
         with mock.patch.object(redes, "AJUSTES", {"activas": ["bluesky"]}):
-            self.assertEqual([o["key"] for o in ops.opciones_aviso()], ["visto", "no-difundir"])
+            opciones = ops.opciones_aviso()
+        self.assertEqual([o["key"] for o in opciones], ["difundir", "visto"])
+        self.assertEqual(opciones[1]["label"], "No difundir")
+        cuerpo = ops.cuerpo_aviso("2026-11-26", "", {"numero": 3, "url_audio": "https://a/x.mp3"}, "main",
+                                  ["bluesky", "youtube"])
+        self.assertIn("«Difundir en redes» lo publica en Bluesky, YouTube", cuerpo)
 
-    def test_responder_no_difundir_lo_veta(self):
+    def responder(self, opcion, **parches):
         with tempfile.TemporaryDirectory() as d:
             hilo = Path(d) / "hilo.json"
             hilo.write_text(json.dumps({"title": "Cátodo 2026-11-26: publicado", "messages": []}))
             nota = Path(d) / "nota.md"
-            entorno = {"OPS_DECISION_OPTION": "no-difundir", "OPS_DECISION_JSON": str(hilo),
+            entorno = {"OPS_DECISION_OPTION": opcion, "OPS_DECISION_JSON": str(hilo),
                        "OPS_REPLY_NOTE_FILE": str(nota), "OPS_DECISION_ID": "7"}
-            with mock.patch.dict(os.environ, entorno), \
-                    mock.patch.object(redes, "vetar", return_value={"redes": {"bluesky": {}}}) as vetar:
+            with mock.patch.dict(os.environ, entorno), mock.patch.object(ops, "cargar_env", return_value={}), \
+                    mock.patch.object(redes, "difundir", **parches) as difundir:
                 ops.responder()
-            self.assertEqual(vetar.call_args.args[0], "2026-11-26")
-            self.assertIn("decisión 7", vetar.call_args.args[1])
-            self.assertIn("Ya publicadas antes de elegirlo: bluesky", nota.read_text())
+            return difundir, (nota.read_text() if nota.exists() else None)
+
+    def test_responder_difundir_publica_y_lo_cuenta(self):
+        difundir, nota = self.responder("difundir", return_value={"bluesky": {"url": "https://bsky.app/x"}})
+        self.assertEqual(difundir.call_args.args[0], "2026-11-26")
+        self.assertEqual(difundir.call_args.kwargs["esperar"], ops.ESPERA_WEB_S)
+        self.assertIn("- Bluesky: https://bsky.app/x", nota)
+
+    def test_responder_difundir_falla_sin_nota_para_que_ops_lo_reintente(self):
+        with self.assertRaises(SystemExit):
+            self.responder("difundir", return_value={"bluesky": {"error": "HTTP 500"}})
+
+    def test_no_difundir_no_publica(self):
+        difundir, nota = self.responder("visto")
+        difundir.assert_not_called()
+        self.assertIn("Visto", nota)
 
 
 if __name__ == "__main__":
