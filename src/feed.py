@@ -7,7 +7,7 @@ Recorre los episodios publicados (los que tienen episodes/AAAA-MM-DD/publicacion
 que escribe publish.py) y regenera:
   - docs/feed.xml: RSS de podcast válido para Apple Podcasts y Spotify;
   - docs/index.html: portada con la lista de episodios;
-  - docs/episodios/AAAA-MM-DD.html: una página por episodio con notas y transcripción.
+  - docs/episodios/AAAA-MM-DD.html: una página por episodio con notas y el guion completo.
 """
 
 import hashlib
@@ -394,7 +394,7 @@ def generar_pagina_episodio(ep, cfg, anterior=None, siguiente=None):
   <audio id="audio" controls preload="metadata" src="{html.escape(ep['url_audio'])}"></audio>
   {insignias(cfg, ep, "insignias episodio-insignias")}
   {capitulos_html(ep)}{descripcion_episodio(ep, cfg, capitulos=False)}
-  <details><summary>Transcripción</summary>
+  <details><summary>Leer el guion completo</summary>
   {transcripcion}
   </details>
   {navegacion_episodios(anterior, siguiente)}"""
