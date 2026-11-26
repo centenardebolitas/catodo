@@ -20,7 +20,7 @@ repite, no se publica dos veces. Si una red falla, las demás siguen; al final, 
 ha fallado, termina con error: ops avisa y lo reintenta, y solo se repiten las que faltan.
 
 Las credenciales llegan por el entorno (en el Mac, de .env): BLUESKY_APP_PASSWORD (la
-cuenta, `redes.bluesky` de settings.yaml); META_TOKEN; THREADS_USER_ID y THREADS_TOKEN;
+cuenta, `redes.bluesky` de settings.yaml); META_TOKEN; THREADS_TOKEN (THREADS_USER_ID, opcional: si no, «me»);
 YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET y YOUTUBE_REFRESH_TOKEN.
 
 Facebook e Instagram van con un solo token, META_TOKEN: el de un usuario del sistema del
@@ -287,8 +287,8 @@ def token_renovable(env, red):
 
 
 def threads(datos, env, medios):
-    falta(env, "THREADS_USER_ID", "THREADS_TOKEN")
-    token, usuario = token_threads(env), env["THREADS_USER_ID"]
+    falta(env, "THREADS_TOKEN")
+    token, usuario = token_threads(env), env.get("THREADS_USER_ID") or "me"
     contenedor = pedir("POST", f"{THREADS}/{usuario}/threads", data={
         "media_type": "VIDEO", "video_url": medios["url_clip"], "text": texto_threads(datos),
         "access_token": token})["id"]
