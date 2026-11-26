@@ -51,9 +51,9 @@ redes:
   - nombre: Instagram
     url: https://www.instagram.com/catodo.es/
     icono: instagram
-  # - nombre: YouTube            # el canal no existe todavía
-  #   url: https://www.youtube.com/@catodo.es
-  #   icono: youtube
+  - nombre: YouTube
+    url: https://www.youtube.com/@catodo_es   # @catodo y @catodo.es estaban cogidos
+    icono: youtube
 
 # Formulario de contacto del pie: los mensajes llegan a `email` sin publicar la dirección en la web.
 # Los envía Web3Forms (gratis hasta 250 al mes). La clave se saca en web3forms.com poniendo
