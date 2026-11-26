@@ -93,3 +93,19 @@ class Cabecera(unittest.TestCase):
         c = feed.cabecera_episodio({k: v for k, v in self.EP.items() if not k.startswith("url_portada")})
         self.assertNotIn("<img", c)
         self.assertNotIn("con-portada", c)
+
+
+class Sitemap(unittest.TestCase):
+    CFG = {"web": "https://catodo.es/"}
+    EPS = [{"fecha": "2026-11-26", "publicado_en": "2026-11-26T09:28:35+01:00"},
+           {"fecha": "2026-11-25", "publicado_en": "2026-11-25T07:00:00+01:00"}]
+
+    def test_paginas_y_fechas(self):
+        s = feed.generar_sitemap(self.EPS, self.CFG)
+        self.assertIn("<url><loc>https://catodo.es/</loc><lastmod>2026-11-26</lastmod></url>", s)
+        self.assertIn("<url><loc>https://catodo.es/sobre.html</loc></url>", s)
+        self.assertIn("<loc>https://catodo.es/episodios/2026-11-25.html</loc><lastmod>2026-11-25</lastmod>", s)
+        self.assertNotIn("legal.html", s)
+
+    def test_sin_episodios(self):
+        self.assertIn("<url><loc>https://catodo.es/</loc></url>", feed.generar_sitemap([], self.CFG))

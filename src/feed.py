@@ -6,6 +6,7 @@ Uso:
 Recorre los episodios publicados (los que tienen episodes/AAAA-MM-DD/publicacion.json,
 que escribe publish.py) y regenera:
   - docs/feed.xml: RSS de podcast válido para Apple Podcasts y Spotify;
+  - docs/sitemap.xml: las páginas que debe indexar Google (sin legal.html);
   - docs/index.html: portada con la lista de episodios;
   - docs/episodios/AAAA-MM-DD.html: una página por episodio con notas y el guion completo.
 """
@@ -181,6 +182,23 @@ def generar_feed(episodios, cfg):
 {chr(10).join(items)}
   </channel>
 </rss>
+"""
+
+
+def generar_sitemap(episodios, cfg):
+    """docs/sitemap.xml para Search Console: portada, sobre.html y cada episodio.
+    legal.html se queda fuera a propósito (además lleva noindex)."""
+    web = cfg["web"].rstrip("/")
+    urls = [(f"{web}/", episodios[0]["publicado_en"][:10] if episodios else None),
+            (f"{web}/sobre.html", None)]
+    urls += [(f"{web}/episodios/{ep['fecha']}.html", ep["publicado_en"][:10]) for ep in episodios]
+    entradas = "\n".join(
+        f"  <url><loc>{escape(loc)}</loc>{f'<lastmod>{fecha}</lastmod>' if fecha else ''}</url>"
+        for loc, fecha in urls)
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{entradas}
+</urlset>
 """
 
 
@@ -457,6 +475,7 @@ def generar_todo(destino=DOCS):
     episodios = episodios_publicados()
     (destino / "episodios").mkdir(parents=True, exist_ok=True)
     (destino / "feed.xml").write_text(generar_feed(episodios, cfg), encoding="utf-8")
+    (destino / "sitemap.xml").write_text(generar_sitemap(episodios, cfg), encoding="utf-8")
     (destino / "index.html").write_text(generar_portada(episodios, cfg), encoding="utf-8")
     for estatica in ("sobre.html", "legal.html"):
         actualizar_pie(destino / estatica, cfg)
@@ -474,7 +493,7 @@ def generar_todo(destino=DOCS):
 
 def main():
     episodios = generar_todo()
-    print(f"Feed y web regenerados con {len(episodios)} episodios: docs/feed.xml, docs/index.html, docs/episodios/")
+    print(f"Feed y web regenerados con {len(episodios)} episodios: docs/feed.xml, docs/sitemap.xml, docs/index.html, docs/episodios/")
 
 
 if __name__ == "__main__":
