@@ -1,0 +1,37 @@
+{
+  "version": "1.2.0",
+  "chapters": [
+    {
+      "startTime": 0,
+      "title": "Apertura"
+    },
+    {
+      "startTime": 24.1,
+      "title": "Nvidia corta el grifo en el Sudeste Asiático"
+    },
+    {
+      "startTime": 172.06,
+      "title": "Google Play y la dirección de los desarrolladores"
+    },
+    {
+      "startTime": 263.22,
+      "title": "1Password, también se llevaron código"
+    },
+    {
+      "startTime": 324.86,
+      "title": "X estrena controles parentales"
+    },
+    {
+      "startTime": 407.14,
+      "title": "Neuralink, a la fase decisiva con pacientes de ELA"
+    },
+    {
+      "startTime": 485.06,
+      "title": "Rockstar dice no al sindicato"
+    },
+    {
+      "startTime": 572.78,
+      "title": "Cierre"
+    }
+  ]
+}

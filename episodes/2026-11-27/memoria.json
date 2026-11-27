@@ -1,0 +1,199 @@
+{
+  "fecha": "2026-11-27",
+  "publicado": true,
+  "contadas": [
+    {
+      "titulo": "Nvidia congela los envíos de chips de IA al Sudeste Asiático",
+      "resumen": "Según el FT y el WSJ, Nvidia pidió a sus fabricantes de servidores (Dell, Super Micro) que paren los envíos a Malasia, Singapur, Tailandia e Indonesia. Nvidia no ha dicho nada en público. Lo provoca una norma de Comercio de EEUU: los centros de datos de la zona necesitan licencia y demostrar que no alquilan potencia a empresas chinas, con unos tres meses de plazo. Según el WSJ, casi una cuarta parte de la potencia de IA de China sale de centros de fuera. Mención a Megaspeed y Super Micro (investigadas por presuntamente desviar chips; lo niegan). Países Bajos pedirá a EEUU que no le aplique la Match Act, que afectaría a ASML (alrededor de una quinta parte de sus ventas en China). Huang comparece la semana que viene; Trump dijo al New York Post que no cree que necesite acogerse a no declarar. Huang no tiene cargos; según Reuters y el WSJ, el fiscal general no vio pruebas de que infringiera la ley.",
+      "asuntos_abiertos": [
+        "Cuánto dura la pausa y si Nvidia la confirma",
+        "Instrucciones de Comercio para las licencias y el plazo de unos tres meses",
+        "Avance de la Match Act y respuesta conjunta de Países Bajos, Bruselas, Alemania y Francia",
+        "Comparecencias de Jensen Huang en la Cámara de Representantes y en el Senado (3 de diciembre)",
+        "Investigaciones de Justicia a Megaspeed y Super Micro"
+      ],
+      "temas": [
+        "Nvidia",
+        "controles de exportación de chips",
+        "Match Act",
+        "ASML",
+        "Jensen Huang",
+        "Megaspeed"
+      ]
+    },
+    {
+      "titulo": "Google Play publicará la dirección de muchos desarrolladores",
+      "resumen": "Por la DSA, desde el 1 de febrero de 2027 las cuentas de Google Play declararán si son comerciantes y desde el 1 de marzo Google mostrará su dirección y teléfono en todo el mundo, aunque la ley solo lo exige para la UE. Apple solo lo muestra en la UE y acepta apartados de correos justificados; Google no, y según su soporte la dirección debe coincidir con el domicilio verificado. Salidas: cuenta de empresa o retirar apps de Europa y Reino Unido.",
+      "asuntos_abiertos": [
+        "Si Google acepta oficinas virtuales o rectifica lo de mostrarlo en todo el mundo",
+        "Reacción de desarrolladores independientes y de reguladores europeos"
+      ],
+      "temas": [
+        "Google Play",
+        "DSA",
+        "ley de servicios digitales",
+        "privacidad de desarrolladores",
+        "Apple App Store"
+      ]
+    },
+    {
+      "titulo": "1Password: también se llevaron código fuente",
+      "resumen": "Seguimiento del hackeo: la empresa reconoce, según The Register y Engadget, que el atacante se llevó también código fuente privado. Las bóvedas siguen a salvo. No ha visto cuentas robadas con lo sustraído. Sigue sin saberse cuántos clientes están afectados ni cómo consiguieron la cuenta del empleado. Opinión: transparencia a plazos (tardó seis días y ahora amplía). Consejo: desconfiar de correos de recuperación o invitación. El cierre explicó el principio de Kerckhoffs.",
+      "asuntos_abiertos": [
+        "Número de clientes afectados",
+        "Cómo se comprometió la cuenta de GitHub del empleado",
+        "Posibles campañas de phishing con los datos robados"
+      ],
+      "temas": [
+        "1Password",
+        "hackeo de 1Password",
+        "código fuente",
+        "principio de Kerckhoffs"
+      ]
+    },
+    {
+      "titulo": "X estrena sus primeros controles parentales",
+      "resumen": "X lanza controles parentales para cuentas de 13 a 17 años: límite de tiempo, quién sigue y escribe, filtros, ver con quién habla sin leer mensajes; modo protegido por defecto y sin anuncios personalizados. El adolescente tiene que aceptar la vinculación. No está claro si llega a España ni cómo verifica la edad. Se recordaron, como opinión sobre el momento, las demandas de Oregón y Virginia contra SpaceX por imágenes sexuales que presuntamente genera Grok; X dijo que ese contenido no tiene cabida. Según Engadget, X admite que no está pensada para niños.",
+      "asuntos_abiertos": [
+        "Disponibilidad en España y la UE",
+        "Si los controles alcanzan a Grok",
+        "Evolución de las demandas de Oregón y Virginia contra SpaceX"
+      ],
+      "temas": [
+        "X",
+        "controles parentales",
+        "Grok",
+        "SpaceX",
+        "demandas de Oregón y Virginia"
+      ]
+    },
+    {
+      "titulo": "Neuralink, a la fase decisiva con pacientes de ELA",
+      "resumen": "La FDA autoriza a Neuralink un ensayo pivotal del implante LINK con pacientes de ELA; se explicó que no es la aprobación del producto. El implante se coloca con cirugía y un robot inserta los electrodos. Según FayerWayer, más de treinta personas lo llevan; un participante con ELA se ha comunicado solo con señales cerebrales. Se desconocen participantes, lugar y duración. Prudencia con plazos de Musk y con las esperanzas de pacientes en España.",
+      "asuntos_abiertos": [
+        "Número de participantes, centros y duración del ensayo",
+        "Publicación de resultados",
+        "Fecha de una posible solicitud de comercialización"
+      ],
+      "temas": [
+        "Neuralink",
+        "LINK",
+        "ELA",
+        "FDA",
+        "interfaces cerebrales"
+      ]
+    },
+    {
+      "titulo": "Rockstar dice no al sindicato; Take-Two y los ports de GTA VI",
+      "resumen": "La plantilla británica de Rockstar votó en contra de reconocer al IWGB: unas 1.500 personas, más del 90 por ciento de participación, tres de cada cuatro en contra. Rockstar habla de preferencia por la relación directa; el IWGB seguirá organizándose. Contexto: despidos de más de treinta trabajadores el año pasado (la empresa alega una presunta filtración en Discord; el sindicato lo ve como represalia), con sentencia pendiente. Take-Two, dueña de Rockstar: una sola reclamación DMCA tumbó más de tres mil copias del port no oficial en GitHub. Sin versión oficial para PC.",
+      "asuntos_abiertos": [
+        "Sentencia del tribunal laboral sobre los despidos de Rockstar",
+        "Próximos pasos del IWGB",
+        "Nuevos ports no oficiales y reacciones de Take-Two",
+        "Anuncio de una versión oficial de GTA VI para PC"
+      ],
+      "temas": [
+        "Rockstar Games",
+        "IWGB",
+        "GTA VI",
+        "Take-Two",
+        "DMCA en GitHub"
+      ]
+    }
+  ],
+  "pendientes": [
+    {
+      "titulo": "Microsoft usa la IA para cazar a hackers de China y Corea del Norte que también usan IA (ARTEX)",
+      "candidata": 16,
+      "resumen": "Según Microsoft, grupos respaldados por estados, entre ellos Salt Typhoon, usan ARTEX, un marco de ataque con agentes de IA que automatiza técnicas conocidas y puede saltarse defensas débiles en minutos.",
+      "motivo": "Buen tema de ciberseguridad e IA, pero hoy ya hay 1Password y no cabe. Las fuentes legibles son The Register y TNW. Puede entrar el lunes o en una pieza sobre agentes de IA y seguridad.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.theregister.com/security/2026/11/26/microsoft-hackers-in-china-n-korea-using-artex-ai-tool-to-break-into-global-tech-systems/5312433",
+        "https://thenextweb.com/news/microsoft-artex-salt-typhoon-north-korea-state-hackers"
+      ]
+    },
+    {
+      "titulo": "El presidente de Microsoft avisa de más caídas ligadas a la IA",
+      "candidata": 15,
+      "resumen": "Tras el código rojo por la caída de casi 24 horas de Outlook, Teams y Copilot, Brad Smith dice que hay que prepararse para los próximos meses, y Microsoft quiere usar más IA para evitar que se repita.",
+      "motivo": "Es un seguimiento de lo del 25 de noviembre sin un hecho nuevo fuerte. Encaja con la pendiente sobre la oleada de caídas y la deuda técnica en un día flojo, o si hay otra caída.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.larazon.es/tecnologia-consumo/inteligencia-artificial/microsoft-codigo-rojo-caida-microsoft-365-agentes-ia_202611266b0865b95cb1082f89b5e072.html",
+        "https://www.xataka.com/seguridad/tenemos-que-prepararnos-para-proximos-meses-presidente-microsoft-alerta-riesgo-caidas-ligado-a-ia"
+      ]
+    },
+    {
+      "titulo": "SAP prepara al menos 10.000 despidos para reorientarse a la IA",
+      "candidata": 13,
+      "resumen": "Según Bloomberg, SAP planea eliminar al menos 10.000 puestos, alrededor del 9 por ciento de su plantilla mundial.",
+      "motivo": "Viene de fuentes anónimas de Bloomberg (no legible) y solo hay una fuente legible, El Confidencial vía Google News. Es una empresa europea con plantilla en España: entra si SAP lo confirma o hay más cobertura.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.bloomberg.com/news/articles/2026-11-26/sap-weighs-cutting-at-least-10-000-positions-in-ai-restructuring",
+        "https://www.bloomberg.com/news/articles/2026-11-26/sap-weighs-cutting-at-least-10-000-positions-in-ai-restructuring",
+        "https://news.google.com/rss/articles/CBMiogFBVV95cUxORS1tWjZVbVdkSUdLcTZVMTVYaHhHeTBoelR6SDc4S3VQTEw5djduOF90bFg5d1F4ME9OLTRpMl9sRFVHRFE1eHB0M0ZVb2s4dDdlZFRxVnR5SHJyRDVVaG9rZnR6LXNjTjFaaXN3eHl6eGthVGVmTjJ5WndOOTFEbXlwWmlMdmtxZDB3cFo5MW5NbGRiWURYd0xCY3FCR0RUR3c?oc=5"
+      ]
+    },
+    {
+      "titulo": "Ucrania derriba por primera vez un dron ruso a reacción con un láser",
+      "candidata": 10,
+      "resumen": "Un sistema láser ucraniano de prueba, de unos 4 kilovatios, ha abatido un dron Geran/Shahed a reacción, un tipo de dron que suele esquivar sus defensas.",
+      "motivo": "Interesante, con tres grupos legibles, pero hoy no cabe. Puede entrar en un día con hueco, con tono serio.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.tomshardware.com/tech-industry/drones/ukraine-downs-russian-jet-drone-with-cheap-high-powered-laser-for-the-first-time-super-fast-shahed-knocked-out-by-a-4-kilowatt-test-system",
+        "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQTzRVSXJwN3FXSzg4a2NpYmZnaTV1UEZNVHZMWVp4OHB3T2xfQU9nY0FKYjZDWFJlRDQwMWhGT2JvanRoZlJ2OWRiZHpYR1gxYVM3TFQwRF9VYURjaFlJZ1NBVHBqRzVLWlZFU01sM2w4elFfczN3TGh1ZUtKblhraDRVeDdTVDh5ZUtnYU12aTd0VEFqbEFRNTB5cGRmM2RpLU5TWXhhWEpZYUctd2ljbnpLMkkwRmVBQko2SlN0eWtBYzk2djc5Z1ctai1lMk5w0gHkAUFVX3lxTFBFMWV6ZEpBS280NVJCcHJrMFVWV2JqQWlMNG5IRmR5ZFFMOC1ERGlMbkRyVXZSYnVZV1JLemdFZkx0U0pWVlI3eUdLanA4aWlnUXQ5TVBCZEZvT2xwRUdVcjJiVzNobEFIX3ByNzdfOHpjYXg1bUZYMEQ4RXI3aV9OTVVybjhRcWdEUl90Y1Q0YUdWTnJhU3Yxb0NHQjZBSUwyMU9BUVptRkpubWtqT1RVZndWeU5ZTDBlT3V1LU83V2VqUFdNbkt1bzJyVXR0VDBhbGgyNnhlUVF3emxBVnRPVkRSVw?oc=5",
+        "https://www.elconfidencial.com/tecnologia/novaceno/2026-11-26/laser-ucraniano-derriba-dron-ruso-a-reaccion-primera-vez_4473673/"
+      ]
+    },
+    {
+      "titulo": "Binance reabre del todo las retiradas tras el robo de 6.300 millones",
+      "candidata": 12,
+      "resumen": "Binance da por terminada la recuperación y levanta todas las limitaciones de retirada casi un mes después del hackeo.",
+      "motivo": "Solo hay una fuente legible (TNW; Reuters está bloqueada) y no contamos el robo en su día. Necesita contexto.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.reuters.com/technology/binance-lifts-withdrawal-suspension-after-63-billion-crypto-heist-2026-11-26/",
+        "https://thenextweb.com/news/binance-withdrawals-reopen-6-3bn-hack-recovery-complete"
+      ]
+    },
+    {
+      "titulo": "OpenAI dice que GPT-6 diseña proteínas sin modelos biológicos especializados",
+      "resumen": "Según OpenAI, los modelos GPT-6 diseñan proteínas solo con razonamiento y código. Nature recoge el interés de los científicos.",
+      "motivo": "Sigue siendo el mejor candidato para profundizar en un día flojo, mirando con calma qué está demostrado. Enlaces en la memoria (pendiente del 25 de noviembre).",
+      "anunciar": false
+    },
+    {
+      "titulo": "Rusia podría lanzar pronto un satélite con arma nuclear",
+      "resumen": "Según informes de inteligencia, el Sputnik-S podría lanzarse en diciembre; el Kremlin lo niega.",
+      "motivo": "Hoy no hay novedades. Entra si otros gobiernos u organismos lo confirman o si se acerca la fecha. Enlaces en la memoria.",
+      "anunciar": false
+    },
+    {
+      "titulo": "Amazon compra la tecnología de Decart por unos 7.500 millones",
+      "resumen": "Amazon se queda con la tecnología de optimización de IA de Decart y ficha a su equipo mientras se prepara para vender sus chips Trainium.",
+      "motivo": "Encajaría en una noticia sobre la competencia con Nvidia en chips de IA. Hoy la noticia de chips va por otro lado (exportaciones). Enlaces en la memoria.",
+      "anunciar": false
+    },
+    {
+      "titulo": "Musk y SpaceX regalarán acciones a los niños estadounidenses con cuentas Trump",
+      "candidata": 9,
+      "resumen": "SpaceX donará una acción a cada cuenta Trump activa, Musk igualará la aportación y promete repetirlo cada año, en una operación de casi 17.000 millones.",
+      "motivo": "Casi todas las fuentes son ilegibles (Bloomberg, CNBC) y le falta interés para el oyente de España. Solo si hay más cobertura legible.",
+      "anunciar": false,
+      "enlaces": [
+        "https://www.bloomberg.com/news/articles/2026-11-26/musk-says-every-us-kid-to-get-two-spacex-shares-doubling-pledge",
+        "https://www.cnbc.com/2026/11/25/spacex-musk-trump-account-stock.html",
+        "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPaHNoVUR5cHlRVktISWd2M094VTZ0bmdyMnFQSzliNjdCZVY5d0VDYWxCdlY3ZDdYT1liV09QVUw2dFQ2R2lqRy1YNmtTeEFjNEhFQnE1RTBUMzd2bWlXRjdOWktXRkxYV09saWRiMmpNOE15N1d6cVg0NGNLdlhJNTdJVFhKWVRETjZIalF4WmtEbUgtOE8zVGFhX1hCWkFjSjlfSG83ODBYb1BIdDdyRnBTeWNGM2hSckJtbmFvbHl3SFpXTXkzekJRbk5STzA3bmt6Zkl6WkJfNHJreV9r?oc=5"
+      ]
+    }
+  ],
+  "revision_humana": {
+    "aprobado": false,
+    "publicacion_automatica": true,
+    "cuando": "2026-11-27T05:22",
+    "nota": "Publicado solo tras las comprobaciones automáticas; lo revisan personas después, al escucharlo."
+  }
+}
